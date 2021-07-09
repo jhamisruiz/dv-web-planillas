@@ -1,0 +1,15 @@
+#error {
+    background-color: #ebf3ff;
+    height: 50vh;
+    padding-top: 5rem;
+    text-align: center;
+}
+
+#error .img-error {
+    width: 50%
+}
+
+#error .error-title {
+    font-size: 4rem;
+    margin-top: 3rem
+}
