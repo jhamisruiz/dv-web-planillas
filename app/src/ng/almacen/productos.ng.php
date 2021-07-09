@@ -62,6 +62,6 @@ if (isset($form_data->select_prods)) {
 }
 
 
-$products = CtrQueryes::SELECT($select, $tables, $where);
+$products = ControllerQueryes::SELECT($select, $tables, $where);
 
 echo json_encode($products);

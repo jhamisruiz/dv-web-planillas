@@ -1,7 +1,7 @@
 <?php
 
-require_once "conexPDO.php";
-class MdlQueryes{
+include_once(dirname(__FILE__) . './../conexPDO.php');
+class ModelQueryes{
 /* ===============================================================================
     QUERY SELECT 
 ================================================================================ */
@@ -180,7 +180,7 @@ class MdlQueryes{
                     
                     return "ok";
                 }else {
-                    return "error";
+                    return "INSERT INTO $table $colums VALUES $values";
                 }
             }
             
@@ -305,9 +305,11 @@ class ModelUbigeo
         $stmt = Conexion::conectar()->prepare("CALL `sp_select_ubigeo`(:provin, :distrito)");
         $stmt->bindParam(":provin", $provin, PDO::PARAM_STR);
         $stmt->bindParam(":distrito", $distrito, PDO::PARAM_STR);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
+        if($stmt->execute()){
+            return $stmt->fetchAll();
+        }else{
+            return "error";
+        }
 
         $stmt = NULL;
     }

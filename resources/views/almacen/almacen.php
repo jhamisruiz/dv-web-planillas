@@ -69,16 +69,18 @@
                             <div class="row d-flex flex-wrap-reverse">
                                 <div class="col-lg-8">
                                     <div class="form-group" id="sucuarlPrincipal">
-                                        <select id="my-select" class="form-control border border-primary" name="">
-                                            <option>Seleccione Sucursal</option>
-                                            <option>Sucursal 1</option>
-                                            <option>Sucursal 2</option>
-                                            <option>Sucursal 3</option>
+                                        <select id="idSucursal" class="form-control border border-primary" name="">
+                                            <option value="">Seleccione Sucursal</option>
+                                            <option value="1">Sucursal 1</option>
+                                            <option value="2">Sucursal 2</option>
+                                            <option value="3">Sucursal 3</option>
                                         </select>
                                     </div>
                                     <div class="form-group d-none" id="sucuarlTemporal">
-                                        <label>Nombre Sucursal Temporal <span class="text-danger">*</span></label>
-                                        <input class="form-control" name="addAlmacen" type="text" placeholder="Nombre temporal...">
+                                        <label>Fecha Termino</label>
+                                        <div class="cal-icon">
+                                            <input type="text" name="addProducto" id="datetimeEnd" class="form-control border border-primary">
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- checkbock switch -->
@@ -97,20 +99,19 @@
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label>Nombre Almacen <span class="text-danger">*</span></label>
-                                <input class="form-control" name="addAlmacen" type="text" placeholder="Nombre...">
+                                <input class="form-control border border-primary" name="addAlmacen" type="text" placeholder="Nombre...">
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Departamento <span class="text-danger">*</span></label>
-                                <select name="" class="form-control" id="region">
+                                <select name="" class="form-control border border-primary" id="region">
                                     <option>Seleccione</option>
                                     <?php
                                     $provin = "";
                                     $distrito = "";
                                     $value = "";
                                     $depart = ControllerUbigeo::CtrUbigeo($provin, $distrito);
-
                                     foreach ($depart as $value) {
 
                                         echo '<option value="' . $value["id_ubigeo"] . '">' . $value["Departamento"] . '</option>';
@@ -122,34 +123,35 @@
                         <div class="col-lg-4 ">
                             <div class="form-group">
                                 <label>Provincias <span class="text-danger">*</span></label>
-                                <select name="" class="form-control" id="provincia">
-                                    <!-- // -->
+                                <select name="" class="form-control border border-primary" id="provincia">
+                                    <option>Seleccione</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-4 ">
                             <div class="form-group">
                                 <label>Distrito <span class="text-danger">*</span></label>
-                                <select name="" class="form-control" id="ubigeo">
+                                <select name="" class="form-control border border-primary" id="ubigeo">
+                                    <option>Seleccione</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label>Direccion <span class="text-danger">*</span></label>
-                                <input class="form-control" name="addAlmacen" type="text" placeholder="Direccion...">
+                                <input class="form-control border border-primary" name="addAlmacen" type="text" placeholder="Direccion...">
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <label>Referencia <span class="text-danger">*</span></label>
-                                <input class="form-control" name="addAlmacen" type="text" placeholder="Referencia...">
+                                <label>Referencia </label>
+                                <input class="form-control border border-primary" name="addAlmacen" type="text" placeholder="Referencia...">
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label>Descripción </label>
-                                <textarea class="form-control" id="addDescripcion" rows="3" placeholder="Descripción..."></textarea>
+                                <textarea class="form-control border border-primary" id="addDescripcion" rows="3" placeholder="Descripción..."></textarea>
                             </div>
                         </div>
                     </div>

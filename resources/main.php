@@ -1,4 +1,4 @@
-<div id="main">
+
     <?php
 
     if (isset($_GET["ruta"])) {
@@ -34,4 +34,3 @@
     } else {
     }
     ?>
-</div>

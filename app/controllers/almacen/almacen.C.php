@@ -25,7 +25,7 @@ class ControllerAlmacen{
             "A.idSucursal" => "S.id",
         );
         $where ="";
-        $respuesta = CtrQueryes::SELECT($select, $tables, $where);
+        $respuesta = ControllerQueryes::SELECT($select, $tables, $where);
         return $respuesta;
     }
 }

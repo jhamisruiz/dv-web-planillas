@@ -20,7 +20,7 @@ class ajaxUsuarios{
             "email" => $data[3],
             "LASTID"=>"TRUE",
         );
-        $persona = CtrQueryes::INSERT($insert);
+        $persona = ControllerQueryes::INSERT($insert);
         
         if ($persona == "error") {
 
@@ -40,7 +40,7 @@ class ajaxUsuarios{
                 "idPersona"=> $persona,
                 "LASTID" => "TRUE",
             );
-            $usuario = CtrQueryes::INSERT($insert);
+            $usuario = ControllerQueryes::INSERT($insert);
             
             if ($usuario=="error") {
 
@@ -48,7 +48,7 @@ class ajaxUsuarios{
                     "table"=>"personas",
                     "id" => $persona,
                 );
-                $delpersona = CtrQueryes::DELATE($delate);
+                $delpersona = ControllerQueryes::DELATE($delate);
                 $alertify = array(
                     "color" => "error",
                     "sms" => "Usuario no guardado",
@@ -85,7 +85,7 @@ class ajaxUsuarios{
             "id"=>$data["id"],#condifion columna y valor
         );
 
-        $respuesta = CtrQueryes::UPDATE($update, $where);
+        $respuesta = ControllerQueryes::UPDATE($update, $where);
         echo $respuesta;
 
     }

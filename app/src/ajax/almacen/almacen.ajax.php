@@ -1,8 +1,8 @@
 <?php
 
 include('./../../../php/functions.php');
-include('./../../../controllers/querys.C.php');
-include('./../../../models/querys.M.php');
+include('./../../../controllers/query/querys.C.php');
+include('./../../../models/query/querys.M.php');
 
 class ajaxAlmacen{
     /*=============================================
@@ -12,18 +12,25 @@ class ajaxAlmacen{
     public function ajaxCrearAlmacen(){
 
         $data = $this->almacen;
+        if($data[0]=="P"){
+            $val = '';
+            $val= 'idSucursal';
+        }else{
+            $val = 'fecha_cierre';
+        }
+        
         $insert = array(
             "table" => "almacen",
-            "nombre" => $data[1],
-            "direccion" => $data[2],
-            "idUbigeo" => $data[3],
-            "descripcion" => $data[4],
-            "idSucursal" => $data[0],
+            "tipo" => $data[0],
+            "nombre" => $data[2],
+            "direccion" => $data[3],
+            "descripcion" => $data[5],
+            "idUbigeo" => $data[6],
+            $val => $data[1],
         );
-        
-        $almacen=CtrQueryes::INSERT($insert);
+        $almacen=ControllerQueryes::INSERT($insert);
         if ($almacen == "ok") {
-            $path = "../../../../public/img/". $insert['nombre'];
+            $path = dirname(__FILE__)."/../../../../public/img/". $insert['nombre'];
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }

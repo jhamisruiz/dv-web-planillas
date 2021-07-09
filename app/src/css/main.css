@@ -1,3 +1,12 @@
-.dataTable-selector{
-    min-width:80px;
+.dataTable-selector {
+    min-width: 80px;
+}
+
+.bootstrap-datetimepicker-widget {
+    background: rgba(230, 226, 226, 0.952) !important;
+}
+
+.bootstrap-datetimepicker-widget table td.old,
+.bootstrap-datetimepicker-widget table td.new {
+    color: red!important;
 }

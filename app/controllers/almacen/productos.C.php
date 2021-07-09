@@ -9,7 +9,7 @@ class ControllerProductos{
             "infraestructura"=>"",
         ); 
         $where="";
-        $deposito=CtrQueryes::SELECT($select, $tables, $where);
+        $deposito=ControllerQueryes::SELECT($select, $tables, $where);
         return $deposito;
     }
 
@@ -53,7 +53,7 @@ class ControllerProductos{
         $where = array(
             "P.idAlmacen" => "='" . $idAlmac . "'",
         );
-        $products = CtrQueryes::SELECT($select, $tables, $where);
+        $products = ControllerQueryes::SELECT($select, $tables, $where);
         return $products;
     }
 /*=============================================
@@ -75,7 +75,7 @@ class ControllerProductos{
                     "idAlmacen" => $produc[0],
                     "LASTID" => "TRUE",
                 );
-                $deposito = CtrQueryes::INSERT($insert);
+                $deposito = ControllerQueryes::INSERT($insert);
                 if ($deposito != "error") {
                     $lastIdDepo = $deposito;
                 }
@@ -93,7 +93,7 @@ class ControllerProductos{
                     $where = array(
                         "id" => $depo[0], #condifion columna y valor
                     );
-                    $depoUpdate = CtrQueryes::UPDATE($update, $where);
+                    $depoUpdate = ControllerQueryes::UPDATE($update, $where);
                     if ($depoUpdate == "ok") {
                         $lastIdDepo = $depo[0];
                     }
@@ -107,7 +107,7 @@ class ControllerProductos{
             "abrev_sunat" => strtoupper($produc[5]),
             "LASTID" => "TRUE",
         );
-        $umedida = CtrQueryes::INSERT($insert);
+        $umedida = ControllerQueryes::INSERT($insert);
         if ($umedida != "error") {
             $lastidUm = $umedida;
         } else {
@@ -129,7 +129,7 @@ class ControllerProductos{
                 "recordad" => $produc[9],
                 "LASTID" => "TRUE",
             );
-            $product = CtrQueryes::INSERT($insert);
+            $product = ControllerQueryes::INSERT($insert);
             if ($product == "error") {
                 return  "error";
             }else{
@@ -153,7 +153,7 @@ class ControllerProductos{
                             "imgUrl" => $url,
                             "idProducto" => $product,
                         );
-                        $image = CtrQueryes::INSERT($insert);
+                        $image = ControllerQueryes::INSERT($insert);
                         if ($image=="ok") {
                             return  "ok";
                         }else{

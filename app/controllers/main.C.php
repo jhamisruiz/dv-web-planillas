@@ -25,12 +25,14 @@ class ControllerMain
 
             ?>
                 <div id="app">
-                    <?php
-                    include "resources/parts/header.php";
-                    include "resources/parts/siderbar.php";
+                    <div id="main" class='layout-navbar'>
+                        <?php
+                        include "resources/parts/header.php";
+                        include "resources/parts/siderbar.php";
 
-                    include "resources/main.php";
-                    ?>
+                        include "resources/main.php";
+                        ?>
+                    </div>
                 </div>
 
                 <div id="smsconfirmations"></div>

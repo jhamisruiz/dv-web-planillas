@@ -11,7 +11,7 @@ $("#region").change(function(){
            $("#provincia").html(response);
        },
        error:function(){
-           alert("error")
+           alertify.error('error');
        }
    });
 })
@@ -28,7 +28,7 @@ $("#provincia").change(function(){
            $("#ubigeo").html(data);
        },
        error:function(){
-           alert("error")
+           alertify.error('error');
        }
    });
 })

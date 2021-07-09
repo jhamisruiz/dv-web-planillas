@@ -1,9 +1,9 @@
 <?php
 
 include('./../../php/functions.php');
-include('./../../controllers/ubigeo.C.php');
-include('./../../controllers/querys.C.php');
-include('./../../models/querys.M.php');
+include('./../../controllers/ubigeo/ubigeo.C.php');
+include('./../../controllers/query/querys.C.php');
+include('./../../models/query/querys.M.php');
 class ajaxControllerUbigeo
 {
 

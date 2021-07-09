@@ -1,11 +1,11 @@
 <?php
-class CtrQueryes{
+class ControllerQueryes{
 /* ================================================================
     QUERY SELECT
 ================================================================= */
     static public function SELECT($select, $tables, $where){
 
-        $respuesta= MdlQueryes::SELECT($select, $tables, $where);
+        $respuesta= ModelQueryes::SELECT($select, $tables, $where);
         return $respuesta;
     }
 /* ================================================================
@@ -13,7 +13,7 @@ class CtrQueryes{
 ================================================================= */
     static public function INSERT($insert){
 
-        $respuesta = MdlQueryes::INSERT($insert);
+        $respuesta = ModelQueryes::INSERT($insert);
         return $respuesta;
     }
 /* ================================================================
@@ -22,7 +22,7 @@ class CtrQueryes{
     static public function UPDATE($update,$where)
     {
 
-        $respuesta = MdlQueryes::UPDATE($update,$where);
+        $respuesta = ModelQueryes::UPDATE($update,$where);
         return $respuesta;
     }
 /* ================================================================
@@ -31,7 +31,7 @@ class CtrQueryes{
     static public function DELATE($delate)
     {
 
-        $respuesta = MdlQueryes::DELATE($delate);
+        $respuesta = ModelQueryes::DELATE($delate);
         return $respuesta;
     }
 }

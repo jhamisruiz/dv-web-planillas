@@ -17,7 +17,7 @@ class ajaxCategorias{
             "descripcion" => $data[2],
             "idSucursal" => $data[0],
         );
-        $respuesta=CtrQueryes::INSERT($insert);
+        $respuesta=ControllerQueryes::INSERT($insert);
         if ($respuesta=="ok") {
             $swift = array(
                 "icon" => "success",
@@ -54,7 +54,7 @@ class ajaxCategorias{
             "id" => $data["id"], #condifion columna y valor
         );
 
-        $respuesta = CtrQueryes::UPDATE($update, $where);
+        $respuesta = ControllerQueryes::UPDATE($update, $where);
         echo $respuesta;
     }
 }

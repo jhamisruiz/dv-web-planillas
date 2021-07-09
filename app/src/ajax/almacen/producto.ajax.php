@@ -97,7 +97,7 @@ class ajaxAddProductos{
             "idAlmacen" => "='" . $data . "'",
         );
 
-        $deposito = CtrQueryes::SELECT($select, $tables, $where);
+        $deposito = ControllerQueryes::SELECT($select, $tables, $where);
         echo '<option value="0">Crear Nuevo Deposito</option>';
         foreach ($deposito as $value) {
             echo '<option value="' . $value["id"] . '">' . $value["dep"] . '</option>';
@@ -127,7 +127,7 @@ class ajaxAddProductos{
             "id"=>"='". $idDep."'",
         );
 
-        $deposito=CtrQueryes::SELECT($select, $tables, $where);
+        $deposito=ControllerQueryes::SELECT($select, $tables, $where);
         /* print_r($deposito[0]); */
         echo json_encode($deposito[0]);
     }

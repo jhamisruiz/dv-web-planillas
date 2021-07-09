@@ -15,7 +15,7 @@ class CtrCategorias{
         );
         $where="";
 
-        $repuesta=CtrQueryes::SELECT($select,$tables,$where);
+        $repuesta=ControllerQueryes::SELECT($select,$tables,$where);
         return $repuesta;
     }
     
