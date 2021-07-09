@@ -1,8 +1,8 @@
 <?php
 
 include('./../../php/functions.php');
-include('./../../controllers/querys.C.php');
-include('./../../models/querys.M.php');
+include('./../../controllers/query/querys.C.php');
+include('./../../models/query/querys.M.php');
 class ajaxUsuarios{
 
 /*=============================================

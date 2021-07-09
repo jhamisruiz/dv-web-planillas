@@ -16,30 +16,36 @@ class ControllerMain
 
         <body>
             <?php
-            $sgbd = Conexion::tryConex();
+           
+                $sgbd = Conexion::tryConex();
 
-            if ($sgbd["error"] == "error") {
+                if ($sgbd["error"] == "error") {
 
-                include "resources/error/sgbd.php";
-            } else {
+                    include "resources/error/sgbd.php";
+                } else {
+                    //  if (isset($_user['asddas'])) {
 
             ?>
-                <div id="app">
-                    <div id="main" class='layout-navbar'>
-                        <?php
-                        include "resources/parts/header.php";
-                        include "resources/parts/siderbar.php";
+                    <div id="app">
+                        <div id="main" class='layout-navbar'>
+                            <?php
+                            include "resources/parts/header.php";
+                            include "resources/parts/siderbar.php";
 
-                        include "resources/main.php";
-                        ?>
+                            include "resources/main.php";
+                            ?>
+                        </div>
                     </div>
-                </div>
 
-                <div id="smsconfirmations"></div>
+                    <div id="smsconfirmations"></div>
             <?php
-            }
-            include "resources/parts/script.php";
+                }
 
+            //     }else{
+            //     //include "login.php";
+            // }
+                include "resources/parts/script.php";
+            
             ?>
 
         </body>
