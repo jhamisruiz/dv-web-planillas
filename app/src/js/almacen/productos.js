@@ -1,58 +1,26 @@
 
-var app = angular.module('live_search_app', []);
-    app.controller('live_search_controller',['$scope','$http', function($scope, $http) {
-
-        $scope.Almacens=[{"id":"1","nombre":"almac Trujillo centro"},{"id":"2","nombre":"almacen victor larco"}];
-        $scope.select_prods="";
-        
-        $scope.fetchProds = function() {
-            $http({
-                method: "POST",
-                url: "app/src/ng/almacen/productos.ng.php",
-                data: {
-                    search_prods: $scope.search_prods,
-                    id_almacen: $scope.select_prods,
-                    
-                }
-            }).success(function(data) {
-                console.log(data);
-                $scope.sortBy = "";
-                $scope.reverse = false;
-
-                $scope.selectProds = data;
-            });
-        };
-        $scope.fetchAlmacen=function(){
-            $http({
-                method: "POST",
-                url: "app/src/ng/almacen/productos.ng.php",
-                data: {
-                    select_prods: $scope.select_prods
-                }
-            }).success(function(data) {
-                console.log(data);
-                $scope.sortBy = "";
-                $scope.reverse = false;
-
-                $scope.selectProds = data;
-            });
-        };
-        $scope.select_prods="1";
-    }]);
-
-$(document).ready(function(){
-    var idalmacen= $("#onloadAlmacen").val();
-    if (idalmacen!=""&&idalmacen>0){
+function selectAllproductos() {
+    var idalmacen = $("#onloadAlmacen").val();
+    if (idalmacen != "" && idalmacen >= 0) {
         $.ajax({
-            url:"app/src/ajax/almacen/producto.ajax.php",
             method: "POST",
-            data: {selectIdAlmProds:idalmacen},
-            success: function(resproducts){
-                //document.getElementById("idTableProds").innerHTML=resproducts;
+            url: "app/src/ajax/almacen/select.productos.ajax.php",
+            data: { 'selectProductos': idalmacen },
+            success: function (respuesta) {
+                $("#mostrarProductos").html(respuesta);//ingresa mensaje en html
             }
         });
-    }    
+    }
+}
+$(document).ready(function () {
+    selectAllproductos();
 });
+$(document).ready(function(){
+    selectAllproductos();
+});
+function AlmacenProds() {
+    selectAllproductos();
+}
 
 function onSumaCantProd(){
     var total = 0;
@@ -64,29 +32,36 @@ function onSumaCantProd(){
     let tot2 =  parseInt(ini);
     total = tot1+tot2;
     document.getElementById("idCantactDep").value=total;
-}
-function onchangeAlmacenProds(){
-    var idalmacen= $("#onloadAlmacen").val();
-    if (idalmacen!=""&&idalmacen>0) {
-        $.ajax({
-            url:"app/src/ajax/almacen/producto.ajax.php",
-            method: "POST",
-            data: {selectIdAlmProds:idalmacen},
-            success: function(resproducts){
-                //document.getElementById("idTableProds").innerHTML="";
-                //document.getElementById("idTableProds").innerHTML=resproducts;
-            }
-        });
+    let cantMax = document.getElementById("idCantmaxDep").value;
+    let inv = document.getElementById("idCantmaxDep");
+    if (cantMax <= cant) {
+        inv.classList.add("is-invalid");
+    }else{
+        inv.classList.remove("is-invalid");
     }
 }
+//validar capasidad minima y maxima
+function validmaxima(){
+    let mx = document.getElementById("idCantmaxDep");
+    let min = document.getElementById("idCantactDep").value;
+    let max = document.getElementById("idCantmaxDep").value;
+    if (max <= min) {
+        mx.classList.add("is-invalid");
+    } else {
+        mx.classList.remove("is-invalid");
+    }
+}
+
 function delateImgAvatar(){
     document.getElementById("imgProducto").innerHTML="";
     document.getElementById("cargarImg").value="";
 }
+//mostrar imagen
 function mostrarImg(){
     let html = `
         <img id="imgProd" src="https://studio105art.com/files/2014/04/framing.png?w=316&h=316&a=t" class="img-thumbnail img-fluid" alt="">
-            <span class="product-remove" onclick="delateImgAvatar()" title="remove"><i class="fa fa-close"></i></span>`;
+        <span class="product-remove" onclick="delateImgAvatar()" title="remove"><i class="bi bi-trash text-danger"></i></span>
+        `;
     document.getElementById("imgProducto").innerHTML=html;
     var archivo = document.getElementById("cargarImg").files[0];
     var reader = new FileReader();
@@ -95,27 +70,7 @@ function mostrarImg(){
         document.getElementById("imgProd").src = reader.result;
         }
 }
-function ocDepositoAlm(){
-    var idalmacen= $("#addAlmacenProd").val();
-    if (idalmacen!=""&&idalmacen>0) {
-        $.ajax({
-            url:"app/src/ajax/almacen/producto.ajax.php",
-            method: "POST",
-            data: {depositosXalmacen:idalmacen},
-            success: function(depositors){
-                document.getElementById("idDepositoprod").innerHTML="";
-                document.getElementById("idDepositoprod").innerHTML=depositors;
-                $("#idaddDeposito").val("0");
-                $("#idNombreDp").val("");
-                $("#idTipoDep").val("");
-                $("#montoactual").val("0");
-                $("#idCantmaxDep").val("");
-                $("#idDescripDep").val("");
-                $("#idCantactDep").val("");
-            }
-        });
-    } 
-}
+//mostrar deposito
 function mostrarDep(){
     function sumaT(){
         var total = 0;
@@ -163,8 +118,32 @@ function mostrarDep(){
     
 }
 
+function ocDepositoAlm() {
+    
+    var idalmacen = $("#addAlmacenProd").val();
+    if (idalmacen != "" && idalmacen > 0) {
+        $.ajax({
+            url: "app/src/ajax/almacen/producto.ajax.php",
+            method: "POST",
+            data: { depositosXalmacen: idalmacen },
+            success: function (depositors) {
+                document.getElementById("idDepositoprod").innerHTML = "";
+                document.getElementById("idDepositoprod").innerHTML = depositors;
+                $("#idaddDeposito").val("0");
+                $("#idNombreDp").val("");
+                $("#idTipoDep").val("");
+                $("#montoactual").val("0");
+                $("#idCantmaxDep").val("");
+                $("#idDescripDep").val("");
+                $("#idCantactDep").val("");
+            }
+        });
+    }
+    $("#onloadAlmacen").find('option:selected').removeAttr("selected");
+    $("#onloadAlmacen option[value='"+idalmacen+"']").attr("selected", "selected");
+    selectAllproductos();
+}
 $("#btnGuardarProducto").click(function() {
-
     var producto =[];
     var deposito =[];
 
@@ -179,11 +158,7 @@ $("#btnGuardarProducto").click(function() {
     var categoria= $("#addCatProd").val();
     producto.splice(2, 0,categoria);
     producto.push(document.getElementById("addProdDescrip").value);
-    if( $('#idRecordar').is(':checked') ) {
-         producto.push("1");
-    }else{
-        producto.push("0");
-    }
+
     var nomalmacen= $('select[name="selectalmacen"] option:selected').text();
     producto.push(nomalmacen);
     /* array add producto */
@@ -213,11 +188,13 @@ $("#btnGuardarProducto").click(function() {
                     contentType: false,
                     processData: false,
                     success: function (respuesta) {
+                        selectAllproductos();
+                        console.log(respuesta);
                         $("#smsconfirmations").html(respuesta);//ingresa mensaje en html
-                        document.getElementById("imgProducto").innerHTML="";
+                        document.getElementById("imgProducto").innerHTML="";//limpiar imput imagen
 
                         var idalmacen= $("#onloadAlmacen").val();
-                        $.ajax({
+                        /* $.ajax({
                             url:"app/src/ajax/almacen/producto.ajax.php",
                             method: "POST",
                             data: {selectIdAlmProds:producto[0]},
@@ -226,7 +203,7 @@ $("#btnGuardarProducto").click(function() {
                                 //document.getElementById("idTableProds").innerHTML=resproducts;
                                 $("#"+producto[0]+"alm").attr("selected","selected");
                             }
-                        });
+                        }); */
                     }
                 });
                 
@@ -239,5 +216,4 @@ $("#btnGuardarProducto").click(function() {
     } else {
         alertify.error('Complete todos los campos');
     }
-    
 });

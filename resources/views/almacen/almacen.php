@@ -6,46 +6,29 @@
                 <button type="button" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Almacen</button>
             </div>
             <div class="card-body">
-                <table class="table table-striped" id="table1">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>City</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Graiden</td>
-                            <td>vehicula.aliquet@semconsequat.co.uk</td>
-                            <td>076 4820 8838</td>
-                            <td>Offenburg</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Harding</td>
-                            <td>Lorem.ipsum.dolor@etnetuset.com</td>
-                            <td>0800 1111</td>
-                            <td>Obaix</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Emmanuel</td>
-                            <td>eget.lacus.Mauris@feugiatSednec.org</td>
-                            <td>(016977) 8208</td>
-                            <td>Saint-Remy-Geest</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="row col-lg-4">
+                    <div class="input-group mb-3 border border-primary rounded p-0">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="bg-primary text-white">#</th>
+                                <th class="bg-primary text-white">Nombre</th>
+                                <th class="bg-primary text-white">Ubigeo</th>
+                                <th class="bg-primary text-white">Dirección</th>
+                                <th class="bg-primary text-center text-white">Status</th>
+                                <th class="bg-primary text-white" style="max-width: 50px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mostrarAlmacen">
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

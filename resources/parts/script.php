@@ -1,6 +1,7 @@
 <!-- js para peticion ajaxs o funciones-->
 <script type="text/javascript" src="app/src/js/almacen/almacen.js"></script>
-
+<script type="text/javascript" src="app/src/js/almacen/categorias.js"></script>
+<script type="text/javascript" src="app/src/js/almacen/productos.js"></script>
 <!-- js peticion ubigeo -->
 <script type="text/javascript" src="app/src/js/ubigeo.js"></script>
 <!-- js -->
@@ -17,17 +18,7 @@
 <script src="public/assets/js/bootstrap-datetimepicker.min.js"></script>
 
 <?php
-if ((isset($_GET["ruta"])) and $_GET["ruta"] != "dashboard") {
 
-    echo '
-    <script src="public/assets/vendors/simple-datatables/simple-datatables.js"></script>
-    <script>
-    // Simple Datatable
-    let table1 = document.querySelector("#table1");
-    let dataTable = new simpleDatatables.DataTable(table1);
-</script>
-    ';
-}
 
 if ((isset($_GET["ruta"])) and $_GET["ruta"] == "dashboard") {
 

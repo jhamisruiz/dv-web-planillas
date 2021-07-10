@@ -1,275 +1,233 @@
 <div class="page-heading">
-    <div class="page-title">
-        <div class="row">
-            <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>DataTable</h3>
-                <p class="text-subtitle text-muted">For user to check they list</p>
-            </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">DataTable</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
     <section class="section">
         <div class="card">
-            <div class="card-header">
-                Simple Datatable
+            <div class="card-header d-flex justify-content-between">
+                <h5>Productos</h5>
+                <button type="button" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Productos</button>
             </div>
             <div class="card-body">
-                <table class="table table-striped" id="table1">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>City</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Graiden</td>
-                            <td>vehicula.aliquet@semconsequat.co.uk</td>
-                            <td>076 4820 8838</td>
-                            <td>Offenburg</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Dale</td>
-                            <td>fringilla.euismod.enim@quam.ca</td>
-                            <td>0500 527693</td>
-                            <td>New Quay</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Nathaniel</td>
-                            <td>mi.Duis@diam.edu</td>
-                            <td>(012165) 76278</td>
-                            <td>Grumo Appula</td>
-                            <td>
-                                <span class="badge bg-danger">Inactive</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Darius</td>
-                            <td>velit@nec.com</td>
-                            <td>0309 690 7871</td>
-                            <td>Ways</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Oleg</td>
-                            <td>rhoncus.id@Aliquamauctorvelit.net</td>
-                            <td>0500 441046</td>
-                            <td>Rossignol</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Kermit</td>
-                            <td>diam.Sed.diam@anteVivamusnon.org</td>
-                            <td>(01653) 27844</td>
-                            <td>Patna</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jermaine</td>
-                            <td>sodales@nuncsit.org</td>
-                            <td>0800 528324</td>
-                            <td>Mold</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ferdinand</td>
-                            <td>gravida.molestie@tinciduntadipiscing.org</td>
-                            <td>(016977) 4107</td>
-                            <td>Marlborough</td>
-                            <td>
-                                <span class="badge bg-danger">Inactive</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Kuame</td>
-                            <td>Quisque.purus@mauris.org</td>
-                            <td>(0151) 561 8896</td>
-                            <td>Tresigallo</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Deacon</td>
-                            <td>Duis.a.mi@sociisnatoquepenatibus.com</td>
-                            <td>07740 599321</td>
-                            <td>Karapınar</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Channing</td>
-                            <td>tempor.bibendum.Donec@ornarelectusante.ca</td>
-                            <td>0845 46 49</td>
-                            <td>Warrnambool</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Aladdin</td>
-                            <td>sem.ut@pellentesqueafacilisis.ca</td>
-                            <td>0800 1111</td>
-                            <td>Bothey</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Cruz</td>
-                            <td>non@quisturpisvitae.ca</td>
-                            <td>07624 944915</td>
-                            <td>Shikarpur</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Keegan</td>
-                            <td>molestie.dapibus@condimentumDonecat.edu</td>
-                            <td>0800 200103</td>
-                            <td>Assen</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ray</td>
-                            <td>placerat.eget@sagittislobortis.edu</td>
-                            <td>(0112) 896 6829</td>
-                            <td>Hofors</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Maxwell</td>
-                            <td>diam@dapibus.org</td>
-                            <td>0334 836 4028</td>
-                            <td>Thane</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Carter</td>
-                            <td>urna.justo.faucibus@orci.com</td>
-                            <td>07079 826350</td>
-                            <td>Biez</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Stone</td>
-                            <td>velit.Aliquam.nisl@sitametrisus.com</td>
-                            <td>0800 1111</td>
-                            <td>Olivar</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Berk</td>
-                            <td>fringilla.porttitor.vulputate@taciti.edu</td>
-                            <td>(0101) 043 2822</td>
-                            <td>Sanquhar</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Philip</td>
-                            <td>turpis@euenimEtiam.org</td>
-                            <td>0500 571108</td>
-                            <td>Okara</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Kibo</td>
-                            <td>feugiat@urnajustofaucibus.co.uk</td>
-                            <td>07624 682306</td>
-                            <td>La Cisterna</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Bruno</td>
-                            <td>elit.Etiam.laoreet@luctuslobortisClass.edu</td>
-                            <td>07624 869434</td>
-                            <td>Rocca d"Arce</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Leonard</td>
-                            <td>blandit.enim.consequat@mollislectuspede.net</td>
-                            <td>0800 1111</td>
-                            <td>Lobbes</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Hamilton</td>
-                            <td>mauris@diam.org</td>
-                            <td>0800 256 8788</td>
-                            <td>Sanzeno</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Harding</td>
-                            <td>Lorem.ipsum.dolor@etnetuset.com</td>
-                            <td>0800 1111</td>
-                            <td>Obaix</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Emmanuel</td>
-                            <td>eget.lacus.Mauris@feugiatSednec.org</td>
-                            <td>(016977) 8208</td>
-                            <td>Saint-Remy-Geest</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select id="onloadAlmacen" class="form-control bg-primary text-white" onchange="AlmacenProds()">
+                                <?php
+                                $value = "";
+                                #<select ng-model="select_prods" ng-change='fetchAlmacen()' id="onloadAlmacen" class="form-control bg-primary text-white">
+                                $almacen = ControllerAlmacen::SELECT();
+                                if (count($almacen) > 0) {
+                                    echo '<option class="bg-white text-dark" value="0">Seleccione Almacén</option>';
+                                    foreach ($almacen as $key => $value) {
+                                        echo '<option class="bg-white text-dark " value="' . $value["idalmacen"] . '">' . $value["nombre"] . '</option>';
+                                    }
+                                } else {
+                                    echo '<option class="bg-white text-dark" value="0">Sin Almacén</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="input-group mb-3 border border-primary rounded p-0">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="bg-primary text-white">#</th>
+                                <th class="bg-primary text-white">Nombre</th>
+                                <th class="bg-primary text-white">Descripción</th>
+                                <th class="text-white bg-primary">Descripcion</th>
+                                <th class="text-white bg-primary">Cantidad</th>
+                                <th class="text-white bg-primary">Categoria</th>
+                                <th class="text-white bg-primary">U.Medida</th>
+                                <th class="text-white bg-primary">F.Ingreso</th>
+                                <th class="text-white bg-primary">F.Vencimiento</th>
+                                <th class="text-white bg-primary">Estado</th>
+                                <th class="bg-primary text-white" style="max-width: 50px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mostrarProductos">
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
     </section>
+</div>
+<!--Add Categorias -->
+<div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title ">Add Productos</h4>
+                <h3 class="float-right">Sucursal Trujillo</h3>
+            </div>
+            <!-- Modal body -->
+            <div class="pl-4 pr-4 pt-3">
+                <form method="post" enctype="multipart/form-data" autocomplete="off" id="addFormProductos">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <label> Almacen </label>
+                                <select class="form-control bg-primary text-white" id="addAlmacenProd" name="selectalmacen" onchange="ocDepositoAlm()">
+                                    <option value="0">Select. Almacen</option>
+                                    <?php
+                                    $value = "";
+                                    $almacen = ControllerAlmacen::SELECT();
+                                    foreach ($almacen as $value) {
+                                        echo '<option value="' . $value["idalmacen"] . '">' . $value["nombre"] . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="row ">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Nombre Producto </label>
+                                        <input class="form-control border border-primary" name="addProducto" type="text" placeholder="Nombre...">
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        <label>Categoria </label>
+                                        <select id="addCatProd" class="form-control bg-primary text-white">
+                                            <option value="">Seleccione</option>
+                                            <?php
+                                            $value = "";
+                                            $categorias = CtrCategorias::SELECT();
+                                            foreach ($categorias as $value) {
+                                                echo '
+                                                    <option value="' . $value["id"] . '">' . $value["nombre"] . '</option>
+                                                ';
+                                            }
+                                            ?>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Cantidad</label>
+                                        <input class="form-control border border-primary pr-2 catidadPd" onchange="onSumaCantProd()" id="idCantProd" name="addProducto" type="number" value="0" min="0" pattern="^[0-9]+">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Unidad Medida</label>
+                                        <input class="form-control border border-primary" name="addProducto" type="text" placeholder="...">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Abrev Sunat</label>
+                                        <input class="form-control border border-primary" name="addProducto" type="text" oninput="this.value = this.value.toUpperCase()" placeholder="...">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Fhecha Ingreso</label>
+                                                    <div class="cal-icon">
+                                                        <input type="text" name="addProducto" id="datetimeStart" class="form-control border border-primary">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Fecha Vencimiento</label>
+                                                    <div class="cal-icon">
+                                                        <input type="text" name="addProducto" id="datetimeEnd" class="form-control border border-primary">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Descripción </label>
+                                                    <textarea class="form-control border border-primary" id="addProdDescrip" rows="4" placeholder="Descripción..."></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group mb-1 text-center">
+                                            <label>Imagen </label>
+                                            <div class="custom-input-file col-md-6 col-sm-6 col-xs-6">
+                                                <input class="form-control input-file" type="file" id="cargarImg" onchange="mostrarImg()" accept="image/*">
+                                                Subir fichero...
+                                            </div>
+                                        </div>
+                                        <div class="row pt-0 mt-0">
+                                            <div class="col-sm-2"></div>
+                                            <div class="col-sm-6" style="float: right;">
+                                                <div class="product-thumbnail pt-2" id="imgProducto">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row border border-primary">
+                                <div class="col-lg-12">
+                                    <h4>Deposito </h4>
+                                    <div class="form-group">
+                                        <select class="form-control border-secondary" id="idDepositoprod" onchange="mostrarDep()">
+                                            <option value="0">Crear Nuevo Deposito</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <input name="addDeposito" id="idaddDeposito" type="hidden" value="0">
+                                        <input class="form-control pr-2 border-secondary" id="idNombreDp" name="addDeposito" type="text" placeholder="Nombre">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <input class="form-control pr-2 border-secondary" id="idTipoDep" name="addDeposito" type="text" placeholder="Tipo">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Cantidad Actual </label>
+                                        <input type="hidden" value="0" id="montoactual">
+                                        <input class="form-control pr-2" onchange="onSumaCantProd()" id="idCantactDep" name="addDeposito" type="number" placeholder="Capacidad Actual">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Capacidad Maxima</label>
+                                        <input class="form-control pr-2" id="idCantmaxDep" name="addDeposito" type="number" placeholder="Capacidad Maxima" onkeyup="validmaxima()">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <input class="form-control pr-2 border-secondary" id="idDescripDep" name="addDeposito" type="text" placeholder="Descripción">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer mt-3">
+                <button type="button" class="btn btn-primary" id="btnGuardarProducto">Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button>
+            </div>
+        </div>
+    </div>
 </div>

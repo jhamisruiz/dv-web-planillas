@@ -1,15 +1,27 @@
+function selectAllcategoria() {
+	let tabla = "categorias";
+	$.ajax({
+		method: "POST",
+		url: "app/src/ajax/almacen/select.categoria.ajax.php",
+		data: { 'selectCategoria': tabla },
+		success: function (respuesta) {
+			$("#mostrarCategorias").html(respuesta);//ingresa mensaje en html
+		}
+	});
+}
+$(document).ready(function () {
+	selectAllcategoria();
+});
 /*============================== 
-    CREAR USUARIOS
+    CREAR CATEGORIA
 ===============================*/
-$('.addCategoria').click(function () {
-
+$('.AddCategoria').click(function () {
     var categoria = [];
-    $("input[name='addCategoria']").each(function() {
-      categoria.push(this.value);
-    });
-    categoria.push(document.getElementById("addDescripcion").value);
 
-    if (categoria[0]!="" &&categoria[1]!=""&&categoria[2]!="") {
+	categoria.push(document.getElementById("nomCategoria").value);
+	categoria.push(document.getElementById("desCategoria").value);
+
+    if (categoria[0]!="" &&categoria[1]!="") {
       
       if (categoria[0]!="") {
         $.ajax({
@@ -17,10 +29,8 @@ $('.addCategoria').click(function () {
             url:"app/src/ajax/almacen/categorias.ajax.php",
             data: {'addCategoria': categoria},
             success: function(respuesta){
-
+				selectAllcategoria();
               $("#smsconfirmations").html(respuesta);//ingresa mensaje en html
-              $("#loadForm").load(" #loadForm");//refresca la tabla
-
             }
         });
       } else {
@@ -34,7 +44,7 @@ $('.addCategoria').click(function () {
     
 });
 /*============================== 
-    ACTIVAR USUARIOS
+    ACTIVAR CATEGORIAS
 ===============================*/
 $(document).on("click", ".btnActivarCategorias", function () {
 

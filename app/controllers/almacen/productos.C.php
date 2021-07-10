@@ -50,9 +50,14 @@ class ControllerProductos{
             "P.id" => "F.idProducto", /**/   # 9-1
         );
 
-        $where = array(
-            "P.idAlmacen" => "='" . $idAlmac . "'",
-        );
+        if ($idAlmac==0) {
+             $where ="";
+        } else {
+            $where = array(
+                "P.idAlmacen" => "='" . $idAlmac . "'",
+            );
+        }
+        
         $products = ControllerQueryes::SELECT($select, $tables, $where);
         return $products;
     }
@@ -126,7 +131,6 @@ class ControllerProductos{
                 "cantidad" => $produc[3],
                 "idAlmacen" => $produc[0],
                 "idInfraestructura" => $lastIdDepo,
-                "recordad" => $produc[9],
                 "LASTID" => "TRUE",
             );
             $product = ControllerQueryes::INSERT($insert);
@@ -138,7 +142,7 @@ class ControllerProductos{
                 }else{
                     $Name = "";
                     $host = URL_HOST_WEB;
-                    $folder = "public/img/" . $produc[10] . "/";
+                    $folder = "public/img/" . $produc[9] . "/";
                     $TmpName = $_FILES['imageFile']['tmp_name'];
                     $Name = $_FILES['imageFile']['name'];
                     $urlfile = $folder . $Name;

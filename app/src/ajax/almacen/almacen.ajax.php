@@ -12,7 +12,7 @@ class ajaxAlmacen{
     public function ajaxCrearAlmacen(){
 
         $data = $this->almacen;
-        if($data[0]=="P"){
+        if($data[0]=="PRINCIPAL"){
             $val = '';
             $val= 'idSucursal';
         }else{
@@ -24,6 +24,7 @@ class ajaxAlmacen{
             "tipo" => $data[0],
             "nombre" => $data[2],
             "direccion" => $data[3],
+            "referencia" => $data[4],
             "descripcion" => $data[5],
             "idUbigeo" => $data[6],
             $val => $data[1],

@@ -25,25 +25,27 @@ class ControllerMain
                 } else {
                     //  if (isset($_user['asddas'])) {
 
-            ?>
+                    ?>
                     <div id="app">
+                            <?php include "resources/parts/siderbar.php";?>
                         <div id="main" class='layout-navbar'>
                             <?php
                             include "resources/parts/header.php";
-                            include "resources/parts/siderbar.php";
-
+                            ?>
+                            <div id="main-content">
+                            <?php
                             include "resources/main.php";
                             ?>
+                            </div>
                         </div>
                     </div>
 
                     <div id="smsconfirmations"></div>
-            <?php
-                }
-
-            //     }else{
-            //     //include "login.php";
-            // }
+                    <?php
+                    
+                //}else{
+                //include "login.php";
+             }
                 include "resources/parts/script.php";
             
             ?>

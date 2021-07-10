@@ -1,3 +1,20 @@
+/*==============================
+SELECT ALMACEN
+===============================*/
+function selectAllalmacen(){
+    let tabla="almacen";
+    $.ajax({
+        method: "POST",
+        url: "app/src/ajax/almacen/select.almacen.ajax.php",
+        data: { 'selectAlmacen': tabla },
+        success: function (respuesta) {
+            $("#mostrarAlmacen").html(respuesta);//ingresa mensaje en html
+        }
+    });
+}
+$(document).ready(function () {
+    selectAllalmacen();
+});
 
 $("#idcheckSucursal").on('change', function () {
     let dn =document.getElementById("sucuarlPrincipal");
@@ -12,11 +29,9 @@ $("#idcheckSucursal").on('change', function () {
     }
 });
  /*==============================
-CREAR PRODUCTO
+CREAR ALMACEN
 ===============================*/
  $('#btnGuardarAlmacen').click(function () {
-
-    var almacen =[];
     if ($('#idcheckSucursal').is(':checked')){
         almacen.push('TEMPORAL');//0 nombre almacen temporal
         almacen.push(document.getElementById("datetimeEnd").value);//1 fecha caducidad
@@ -34,12 +49,12 @@ CREAR PRODUCTO
      if (almacen[2] != "" && almacen[6] != "") {
          if (almacen[6] != "Seleccione"){
             if (almacen[1] != "" ) {
-
                 $.ajax({
                     method: "POST",
                     url:"app/src/ajax/almacen/almacen.ajax.php",
                     data: {'addAlmacen': almacen},
                     success: function(respuesta){
+                        selectAllalmacen();
                         let dn = document.getElementById("sucuarlPrincipal");//formater el swith alamcen temporal
                         let db = document.getElementById("sucuarlTemporal");//formater el swith alamcen temporal
                         dn.classList.remove("d-none");//formater el swith alamcen temporal

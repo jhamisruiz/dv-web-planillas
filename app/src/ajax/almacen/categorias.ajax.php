@@ -1,7 +1,7 @@
 <?php
 include('./../../../php/functions.php');
-include('./../../../controllers/querys.C.php');
-include('./../../../models/querys.M.php');
+include('./../../../controllers/query/querys.C.php');
+include('./../../../models/query/querys.M.php');
 
 class ajaxCategorias{
     /*=============================================
@@ -13,9 +13,8 @@ class ajaxCategorias{
         $data = $this->categorias;
         $insert=array(
             "table"=>"categorias",
-            "nombre"=> $data[1],
-            "descripcion" => $data[2],
-            "idSucursal" => $data[0],
+            "nombre"=> $data[0],
+            "descripcion" => $data[1]
         );
         $respuesta=ControllerQueryes::INSERT($insert);
         if ($respuesta=="ok") {
