@@ -34,7 +34,7 @@ function onSumaCantProd(){
     document.getElementById("idCantactDep").value=total;
     let cantMax = document.getElementById("idCantmaxDep").value;
     let inv = document.getElementById("idCantmaxDep");
-    if (cantMax <= cant) {
+    if (cant>cantMax) {
         inv.classList.add("is-invalid");
     }else{
         inv.classList.remove("is-invalid");
@@ -45,7 +45,7 @@ function validmaxima(){
     let mx = document.getElementById("idCantmaxDep");
     let min = document.getElementById("idCantactDep").value;
     let max = document.getElementById("idCantmaxDep").value;
-    if (max <= min) {
+    if (min > max) {
         mx.classList.add("is-invalid");
     } else {
         mx.classList.remove("is-invalid");

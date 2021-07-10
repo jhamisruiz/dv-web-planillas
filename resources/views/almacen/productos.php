@@ -40,14 +40,14 @@
                                 <th class="bg-primary text-white">#</th>
                                 <th class="bg-primary text-white">Nombre</th>
                                 <th class="bg-primary text-white">Descripción</th>
-                                <th class="text-white bg-primary">Descripcion</th>
                                 <th class="text-white bg-primary">Cantidad</th>
                                 <th class="text-white bg-primary">Categoria</th>
                                 <th class="text-white bg-primary">U.Medida</th>
                                 <th class="text-white bg-primary">F.Ingreso</th>
                                 <th class="text-white bg-primary">F.Vencimiento</th>
+                                <th class="text-white bg-primary">Almacenamiento</th>
                                 <th class="text-white bg-primary">Estado</th>
-                                <th class="bg-primary text-white" style="max-width: 50px;">Action</th>
+                                <th class="bg-primary text-white" style="max-width: 70px;">Action</th>
                             </tr>
                         </thead>
                         <tbody id="mostrarProductos">
@@ -226,7 +226,7 @@
             <!-- Modal footer -->
             <div class="modal-footer mt-3">
                 <button type="button" class="btn btn-primary" id="btnGuardarProducto">Guardar</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Salir</button>
             </div>
         </div>
     </div>

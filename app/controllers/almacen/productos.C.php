@@ -85,6 +85,7 @@ class ControllerProductos{
                     $lastIdDepo = $deposito;
                 }
             } else {
+                //actualiza deposito
                 if ($depo[0] > 0 and $depo[1] != "") {
 
                     $update = array(

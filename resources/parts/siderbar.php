@@ -20,24 +20,57 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-grid-1x2-fill"></i>
-                        <span>Layouts</span>
+                        <i class="bi bi-person-badge-fill"></i>
+                        <span>Mantenimiento</span>
                     </a>
                     <ul class="submenu ">
                         <li class="submenu-item ">
-                            <a href="layout-default.html">Default Layout</a>
+                            <a href="auth-login">Login</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="layout-vertical-1-column.html">1 Column</a>
+                            <a href="auth-register">Register</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="layout-vertical-navbar.html">Vertical with Navbar</a>
+                            <a href="auth">Forgot Password</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item  has-sub">
+                    <a href="#" class='sidebar-link'>
+                        <i class="bi bi-stack"></i>
+                        <span>Procesos</span>
+                    </a>
+                    <ul class="submenu ">
+                        <li class="submenu-item ">
+                            <a href="component">Alert</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item  ">
+                    <a href="form" class='sidebar-link'>
+                        <i class="bi bi-file-earmark-medical-fill"></i>
+                        <span>Reportes</span>
+                    </a>
+                </li>
+                <li class="sidebar-item  has-sub">
+                    <a href="#" class='sidebar-link'>
+                        <i class="bi bi-pen-fill"></i>
+                        <span>Utilidades</span>
+                    </a>
+                    <ul class="submenu ">
+                        <li class="submenu-item ">
+                            <a href="utilidad-editor">Quill</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="layout-horizontal.html">Horizontal Menu</a>
+                            <a href="utilidad-editor-ckeditor">CKEditor</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="utilidadsummernote">Summernote</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="utilidad-editor">TinyMCE</a>
                         </li>
                     </ul>
                 </li>
@@ -66,13 +99,6 @@
                             <a href="#"> Stock Prod. por Almacen </a>
                         </li>
                     </ul>
-                </li>
-
-                <li class="sidebar-item  ">
-                    <a href="ui-file-uploader.html" class='sidebar-link'>
-                        <i class="bi bi-cloud-arrow-up-fill"></i>
-                        <span>File Uploader</span>
-                    </a>
                 </li>
 
                 <li class="sidebar-title">Raise Support</li>
