@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-07-2021 a las 03:31:21
+-- Tiempo de generación: 11-07-2021 a las 22:29:35
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 7.4.16
 
@@ -45,6 +45,33 @@ END IF;
 END$$
 
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `admin`
+--
+
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `nombres` varchar(250) NOT NULL DEFAULT '''Name''',
+  `apellidos` varchar(250) NOT NULL DEFAULT '''Lastname''',
+  `usuario` varchar(100) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `password` varchar(250) NOT NULL,
+  `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp(),
+  `id_rol` int(11) DEFAULT NULL,
+  `id_permiso` int(11) DEFAULT NULL,
+  `estado` enum('0','1') NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `admin`
+--
+
+INSERT INTO `admin` (`id`, `nombres`, `apellidos`, `usuario`, `email`, `password`, `fecha_registro`, `id_rol`, `id_permiso`, `estado`) VALUES
+(1, 'Jhamis', 'Castillo', 'admin', 'admin@email.com', '$2y$10$u1NM1de97HnIgGqvJkY/ceFzYd5etEwVvd4rsbFllXzbH9u0C1ue.', '2021-07-11 10:31:23', NULL, NULL, '1');
 
 -- --------------------------------------------------------
 
@@ -2423,6 +2450,12 @@ INSERT INTO `usuarios` (`id`, `userNombre`, `password`, `userIP`, `loginTime`, `
 --
 
 --
+-- Indices de la tabla `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `almacen`
 --
 ALTER TABLE `almacen`
@@ -2497,6 +2530,12 @@ ALTER TABLE `usuarios`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `almacen`
