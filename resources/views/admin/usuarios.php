@@ -34,39 +34,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-                                $usuarios = CtrUsuarios::SELECT();
-                                foreach ($usuarios as $key => $value) {
-                                    echo '<tr>
-                                    <td>' . ($key + 1) . '</td>
-                                    <td>
-                                        <img width="28" height="28" src="public/assets/img/user.jpg" class="rounded-circle m-r-5" alt="">
-                                         <h2>' . $value["nombre"] . ' ' . $value["apellido"] . '</h2>
-                                    </td>
-                                    <td>' . $value["usuario"] . '</td>
-                                    <td>' . $value["email"] . '</td>';
-                                    if ($value["estado"] != 0) {
-
-                                        echo '<td class="text-center"><button class="btn btn-success btn-sm btnActivarUsuarios" idusuarios="' . $value["idUser"] . '" estadousuarios="0">Activado</button></td>';
-                                    } else {
-
-                                        echo '<td class="text-center"><button class="btn btn-danger btn-sm btnActivarUsuarios" idusuarios="' . $value["idUser"] . '" estadousuarios="1">Desactivado</button></td>';
-                                    }
-                                    echo '<td class="text-right">
-                                    <div class="dropdown dropdown-action">
-                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="edit-patient.html"><i class="fa fa-pencil m-r-5 text-success"></i> Edit</a>
-                                            <a class="dropdown-item" href="#"><i class="fa fa-trash-o m-r-5 text-danger"></i> Delete</a>
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient ">
-                                                <i class="fa fa-times-circle text-primary"></i> Ress Password</a>
-                                        </div>
-                                    </div>
-                                </td>
-                                </tr>';
-                                }
-
-                                ?>
                             </tbody>
                         </table>
                     </div>

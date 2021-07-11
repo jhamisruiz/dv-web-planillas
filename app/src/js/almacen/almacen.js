@@ -32,6 +32,7 @@ $("#idcheckSucursal").on('change', function () {
 CREAR ALMACEN
 ===============================*/
  $('#btnGuardarAlmacen').click(function () {
+     var almacen =[];
     if ($('#idcheckSucursal').is(':checked')){
         almacen.push('TEMPORAL');//0 nombre almacen temporal
         almacen.push(document.getElementById("datetimeEnd").value);//1 fecha caducidad

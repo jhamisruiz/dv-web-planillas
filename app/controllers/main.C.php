@@ -16,6 +16,7 @@ class ControllerMain
 
         <body>
             <?php
+            $usuario= "prueba";
            
                 $sgbd = Conexion::tryConex();
 
@@ -23,7 +24,7 @@ class ControllerMain
 
                     include "resources/error/sgbd.php";
                 } else {
-                    //  if (isset($_user['asddas'])) {
+                    if ($usuario=="prueba") {
 
                     ?>
                     <div id="app">
@@ -43,8 +44,18 @@ class ControllerMain
                     <div id="smsconfirmations"></div>
                     <?php
                     
-                //}else{
-                //include "login.php";
+                }else{
+                    if (isset($_GET["ruta"])) {
+                        if ($_GET["ruta"] == "login" ||$_GET["ruta"] == "registro"){
+                            include "resources/views/usuario/" . $_GET["ruta"] . ".php";
+                        }else{
+                            include "resources/views/usuario/login.php";
+                        }
+                    }else{
+                        include "resources/views/usuario/login.php";
+                    }
+                    
+                }
              }
                 include "resources/parts/script.php";
             
