@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-07-2021 a las 22:02:56
+-- Tiempo de generación: 11-07-2021 a las 03:31:21
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 7.4.16
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dv_db_planillas`
 --
-CREATE DATABASE IF NOT EXISTS `dv_db_planillas` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `dv_db_planillas`;
 
 DELIMITER $$
 --
@@ -64,24 +62,21 @@ CREATE TABLE `almacen` (
   `descripcion` varchar(255) DEFAULT NULL,
   `idSucursal` int(11) DEFAULT NULL,
   `tipo` enum('PRINCIPAL','TEMPORAL') DEFAULT 'PRINCIPAL',
-  `fecha_cierre` date DEFAULT NULL
+  `fecha_cierre` date DEFAULT NULL,
+  `referencia` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `almacen`
 --
 
-INSERT INTO `almacen` (`id`, `nombre`, `direccion`, `idUbigeo`, `estado`, `descripcion`, `idSucursal`, `tipo`, `fecha_cierre`) VALUES
-(1, 'almacén Trujillo centro', 'trujillo centro nr2', '130101', '1', 'plaza de armas', 1, 'TEMPORAL', '2021-07-15'),
-(2, 'almacen victor larco', 'trujillo 202', '130111', '1', 'describe', 1, 'PRINCIPAL', NULL),
-(5, 'nombre', 'direccion', '020501', '1', 'Descripcion', 1, 'PRINCIPAL', NULL),
-(6, 'lima obra ', 'asd', '150501', '1', 'ads', NULL, 'TEMPORAL', '2021-07-23'),
-(7, 'temporal', 'ads asda', '020401', '1', 'ad ', NULL, 'TEMPORAL', '2021-07-09'),
-(8, 'asd', 'ads', '030301', '1', 'ad', NULL, 'TEMPORAL', '2021-07-22'),
-(9, 'asdasd', 'asd', '150516', '1', 'asd', NULL, 'TEMPORAL', '2021-07-22'),
-(10, 'asd', 'asd', '010401', '1', 'asd', NULL, 'PRINCIPAL', '0000-00-00'),
-(11, 'asd', 'asd', '030301', '1', 'asd', NULL, 'TEMPORAL', '2021-07-09'),
-(12, 'adfasfafa', 'asdddddddddddd', '150501', '1', 'adsassss', NULL, 'PRINCIPAL', '0000-00-00');
+INSERT INTO `almacen` (`id`, `nombre`, `direccion`, `idUbigeo`, `estado`, `descripcion`, `idSucursal`, `tipo`, `fecha_cierre`, `referencia`) VALUES
+(1, 'Almacen principal', 'av panamericana 300', '150101', '1', 'almacén principal de productos y herramientas ', 2, 'PRINCIPAL', NULL, 'sin referencia'),
+(2, 'Almacen temporal Ate', 'av nicolas numero 233', '150103', '1', 'Almacén de la obra construcción de  puente ', NULL, 'TEMPORAL', '2021-07-30', 'frente del grifo'),
+(3, 'prueba almacen', 'Alcen prueba', '010301', '1', 'Alcen prueba', 1, 'PRINCIPAL', NULL, 'Alcen prueba'),
+(4, 'prueba temporal', 'direccion prueba', '020401', '1', 'diescribe..', NULL, 'TEMPORAL', '2021-07-30', 'refe. sin '),
+(5, 'asd', 'asd', '030401', '1', 'asd', 1, 'PRINCIPAL', NULL, 'asd'),
+(6, 'asdf', 'sdf', '010304', '1', 'sfd', 2, 'PRINCIPAL', NULL, 'sfd');
 
 -- --------------------------------------------------------
 
@@ -94,19 +89,22 @@ CREATE TABLE `categorias` (
   `id` int(11) NOT NULL,
   `nombre` varchar(150) DEFAULT NULL,
   `descripcion` varchar(250) DEFAULT NULL,
-  `estado` enum('0','1') NOT NULL DEFAULT '1',
-  `idSucursal` int(11) DEFAULT NULL
+  `estado` enum('0','1') NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `categorias`
 --
 
-INSERT INTO `categorias` (`id`, `nombre`, `descripcion`, `estado`, `idSucursal`) VALUES
-(2, 'frutas', 'frutas frescas', '1', 1),
-(3, 'verduras', 'verduras secas', '1', 1),
-(4, 'medicina', 'medicina cara', '1', 1),
-(5, 'hortalizas', 'hortalizas', '1', 1);
+INSERT INTO `categorias` (`id`, `nombre`, `descripcion`, `estado`) VALUES
+(2, 'frutas', 'frutas frescas', '1'),
+(3, 'verduras', 'verduras secas', '1'),
+(4, 'medicina', 'medicina cara', '1'),
+(5, 'hortalizas', 'hortalizas', '1'),
+(6, 'prueba de categoria', NULL, '1'),
+(7, 'describe categorias', NULL, '1'),
+(8, 'asd', 'asd', '1'),
+(9, 'prueba asdasd', 'prueba sin errores', '1');
 
 -- --------------------------------------------------------
 
@@ -153,15 +151,12 @@ CREATE TABLE `images` (
 --
 
 INSERT INTO `images` (`id`, `nombre`, `imgFile`, `imgUrl`, `idPersona`, `idProducto`) VALUES
-(1, 'Naranja de jugo.png', 'public/img/almacén Trujillo centro/Naranja de jugo.png', 'http://clinica.test/public/img/almacén Trujillo centro/Naranja de jugo.png', NULL, 1),
-(2, 'Manzana royal.png', 'public/img/almacen victor larco/Manzana royal.png', 'http://clinica.test/public/img/almacen victor larco/Manzana royal.png', NULL, 2),
-(3, 'Fresa.png', 'public/img/almacén Trujillo centro/Fresa.png', 'http://clinica.test/public/img/almacén Trujillo centro/Fresa.png', NULL, 3),
-(4, 'Lechuga hidroponica.png', 'public/img/almacen victor larco/Lechuga hidroponica.png', 'http://clinica.test/public/img/almacen victor larco/Lechuga hidroponica.png', NULL, 4),
-(5, 'Platano de freir.png', 'public/img/almacen victor larco/Platano de freir.png', 'http://clinica.test/public/img/almacen victor larco/Platano de freir.png', NULL, 5),
-(6, 'Camote amarillo.png', 'public/img/almacén Trujillo centro/Camote amarillo.png', 'http://clinica.test/public/img/almacén Trujillo centro/Camote amarillo.png', NULL, 6),
-(7, 'Zanahoria.png', 'public/img/almacén Trujillo centro/Zanahoria.png', 'http://clinica.test/public/img/almacén Trujillo centro/Zanahoria.png', NULL, 7),
-(8, 'Platano del molino.png', 'public/img/almacén Trujillo centro/Platano del molino.png', 'http://clinica.test/public/img/almacén Trujillo centro/Platano del molino.png', NULL, 8),
-(9, 'Granadilla.png', 'public/img/almacen victor larco/Granadilla.png', 'http://clinica.test/public/img/almacen victor larco/Granadilla.png', NULL, 9);
+(11, 'Espinaca.png', 'public/img/Almacen principal/Espinaca.png', 'http://planillas.test/public/img/Almacen principal/Espinaca.png', NULL, 12),
+(12, 'Durazno.png', 'public/img/Almacen principal/Durazno.png', 'http://planillas.test/public/img/Almacen principal/Durazno.png', NULL, 13),
+(13, 'Coliflor.png', 'public/img/Almacen principal/Coliflor.png', 'http://planillas.test/public/img/Almacen principal/Coliflor.png', NULL, 14),
+(14, 'Col china.png', 'public/img/Almacen principal/Col china.png', 'http://planillas.test/public/img/Almacen principal/Col china.png', NULL, 15),
+(15, 'Papa peruanita.png', 'public/img/Almacen principal/Papa peruanita.png', 'http://planillas.test/public/img/Almacen principal/Papa peruanita.png', NULL, 16),
+(16, 'Durazno.png', 'public/img/Almacen principal/Durazno.png', 'http://planillas.test/public/img/Almacen principal/Durazno.png', NULL, 17);
 
 -- --------------------------------------------------------
 
@@ -187,10 +182,10 @@ CREATE TABLE `infraestructura` (
 
 INSERT INTO `infraestructura` (`id`, `deposito`, `tipo`, `catidad_actual`, `catidad_max`, `descripcion`, `estado`, `idAlmacen`) VALUES
 (1, 'estante aluminio', 'prueba', 6, 200, 'sin describe', '1', 1),
-(2, 'cubo 20kilos', 'deposito', 130, 200, 'cubo plástico', '1', 2),
-(3, 'frez 20kl', 'congelador', 130, 200, 'describe deposito', '1', 1),
-(4, 'cubo madera 200', 'tipo cubo', 80, 200, 'cubo madera 200 kilos', '1', 2),
-(5, 'asdasd', NULL, 10, NULL, 'awdeas', '1', 1);
+(7, 'cubo madera', 'de tipo', 100, 200, 'cubo madera ', '1', 1),
+(8, 'estante fierro', NULL, 200, 400, 'estante de almacen de cemento', '1', 1),
+(9, 'botella', 'barril', 10, 40, 'barril de almacen', '1', 1),
+(10, 'estante madera', 'tipo prueba', 50, 1000, 'describe ', '1', 1);
 
 -- --------------------------------------------------------
 
@@ -206,30 +201,25 @@ CREATE TABLE `productos` (
   `idCategoria` int(11) DEFAULT NULL,
   `idUmedida` int(11) DEFAULT NULL,
   `fecha_ingreso` date DEFAULT NULL,
-  `fecha_update` timestamp NULL DEFAULT NULL,
+  `fecha_update` datetime DEFAULT NULL,
   `fecha_end` date DEFAULT NULL,
   `cantidad` int(10) DEFAULT NULL,
   `estado` enum('0','1') NOT NULL DEFAULT '1',
   `idAlmacen` int(11) DEFAULT NULL,
-  `idInfraestructura` int(11) DEFAULT NULL,
-  `recordad` enum('0','1') DEFAULT '0'
+  `idInfraestructura` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`id`, `nombre`, `descripcion`, `idCategoria`, `idUmedida`, `fecha_ingreso`, `fecha_update`, `fecha_end`, `cantidad`, `estado`, `idAlmacen`, `idInfraestructura`, `recordad`) VALUES
-(1, 'naranja', 'naranja dulce', 2, 1, '2021-04-30', NULL, '0000-00-00', 9, '1', 1, 1, '1'),
-(2, 'Manzana roja', 'sin describe', 2, 3, '2021-05-04', NULL, '2021-05-06', 100, '1', 2, 2, '1'),
-(3, 'fresa', 'fresa dulce', 2, 4, '2021-05-01', NULL, '2021-05-01', 20, '1', 1, 3, '1'),
-(4, 'lechuga', 'describe lechuga', 3, 5, '2021-05-01', NULL, '2021-05-01', 100, '1', 2, 3, '1'),
-(5, 'plátano verde', 'plátano de freír', 3, 6, '2021-05-01', NULL, '2021-05-26', 10, '1', 2, 3, '1'),
-(6, 'camote amarillo', 'camote amarillo', 3, 7, '2021-05-01', NULL, '2021-05-20', 50, '1', 1, 4, '1'),
-(7, 'zanahoria', 'zanahoria fresca', 3, 8, '2021-05-01', NULL, '2021-05-01', 20, '1', 1, 4, '1'),
-(8, 'platano amarillo', 'plátano maduro', 2, 9, '2021-05-01', NULL, '2021-05-01', 30, '1', 1, 2, '1'),
-(9, 'granadilla', 'granadilla dulce amarilla', 2, 10, '2021-05-01', NULL, '2021-05-01', 10, '1', 2, 4, '1'),
-(10, 'prueba', 'asdasd', 3, 11, '2021-07-15', NULL, '2021-07-06', 10, '1', 1, 5, '1');
+INSERT INTO `productos` (`id`, `nombre`, `descripcion`, `idCategoria`, `idUmedida`, `fecha_ingreso`, `fecha_update`, `fecha_end`, `cantidad`, `estado`, `idAlmacen`, `idInfraestructura`) VALUES
+(12, 'palanas', 'palanas de plastico', 6, 13, '2021-07-10', '2021-07-29 00:00:00', '2021-07-10', 20, '1', 1, 1),
+(13, 'prueba', 'asdas asdasd asdd', 4, 14, '2021-07-10', NULL, '2021-07-10', 100, '1', 1, 1),
+(14, 'prueba sin registro', 'asd', 6, 15, '2021-07-10', NULL, '2021-07-28', 100, '1', 1, 7),
+(15, 'cemento sol', 'cemento sol de 40.5 kilos', 6, 16, '2021-07-10', '0000-00-00 00:00:00', '2021-07-10', 200, '1', 1, 8),
+(16, 'prueba dos', 'litros de prueba', 4, 17, '2021-06-30', NULL, '0000-00-00', 10, '1', 1, 9),
+(17, 'palanas 2', 'decxripcion poalanas ', 9, 18, '2021-07-10', NULL, '2021-07-10', 50, '1', 1, 10);
 
 -- --------------------------------------------------------
 
@@ -253,7 +243,9 @@ CREATE TABLE `sucursales` (
 --
 
 INSERT INTO `sucursales` (`id`, `nombre`, `direccion`, `idUbigeo`, `referencia`, `estado`, `idEmpresa`) VALUES
-(1, 'sucursal trujillo', '', '130101', '', '1', 1);
+(1, 'sucursal trujillo', 'sin direcc', '130101', 'no ref', '1', 1),
+(2, 'Sucursal Lima lima', 'Lima', '150101', 'a sin numero', '1', 1),
+(3, 'Sucursal Lima lima ate', 'ate sin numero av los asd', '150103', 'sin fefereancia', '1', 1);
 
 -- --------------------------------------------------------
 
@@ -2382,7 +2374,14 @@ INSERT INTO `unidadmedida` (`id`, `nombre`, `abrev_sunat`, `descripcion`) VALUES
 (8, 'kilo', 'KL', NULL),
 (9, 'kilo', 'KL', NULL),
 (10, 'kl', 'KL', NULL),
-(11, 'asdasd', 'ASDASD', NULL);
+(11, 'asdasd', 'ASDASD', NULL),
+(12, 'kilos', 'KL', NULL),
+(13, 'unidad', 'UN', NULL),
+(14, 'kilos', 'KL', NULL),
+(15, 'kilos', 'KL', NULL),
+(16, 'bolsas', 'BL', NULL),
+(17, 'litros', 'LT', NULL),
+(18, 'unidad', 'UN', NULL);
 
 -- --------------------------------------------------------
 
@@ -2503,13 +2502,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `almacen`
 --
 ALTER TABLE `almacen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `empresa`
@@ -2521,31 +2520,31 @@ ALTER TABLE `empresa`
 -- AUTO_INCREMENT de la tabla `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` int(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `infraestructura`
 --
 ALTER TABLE `infraestructura`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `sucursales`
 --
 ALTER TABLE `sucursales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `unidadmedida`
 --
 ALTER TABLE `unidadmedida`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
