@@ -78,7 +78,7 @@
                 <li class="sidebar-title">Extra UI</li>
 
                 <li class="sidebar-item  has-sub">
-                    <a href="#" class='sidebar-link'>
+                    <a  class='sidebar-link'>
                         <i class="bi bi-pentagon-fill"></i>
                         <span>Almacen</span>
                     </a>

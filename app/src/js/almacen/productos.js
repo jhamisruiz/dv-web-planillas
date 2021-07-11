@@ -12,9 +12,7 @@ function selectAllproductos() {
         });
     }
 }
-$(document).ready(function () {
-    selectAllproductos();
-});
+
 $(document).ready(function(){
     selectAllproductos();
 });

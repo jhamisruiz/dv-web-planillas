@@ -1,4 +1,5 @@
-<?php
+<?php  
+  session_start();
 class ControllerMain
 {
 
@@ -16,15 +17,13 @@ class ControllerMain
 
         <body>
             <?php
-            $usuario= "prueba";
-           
                 $sgbd = Conexion::tryConex();
 
                 if ($sgbd["error"] == "error") {
 
                     include "resources/error/sgbd.php";
                 } else {
-                    if ($usuario=="prueba") {
+                    if (isset($_SESSION["logSession"])&& $_SESSION["logSession"]=="ok") {
 
                     ?>
                     <div id="app">
@@ -47,12 +46,12 @@ class ControllerMain
                 }else{
                     if (isset($_GET["ruta"])) {
                         if ($_GET["ruta"] == "login" ||$_GET["ruta"] == "registro"){
-                            include "resources/views/usuario/" . $_GET["ruta"] . ".php";
+                            include "resources/views/login/" . $_GET["ruta"] . ".php";
                         }else{
-                            include "resources/views/usuario/login.php";
+                            include "resources/views/login/login.php";
                         }
                     }else{
-                        include "resources/views/usuario/login.php";
+                        include "resources/views/login/login.php";
                     }
                     
                 }

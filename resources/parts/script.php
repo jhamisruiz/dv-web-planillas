@@ -19,13 +19,11 @@
 <script src="public/assets/js/bootstrap-datetimepicker.min.js"></script>
 
 <?php
-if(isset($_GET["ruta"])){
-    if ($_GET["ruta"] == "login" || $_GET["ruta"] == "registro") {
-        echo $main="";
-    }else{
-        echo $main= '<script src="public/assets/js/main.js"></script>';
-    }
 
+    if (isset($_SESSION["logSession"]) && $_SESSION["logSession"] == "ok") {
+        echo'<script src="public/assets/js/main.js"></script>';
+    }
+if(isset($_GET["ruta"])){
 
     if ($_GET["ruta"] == "dashboard") {
 

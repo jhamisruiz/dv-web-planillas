@@ -11,7 +11,7 @@ $('.btnLogin').click(function () {
         data: { 'usuerLogin': login },
         success: function (respuesta) {
             console.log(respuesta);
-            //$("#mostrarAlmacen").html(respuesta);//ingresa mensaje en html
+            $("#resLogin").html(respuesta);//ingresa mensaje en html
         }
     });
 

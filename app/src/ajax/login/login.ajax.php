@@ -4,21 +4,16 @@ include('./../../../php/functions.php');
 include('./../../../controllers/query/querys.C.php');
 include('./../../../models/query/querys.M.php');
 
+include('./../../../controllers/login/login.C.php');
 class ajaxLogin{
     public $login;
     public function login(){
         $data = $this->login;
-        print_r($data);
-        $select= "";
-        $table="";
-        $where=array(
-            "user"=>"='" . $data[0] . "'",
-        );
-        $respuest=ControllerQueryes::SELECT($select, $table, $where);
-        foreach ($respuest as $value) {
-            $sesionuser= $value['user'];
-            $sesionpass = $value['password'];
-        }
+
+        $respuest=ControllerLogin::LOGIN($data);
+        //print_r($respuest);
+        echo $respuest;
+        
     }
 }
 
