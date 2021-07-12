@@ -24,7 +24,7 @@
                                 <th class="bg-primary text-white" style="max-width: 50px;">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="mostrarAlmacen">
+                        <tbody id="mostrarMovimientos">
 
                         </tbody>
                     </table>
@@ -50,20 +50,19 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="row d-flex flex-wrap-reverse">
-                                <div class="col-lg-4">
+                                <div class="col-lg-8">
                                     <div class="form-group" id="sucuarlPrincipal">
                                         <select id="idSucursal" class="form-control border border-primary" name="">
-                                            <option value="0">Seleccione Sucursal</option>
+                                            <option value="">Seleccione Sucursal</option>
                                             <option value="1">Sucursal 1</option>
                                             <option value="2">Sucursal 2</option>
                                             <option value="3">Sucursal 3</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-lg-4">
                                     <div class="form-group d-none" id="sucuarlTemporal">
+                                        <label>Fecha Termino</label>
                                         <div class="cal-icon">
-                                            <input type="text" name="addProducto" id="datetimeEnd" class="form-control border border-primary" placeholder="Fecha Termino">
+                                            <input type="text" name="addProducto" id="datetimeEnd" class="form-control border border-primary">
                                         </div>
                                     </div>
                                 </div>

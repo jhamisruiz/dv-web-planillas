@@ -33,9 +33,9 @@ class ControllerMain
                             include "resources/parts/header.php";
                             ?>
                             <div id="main-content">
-                            <?php
-                            include "resources/main.php";
-                            ?>
+                                <?php
+                                include "resources/main.php";
+                                ?>
                             </div>
                         </div>
                     </div>

@@ -12,12 +12,17 @@
                             <select id="onloadAlmacen" class="form-control bg-primary text-white" onchange="AlmacenProds()">
                                 <?php
                                 $value = "";
+                                $all="all";
                                 #<select ng-model="select_prods" ng-change='fetchAlmacen()' id="onloadAlmacen" class="form-control bg-primary text-white">
-                                $almacen = ControllerAlmacen::SELECT();
+                                $almacen = ControllerAlmacen::SELECT($all);
                                 if (count($almacen) > 0) {
                                     echo '<option class="bg-white text-dark" value="0">Seleccione Almacén</option>';
                                     foreach ($almacen as $key => $value) {
-                                        echo '<option class="bg-white text-dark " value="' . $value["idalmacen"] . '">' . $value["nombre"] . '</option>';
+                                        $tipo = "";
+                                        if ($value["tipo"] === "TEMPORAL") {
+                                            $tipo = "-" . $value["tipo"];
+                                        }
+                                        echo '<option class="bg-white text-dark " value="' . $value["idalmacen"] . '">' . $value["nombre"] . $tipo. '</option>';
                                     }
                                 } else {
                                     echo '<option class="bg-white text-dark" value="0">Sin Almacén</option>';
@@ -79,9 +84,14 @@
                                     <option value="0">Select. Almacen</option>
                                     <?php
                                     $value = "";
-                                    $almacen = ControllerAlmacen::SELECT();
+                                    $all = "";
+                                    $almacen = ControllerAlmacen::SELECT($all);
                                     foreach ($almacen as $value) {
-                                        echo '<option value="' . $value["idalmacen"] . '">' . $value["nombre"] . '</option>';
+                                        $tipo = "";
+                                        if($value["tipo"]==="TEMPORAL"){
+                                            $tipo= "-".$value["tipo"];
+                                        }
+                                        echo '<option value="' . $value["idalmacen"] . '">' . $value["nombre"] . $tipo.'</option>';
                                     }
                                     ?>
                                 </select>

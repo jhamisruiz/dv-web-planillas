@@ -1,5 +1,5 @@
 <header class='mb-3'>
-    <nav class="navbar navbar-expand navbar-light ">
+    <nav class="navbar navbar-expand navbar-light">
         <div class="container-fluid">
             <a href="#" class="burger-btn d-block">
                 <i class="bi bi-justify fs-3"></i>

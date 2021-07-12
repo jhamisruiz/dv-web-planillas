@@ -6,14 +6,16 @@
         if ($_GET["ruta"] == "usuarios") {
 
             include "resources/views/admin/" . $_GET["ruta"] . ".php";
-        } elseif ($_GET["ruta"] == "...") {
-            //...
+        } elseif ($_GET["ruta"] == "config-almacen") {
+            include "resources/views/config/" . $_GET["ruta"] . ".php";
         } elseif (
             $_GET["ruta"] == "categorias" ||
             $_GET["ruta"] == "productos" ||
+            $_GET["ruta"] == "movimientos" ||
             $_GET["ruta"] == "almacen"
         ) {
             include "resources/views/almacen/" . $_GET["ruta"] . ".php";
+            
         } elseif ($_GET["ruta"] == "salir") {
             #salir login
             include "resources/views/login/salir.php";

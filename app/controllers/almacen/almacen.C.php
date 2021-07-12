@@ -1,7 +1,7 @@
 <?php
 class ControllerAlmacen{
 
-    static public function SELECT(){
+    static public function SELECT($all){
 
         $select = array(
             "A.id" => "idalmacen",
@@ -11,6 +11,7 @@ class ControllerAlmacen{
             "A.estado" => "",
             "A.descripcion" => "descrip",
             "A.idSucursal " => "idsucursal",
+            "A.tipo" => "",
             "U.id_ubigeo" => "",
             "U.Departamento" => "Depart",
             "U.Provincia" => "Prov",
@@ -24,7 +25,26 @@ class ControllerAlmacen{
             "sucursales S" => "",
             "A.idSucursal" => "S.id",
         );
-        $where ="";
+
+        $where =array(
+            "A.ingreso" =>"='1'"
+        );
+        if ($all=="all") {
+             $where ="";
+        }
+        $respuesta = ControllerQueryes::SELECT($select, $tables, $where);
+        return $respuesta;
+    }
+
+    static public function SELECTALL($tables)
+    {
+        $select = array("*" => "*");
+        $tables = array(
+            $tables=>""
+        );
+        $where = array(
+            "tipo" => "='TEMPORAL'"
+        );
         $respuesta = ControllerQueryes::SELECT($select, $tables, $where);
         return $respuesta;
     }

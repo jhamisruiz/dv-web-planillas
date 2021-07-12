@@ -17,15 +17,13 @@ $(document).ready(function () {
 });
 
 $("#idcheckSucursal").on('change', function () {
-    let dn =document.getElementById("sucuarlPrincipal");
     let db = document.getElementById("sucuarlTemporal");
     if ($(this).is(':checked')) {
-        dn.classList.add("d-none");
         db.classList.remove("d-none");
     }
-    else {
-        dn.classList.remove("d-none");
+    else {;
         db.classList.add("d-none");
+        document.getElementById("datetimeEnd").value="";
     }
 });
  /*==============================
@@ -46,10 +44,12 @@ CREAR ALMACEN
     });
     almacen.push(document.getElementById("addDescripcion").value);
     almacen.push(document.getElementById("ubigeo").value);
+
+    almacen.push(document.getElementById("idSucursal").value);
      
-     if (almacen[2] != "" && almacen[6] != "") {
+     if (almacen[2] != "" && almacen[6] != "" && almacen[7] != "") {
          if (almacen[6] != "Seleccione"){
-            if (almacen[1] != "" ) {
+             if (almacen[1] != "" && almacen[7] >= "1") {
                 $.ajax({
                     method: "POST",
                     url:"app/src/ajax/almacen/almacen.ajax.php",

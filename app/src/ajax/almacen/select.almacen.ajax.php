@@ -3,6 +3,8 @@
 include('./../../../php/functions.php');
 include('./../../../controllers/query/querys.C.php');
 include('./../../../models/query/querys.M.php');
+
+include('./../../../controllers/almacen/almacen.C.php');
 class ajaxSelectAlamacen
 {
     /*=============================================
@@ -70,6 +72,65 @@ class ajaxSelectAlamacen
             }
         }
     }
+    /*=============================================
+    SELECT ALMACEN PERMISOS
+    =============================================*/
+    public $permiso;
+    public function ajaxSelectAlmacenPermisos()
+    {
+
+        $tables = $this->permiso;
+
+        $respuesta = ControllerAlmacen::SELECTALL($tables);
+        foreach ($respuesta as $value) {
+            $valueid ="'". $value['id']. "'";
+            if($value['ingreso']=="1"){
+                $active= "active";
+                $check="checked";
+                $color= "bg-success";
+            }else{
+                $active="";
+                $check="";
+                $color = "";
+            }
+           echo '<button type="button" onclick="checkPermisos('. $valueid. ')" class="border border-' . $color . ' list-group-item list-group-item-action ' . $active. '">
+                    <input class="form-check-input me-1 ' . $color . ' border border-success" type="checkbox" id="' . $value['id'] . 'permiso" value="' . $value['ingreso'] . '" aria-label="..." '. $check.'>
+                    '. $value['nombre'].'
+                </button>';
+        }
+    }
+    public $update;
+    public function ajaxUpdateAlmacenPermisos()
+    {
+
+        $data = $this->update;
+        $update = array(
+            "table" => "almacen", #nombre de tabla
+            "ingreso" => $data["value"], #nombre de columna y valor
+            #"columna"=>"valor",#nombre de columna y valor
+        );
+        $where = array(
+            "id" => $data["id"], #condifion columna y valor
+        ); 
+        $respuesta = ControllerQueryes::UPDATE($update,$where);
+        if($respuesta=="ok"){
+            $alertify = array(
+                "color" => "success",
+                "sms" => "Permiso actualizado.",
+            );
+            $error = Functions::Alertify($alertify);
+            echo $error;
+        }else{
+            $alertify = array(
+                "color" => "error",
+                "sms" => "No se actualizo el premiso Almacen",
+            );
+            $error = Functions::Alertify($alertify);
+            echo $error;
+        }
+       
+    }
+
 }
 
 /*=============================================
@@ -79,4 +140,25 @@ if (isset($_POST['selectAlmacen'])) {
     $select = new ajaxSelectAlamacen();
     $select->select = $_POST['selectAlmacen'];
     $select->ajaxSelect();
+}
+
+/*=============================================
+    OBJETO SELECT ALMACEN PERMISOS
+    =============================================*/
+if (isset($_POST['selectAlmacenPermisos'])) {
+    $permiso = new ajaxSelectAlamacen();
+    $permiso->permiso = $_POST['selectAlmacenPermisos'];
+    $permiso->ajaxSelectAlmacenPermisos();
+}
+
+/*=============================================
+    OBJETO UPDATE ALMACEN PERMISOS
+    =============================================*/
+if (isset($_POST['updateIDPermisos'])) {
+    $update = new ajaxSelectAlamacen();
+    $update->update = array(
+        "id"=> $_POST['updateIDPermisos'],
+        "value"=> $_POST['updateVauePermisos'],
+    );
+    $update->ajaxUpdateAlmacenPermisos();
 }
