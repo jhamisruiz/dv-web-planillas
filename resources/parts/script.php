@@ -2,6 +2,7 @@
 <script type="text/javascript" src="app/src/js/almacen/almacen.js"></script>
 <script type="text/javascript" src="app/src/js/almacen/categorias.js"></script>
 <script type="text/javascript" src="app/src/js/almacen/productos.js"></script>
+<script type="text/javascript" src="app/src/js/config/config.js"></script>
 <script type="text/javascript" src="app/src/js/login/login.js"></script>
 <!-- js peticion ubigeo -->
 <script type="text/javascript" src="app/src/js/ubigeo.js"></script>
@@ -20,10 +21,11 @@
 
 <?php
 
-    if (isset($_SESSION["logSession"]) && $_SESSION["logSession"] == "ok") {
-        echo'<script src="public/assets/js/main.js"></script>';
-    }
-if(isset($_GET["ruta"])){
+if (isset($_SESSION["logSession"]) && $_SESSION["logSession"] == "ok") {
+    echo '<script src="public/assets/js/main.js"></script>';
+}
+
+if (isset($_GET["ruta"])) {
 
     if ($_GET["ruta"] == "dashboard") {
 

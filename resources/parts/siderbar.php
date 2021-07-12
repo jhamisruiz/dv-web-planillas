@@ -78,7 +78,7 @@
                 <li class="sidebar-title">Extra UI</li>
 
                 <li class="sidebar-item  has-sub">
-                    <a  class='sidebar-link'>
+                    <a class='sidebar-link'>
                         <i class="bi bi-pentagon-fill"></i>
                         <span>Almacen</span>
                     </a>
@@ -93,21 +93,26 @@
                             <a href="productos">Productos</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="#"> Movimiento </a>
+                            <a href="movimientos"> Movimiento </a>
                         </li>
-                        <li class="submenu-item ">
+                        <!-- <li class="submenu-item ">
                             <a href="#"> Stock Prod. por Almacen </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </li>
 
                 <li class="sidebar-title">Raise Support</li>
 
-                <li class="sidebar-item  active">
-                    <a href="" class='sidebar-link' style="max-width: 120px;background:#57caeb">
+                <li class="sidebar-item has-sub  active">
+                    <a class='sidebar-link' id="bsidebar-link" style="max-width: 120px;background:#57caeb">
                         <i class="bi bi-gear"></i>
                         <span>Config</span>
                     </a>
+                    <ul class="submenu ">
+                        <li class="submenu-item">
+                            <a href="config-almacen"> Almacenes </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="sidebar-item  ">

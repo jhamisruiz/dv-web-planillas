@@ -195,7 +195,7 @@ class ModelQueryes{
 /* ================================================================
     QUERY UPDATE
 ================================================================= */
-    /* $data = $this->activarUsuarios;
+    /* 
         $update=array(
             "table"=>"usuarios",#nombre de tabla
             "valor" => $data["valor"],#nombre de columna y valor

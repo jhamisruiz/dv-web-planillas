@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-07-2021 a las 22:29:35
+-- Tiempo de generación: 12-07-2021 a las 17:09:02
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 7.4.16
 
@@ -90,20 +90,21 @@ CREATE TABLE `almacen` (
   `idSucursal` int(11) DEFAULT NULL,
   `tipo` enum('PRINCIPAL','TEMPORAL') DEFAULT 'PRINCIPAL',
   `fecha_cierre` date DEFAULT NULL,
-  `referencia` varchar(250) DEFAULT NULL
+  `referencia` varchar(250) DEFAULT NULL,
+  `ingreso` enum('0','1') DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `almacen`
 --
 
-INSERT INTO `almacen` (`id`, `nombre`, `direccion`, `idUbigeo`, `estado`, `descripcion`, `idSucursal`, `tipo`, `fecha_cierre`, `referencia`) VALUES
-(1, 'Almacen principal', 'av panamericana 300', '150101', '1', 'almacén principal de productos y herramientas ', 2, 'PRINCIPAL', NULL, 'sin referencia'),
-(2, 'Almacen temporal Ate', 'av nicolas numero 233', '150103', '1', 'Almacén de la obra construcción de  puente ', NULL, 'TEMPORAL', '2021-07-30', 'frente del grifo'),
-(3, 'prueba almacen', 'Alcen prueba', '010301', '1', 'Alcen prueba', 1, 'PRINCIPAL', NULL, 'Alcen prueba'),
-(4, 'prueba temporal', 'direccion prueba', '020401', '1', 'diescribe..', NULL, 'TEMPORAL', '2021-07-30', 'refe. sin '),
-(5, 'asd', 'asd', '030401', '1', 'asd', 1, 'PRINCIPAL', NULL, 'asd'),
-(6, 'asdf', 'sdf', '010304', '1', 'sfd', 2, 'PRINCIPAL', NULL, 'sfd');
+INSERT INTO `almacen` (`id`, `nombre`, `direccion`, `idUbigeo`, `estado`, `descripcion`, `idSucursal`, `tipo`, `fecha_cierre`, `referencia`, `ingreso`) VALUES
+(1, 'Almacen principal', 'av panamericana 300', '150101', '1', 'almacén principal de productos y herramientas ', 2, 'PRINCIPAL', NULL, 'sin referencia', '1'),
+(2, 'Almacen temporal Ate', 'av nicolas numero 233', '150103', '1', 'Almacén de la obra construcción de  puente ', 3, 'TEMPORAL', '2021-07-30', 'frente del grifo', '1'),
+(3, 'prueba almacen principal', 'Alcen prueba', '010301', '1', 'Alcen prueba', 1, 'PRINCIPAL', NULL, 'Alcen prueba', '1'),
+(4, 'temporal', 'direccion prueba', '020401', '1', 'describe almacen temporal', 2, 'TEMPORAL', '2021-07-30', 'refe. sin ', '0'),
+(7, 'Almacén temporal Lima centro', 'mz l calle 23 lt 20 la molina', '150114', '1', 'almacen aperturado por obra de calle', 3, 'TEMPORAL', '2021-07-11', 'a dos cuadras del hospital', '0'),
+(8, 'temporal almacen permiso', 'direccion de prueba', '100104', '1', 'descripcion de prueba', 1, 'TEMPORAL', '2021-07-30', 'de prueba', '1');
 
 -- --------------------------------------------------------
 
@@ -213,6 +214,19 @@ INSERT INTO `infraestructura` (`id`, `deposito`, `tipo`, `catidad_actual`, `cati
 (8, 'estante fierro', NULL, 200, 400, 'estante de almacen de cemento', '1', 1),
 (9, 'botella', 'barril', 10, 40, 'barril de almacen', '1', 1),
 (10, 'estante madera', 'tipo prueba', 50, 1000, 'describe ', '1', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `movimientos`
+--
+
+DROP TABLE IF EXISTS `movimientos`;
+CREATE TABLE `movimientos` (
+  `id` int(11) NOT NULL,
+  `id_admin` int(11) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -2491,6 +2505,12 @@ ALTER TABLE `infraestructura`
   ADD KEY `idAlmacen` (`idAlmacen`);
 
 --
+-- Indices de la tabla `movimientos`
+--
+ALTER TABLE `movimientos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `productos`
 --
 ALTER TABLE `productos`
@@ -2541,7 +2561,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT de la tabla `almacen`
 --
 ALTER TABLE `almacen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
@@ -2566,6 +2586,12 @@ ALTER TABLE `images`
 --
 ALTER TABLE `infraestructura`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `movimientos`
+--
+ALTER TABLE `movimientos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
