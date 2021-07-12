@@ -9,11 +9,31 @@ function selectAllalmacen(){
         data: { 'selectAlmacen': tabla },
         success: function (respuesta) {
             $("#mostrarAlmacen").html(respuesta);//ingresa mensaje en html
+            $(".selectChangeAlmacen").on('change', function () {
+                var idalmacen=$(this).attr('idalmacen');
+                var selecttype=$(this);
+                var nowtype=selecttype[0].value;
+                changeTipo(idalmacen,nowtype);
+            });
         }
     });
 }
+
+function changeTipo(idalmacen,nowtype){
+    $.ajax({
+        method: "POST",
+        url: "app/src/ajax/almacen/change.tipo.almacen.ajax.php",
+        data: { 'idalmacen': idalmacen,'nowtype': nowtype},
+        success: function (respuesta) {
+            $("#smsconfirmations").html(respuesta);         
+        }
+    });
+}
+
+
 $(document).ready(function () {
     selectAllalmacen();
+
 });
 
 $("#idcheckSucursal").on('change', function () {
@@ -79,4 +99,6 @@ CREAR ALMACEN
 
     }
  });
+
+  
  //   != diferente de ""

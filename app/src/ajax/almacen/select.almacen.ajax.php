@@ -41,6 +41,7 @@ class ajaxSelectAlamacen
                    <td>' . $value["nombre"] . '</td>
                    <td>' . $value["depa"] . ' - ' . $value["provi"] . ' - ' . $value["dist"] . '</td>
                    <td>' . $value["direccion"] . '<br><strong>Ref:</strong>' . $value["referencia"] . '</td>';
+
             if ($value["estado"] == 1) {
 
                 echo '<td class="text-center"><button class="btn btn-success btn-sm btnActivarAlmacen" idalmacen="' . $value["id"] . '" estadoalmacen="0">Activado</button></td>';
@@ -52,6 +53,19 @@ class ajaxSelectAlamacen
 
                 echo '<td class="text-center"><button class="btn btn-danger btn-sm btnActivarAlmacen" idalmacen="' . $value["id"] . '" estadoalmacen="1">Desactivado</button></td>';
             }
+                     
+
+                echo '<td class="text-center"><select name="" 
+                        class="form-control border border-primary selectChangeAlmacen" idalmacen="' . $value["id"] . '" tipoalmacen="TEMPORAL" style="font-size: 10px;">
+                        <option value="'.$value["tipo"].'" selected>'.$value["tipo"].'</option>';
+                if ($value["tipo"] == 'TEMPORAL') {
+                    echo '<option value="PRINCIPAL">PRINCIPAL</option>';
+                    }else{
+                    echo '<option value="TEMPORAL">TEMPORAL</option>';
+                    };     
+                    echo '</select></td>';
+
+            
             if ($value["estado"] != 'ENDED') {
                 echo '<td class="text-right" >
                             <div class="dropdown dropdown-action">
@@ -65,9 +79,10 @@ class ajaxSelectAlamacen
                             </div>
                         </td>
                 </tr>';
-            }else{
-                echo '<td></td>';
             }
+
+                echo '<td></td>';
+            
         }
     }
 }

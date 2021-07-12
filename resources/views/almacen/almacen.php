@@ -21,6 +21,7 @@
                                 <th class="bg-primary text-white">Ubigeo</th>
                                 <th class="bg-primary text-white">Dirección</th>
                                 <th class="bg-primary text-center text-white">Status</th>
+                                <th class="bg-primary text-center text-white">Tipo</th>
                                 <th class="bg-primary text-white" style="max-width: 50px;">Action</th>
                             </tr>
                         </thead>
