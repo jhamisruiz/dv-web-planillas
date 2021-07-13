@@ -32,8 +32,11 @@ class ajaxAlmacen{
         );
         if ( $val== "fecha_cierre") {
             $insert= $insert+['idSucursal'=> $data[7]];//pushear key mas el valor al array insert
+        }else{
+            $insert = $insert + [ 'ingreso' => '1'];
         }
         $almacen=ControllerQueryes::INSERT($insert);
+        echo $almacen;
         if ($almacen == "ok") {
             $path = dirname(__FILE__)."/../../../../public/img/". $insert['nombre'];
             if (!file_exists($path)) {

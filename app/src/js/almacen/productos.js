@@ -15,6 +15,7 @@ function selectAllproductos() {
 
 $(document).ready(function(){
     selectAllproductos();
+    selectMarcaProducto();
 });
 function AlmacenProds() {
     selectAllproductos();
@@ -141,10 +142,29 @@ function ocDepositoAlm() {
     $("#onloadAlmacen option[value='"+idalmacen+"']").attr("selected", "selected");
     selectAllproductos();
 }
-$("#btnGuardarProducto").click(function() {
+
+//select marca producto
+function selectMarcaProducto(){
+    let table ="marca";
+    $.ajax({
+        method: "POST",
+        url: "app/src/ajax/almacen/select.productos.ajax.php",
+        data: { 'selectMarca': table },
+        success: function (respuesta) {
+            $("#marcaProducto").html(respuesta);//ingresa mensaje en html
+        }
+    });
+}
+
+function addMarcaValue(value,id){
+    document.getElementById("idMarcaProd").value = id;
+    document.getElementById('addMarcaProd').value = value;
+}
+
+$("#btnGuardarProducto").click(function () {
+    selectMarcaProducto();
     var producto =[];
     var deposito =[];
-
     /* array add producto */
     var almacen= $("#addAlmacenProd").val();
     producto.unshift(almacen);
@@ -156,9 +176,9 @@ $("#btnGuardarProducto").click(function() {
     var categoria= $("#addCatProd").val();
     producto.splice(2, 0,categoria);
     producto.push(document.getElementById("addProdDescrip").value);
-
-    var nomalmacen= $('select[name="selectalmacen"] option:selected').text();
-    producto.push(nomalmacen);
+    
+    producto.push(document.getElementById("addAlmacenProd").value);
+    producto.push(document.getElementById("idMarcaProd").value);
     /* array add producto */
     $("input[name='addDeposito']").each(function() {
       deposito.push(this.value);
@@ -175,8 +195,7 @@ $("#btnGuardarProducto").click(function() {
     formProd.append('addProducts',producto);
     formProd.append('imageFile',files);
     formProd.append('addidDeposit',deposito);
-
-    if (producto[0]!=""&&producto[1]!=""&&producto[3]!=""&&producto[4]!="") {
+    if (producto[0] != "" && producto[1] != "" && producto[3] != "" && producto[4] != "" && producto[10] != "") {
         if (producto[0]!="") {
             if (producto[2]!="") {
                 $.ajax({
@@ -187,21 +206,8 @@ $("#btnGuardarProducto").click(function() {
                     processData: false,
                     success: function (respuesta) {
                         selectAllproductos();
-                        console.log(respuesta);
                         $("#smsconfirmations").html(respuesta);//ingresa mensaje en html
                         document.getElementById("imgProducto").innerHTML="";//limpiar imput imagen
-
-                        var idalmacen= $("#onloadAlmacen").val();
-                        /* $.ajax({
-                            url:"app/src/ajax/almacen/producto.ajax.php",
-                            method: "POST",
-                            data: {selectIdAlmProds:producto[0]},
-                            success: function(resproducts){
-                                //document.getElementById("idTableProds").innerHTML="";
-                                //document.getElementById("idTableProds").innerHTML=resproducts;
-                                $("#"+producto[0]+"alm").attr("selected","selected");
-                            }
-                        }); */
                     }
                 });
                 

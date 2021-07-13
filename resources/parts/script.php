@@ -19,6 +19,9 @@
 <script src="public/assets/js/moment.min.js"></script>
 <script src="public/assets/js/bootstrap-datetimepicker.min.js"></script>
 
+<!-- Include Choices JavaScript -->
+<script src="public/assets/vendors/choices.js/choices.min.js"></script>
+
 <?php
 
 if (isset($_SESSION["logSession"]) && $_SESSION["logSession"] == "ok") {

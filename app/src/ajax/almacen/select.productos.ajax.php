@@ -44,6 +44,27 @@ class ajaxSelectProductos
             </tr>';
         }
     }
+    /*=============================================
+    SELECT MARCAS
+    =============================================*/
+    public $marca;
+    public function ajaxSelectMarca()
+    {
+        $tabla =$this->marca;
+        $select =array(
+            "*"=>"*"
+        );
+        $tables=array(
+            $tabla=>""
+        );
+
+        $where="";
+        
+        $respuesta=ControllerQueryes::SELECT($select, $tables, $where);
+        foreach ($respuesta as $value) {
+            echo '<a onclick="'."addMarcaValue('". $value['nombre']."',". $value['id'].")".'"'." class='dropdown-item pb-0 pt-0 mb-0'>".$value['nombre']."</a>";
+        }
+    }
 }
 
  /*=============================================
@@ -53,4 +74,14 @@ if (isset($_POST['selectProductos'])) {
     $select = new ajaxSelectProductos();
     $select->select = $_POST['selectProductos'];
     $select->ajaxSelect();
+}
+
+
+/*=============================================
+    OBJETO SELECT PRODUCTO MARCA
+    =============================================*/
+if (isset($_POST['selectMarca'])) {
+    $marca = new ajaxSelectProductos();
+    $marca->marca = $_POST['selectMarca'];
+    $marca->ajaxSelectMarca();
 }

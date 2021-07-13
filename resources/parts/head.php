@@ -20,6 +20,9 @@
 <link rel="stylesheet" href="public/assets/css/pages/error.css">
 <link rel="stylesheet" href="public/assets/css/pages/auth.css">
 
+<!-- Include Choices CSS -->
+<link rel="stylesheet" href="public/assets/vendors/choices.js/choices.min.css" />
+
 <!-- css  -->
 <link rel="stylesheet" href="app/src/css/main.css">
 

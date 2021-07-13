@@ -75,6 +75,7 @@ CREAR ALMACEN
                     url:"app/src/ajax/almacen/almacen.ajax.php",
                     data: {'addAlmacen': almacen},
                     success: function(respuesta){
+                        console.log(respuesta);
                         selectAllalmacen();
                         let dn = document.getElementById("sucuarlPrincipal");//formater el swith alamcen temporal
                         let db = document.getElementById("sucuarlTemporal");//formater el swith alamcen temporal

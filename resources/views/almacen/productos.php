@@ -12,7 +12,7 @@
                             <select id="onloadAlmacen" class="form-control bg-primary text-white" onchange="AlmacenProds()">
                                 <?php
                                 $value = "";
-                                $all="all";
+                                $all = "all";
                                 #<select ng-model="select_prods" ng-change='fetchAlmacen()' id="onloadAlmacen" class="form-control bg-primary text-white">
                                 $almacen = ControllerAlmacen::SELECT($all);
                                 if (count($almacen) > 0) {
@@ -22,7 +22,7 @@
                                         if ($value["tipo"] === "TEMPORAL") {
                                             $tipo = "-" . $value["tipo"];
                                         }
-                                        echo '<option class="bg-white text-dark " value="' . $value["idalmacen"] . '">' . $value["nombre"] . $tipo. '</option>';
+                                        echo '<option class="bg-white text-dark " value="' . $value["idalmacen"] . '">' . $value["nombre"] . $tipo . '</option>';
                                     }
                                 } else {
                                     echo '<option class="bg-white text-dark" value="0">Sin Almacén</option>';
@@ -79,19 +79,19 @@
                     <div class="row">
                         <div class="col-lg-5">
                             <div class="form-group">
-                                <label> Almacen </label>
+                                <label> Almacen <span class="text-danger">*</span></label>
                                 <select class="form-control bg-primary text-white" id="addAlmacenProd" name="selectalmacen" onchange="ocDepositoAlm()">
-                                    <option value="0">Select. Almacen</option>
+                                    <option value="0">Select. Almacen </option>
                                     <?php
                                     $value = "";
                                     $all = "";
                                     $almacen = ControllerAlmacen::SELECT($all);
                                     foreach ($almacen as $value) {
                                         $tipo = "";
-                                        if($value["tipo"]==="TEMPORAL"){
-                                            $tipo= "-".$value["tipo"];
+                                        if ($value["tipo"] === "TEMPORAL") {
+                                            $tipo = "-" . $value["tipo"];
                                         }
-                                        echo '<option value="' . $value["idalmacen"] . '">' . $value["nombre"] . $tipo.'</option>';
+                                        echo '<option value="' . $value["idalmacen"] . '">' . $value["nombre"] . $tipo . '</option>';
                                     }
                                     ?>
                                 </select>
@@ -103,13 +103,13 @@
                             <div class="row ">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>Nombre Producto </label>
+                                        <label>Nombre Producto <span class="text-danger">*</span></label>
                                         <input class="form-control border border-primary" name="addProducto" type="text" placeholder="Nombre...">
                                     </div>
                                 </div>
                                 <div class="col-lg-5">
                                     <div class="form-group">
-                                        <label>Categoria </label>
+                                        <label>Categoria <span class="text-danger">*</span></label>
                                         <select id="addCatProd" class="form-control bg-primary text-white">
                                             <option value="">Seleccione</option>
                                             <?php
@@ -127,13 +127,13 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <label>Cantidad</label>
+                                        <label>Cantidad <span class="text-danger">*</span></label>
                                         <input class="form-control border border-primary pr-2 catidadPd" onchange="onSumaCantProd()" id="idCantProd" name="addProducto" type="number" value="0" min="0" pattern="^[0-9]+">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Unidad Medida</label>
+                                        <label>Unidad Medida <span class="text-danger">*</span></label>
                                         <input class="form-control border border-primary" name="addProducto" type="text" placeholder="...">
                                     </div>
                                 </div>
@@ -148,7 +148,7 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label>Fhecha Ingreso</label>
+                                                    <label>Fhecha Ingreso <span class="text-danger">*</span></label>
                                                     <div class="cal-icon">
                                                         <input type="text" name="addProducto" id="datetimeStart" class="form-control border border-primary">
                                                     </div>
@@ -171,11 +171,21 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Ingrese Marca <span class="text-danger">*</span></label>
+                                            <div class="dropdown">
+                                                <input type="hidden" id="idMarcaProd">
+                                                <input type="text" id="addMarcaProd" data-bs-toggle="dropdown" class="form-control border border-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                                                <div class="dropdown-menu border border-primary" aria-labelledby="dropdownMenuButton" id="marcaProducto">
+                                                    Sin marcas...
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="form-group mb-1 text-center">
                                             <label>Imagen </label>
                                             <div class="custom-input-file col-md-6 col-sm-6 col-xs-6">
                                                 <input class="form-control input-file" type="file" id="cargarImg" onchange="mostrarImg()" accept="image/*">
-                                                Subir fichero...
+                                                Subir Imagen...
                                             </div>
                                         </div>
                                         <div class="row pt-0 mt-0">

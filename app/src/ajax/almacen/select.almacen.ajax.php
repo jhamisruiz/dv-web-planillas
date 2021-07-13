@@ -114,6 +114,9 @@ class ajaxSelectAlamacen
                 </button>';
         }
     }
+    /*=============================================
+    UPDATE ALMACEN PERMISOS
+    =============================================*/
     public $update;
     public function ajaxUpdateAlmacenPermisos()
     {
@@ -146,6 +149,7 @@ class ajaxSelectAlamacen
        
     }
 
+
 }
 
 /*=============================================
@@ -177,3 +181,4 @@ if (isset($_POST['updateIDPermisos'])) {
     );
     $update->ajaxUpdateAlmacenPermisos();
 }
+
