@@ -22,6 +22,7 @@ require_once "app/controllers/ubigeo/ubigeo.C.php";
         ALMACEN CONTROLLER 
 ========================================================================*/
 require_once "app/controllers/almacen/categorias.C.php";
+require_once "app/controllers/almacen/movimientos.C.php";
 require_once "app/controllers/almacen/productos.C.php";
 require_once "app/controllers/almacen/almacen.C.php";
 /* =====================================================================
