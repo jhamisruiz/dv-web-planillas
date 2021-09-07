@@ -13,14 +13,15 @@ $(document).ready(function () {
 	selectAllcategoria();
 });
 /*============================== 
-    CREAR CATEGORIA
+    CREAR/EDITAR CATEGORIA
 ===============================*/
-$('.AddCategoria').click(function () {
+$('#AddCategoria').click(function () {
     var categoria = [];
 
 	categoria.push(document.getElementById("nomCategoria").value);
 	categoria.push(document.getElementById("desCategoria").value);
-
+	categoria.push($(this).attr("editarCateg"));
+	categoria.push($(this).attr("idCategoria"));
     if (categoria[0]!="" &&categoria[1]!="") {
       
       if (categoria[0]!="") {
@@ -30,7 +31,10 @@ $('.AddCategoria').click(function () {
             data: {'addCategoria': categoria},
             success: function(respuesta){
 				selectAllcategoria();
-              $("#smsconfirmations").html(respuesta);//ingresa mensaje en html
+              	$("#smsconfirmations").html(respuesta);//ingresa mensaje en html]
+				if ($('#AddCategoria').attr("editarcateg") == "NO") {
+					limpiarForm();
+				}
             }
         });
       } else {
@@ -43,11 +47,58 @@ $('.AddCategoria').click(function () {
     }
     
 });
+/* GET Editar categoria */
+function limpiarForm(){
+	$('#addFormCategorias')[0].reset();
+	$("#AddCategoria").attr('editarCateg', 'NO')
+	$("#AddCategoria").attr('idCategoria', '0')
+}
+function editarCategoria(id,nom,desc){
+	limpiarForm();
+	$("#inlineForm").modal('show');
+	$("#nomCategoria").val(nom);
+	$("#desCategoria").val(desc);
+	$("#AddCategoria").attr('editarCateg', 'SI')
+	$("#AddCategoria").attr('idCategoria', id)
+}
+///////////function eleminar almacen
+function eliminarCategoria(id) {
+	Swal.fire({
+		title: 'Está seguro?',
+		text: "La categoria se eliminara definitivamente!",
+		icon: 'error',
+		showCancelButton: true,
+		confirmButtonColor: '#d33',
+		cancelButtonColor: '#dd6b55',
+		confirmButtonText: 'Si, eliminar!'
+	}).then((result) => {
+		if (result.isConfirmed) {
+
+			var datos = new FormData();
+
+			datos.append("idEliminar", id);
+
+			$.ajax({
+				url: "app/src/ajax/almacen/categorias.ajax.php",
+				method: "POST",
+				data: datos,
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function (respuesta) {
+					$("#smsconfirmations").html(respuesta);///
+					selectAllcategoria();
+				}
+			});
+
+		}
+	})
+}
+
 /*============================== 
     ACTIVAR CATEGORIAS
 ===============================*/
-$(document).on("click", ".btnActivarCategorias", function () {
-
+$(document).on("click", ".btnActivarCategoria", function () {
     Swal.fire({
     	title: 'Está seguro?',
     	text: "El estado cambiara!",
@@ -59,20 +110,14 @@ $(document).on("click", ".btnActivarCategorias", function () {
 		cancelButtonText: 'Cancelar'
     }).then((result) => {
     	if (result.isConfirmed) {
-
 			var response="";
-			
-			var idcategorias = $(this).attr("idcategorias");
-			var estadocategorias = $(this).attr("estadocategorias");
-
+			var idcategoria = $(this).attr("idcategoria");
+			var estadocategorias = $(this).attr("estadocategoria");
 			function activar(){
 				var resp= "";
-
 				var datos = new FormData();
-
-				datos.append("activarId", idcategorias);
+				datos.append("activarId", idcategoria);
 				datos.append("estadoCategoria", estadocategorias);
-
 				$.ajax({
 
 					url: "app/src/ajax/almacen/categorias.ajax.php",
@@ -83,7 +128,6 @@ $(document).on("click", ".btnActivarCategorias", function () {
 					contentType: false,
 					processData: false,
 					success: function (respuesta) {
-                        
 						resp=respuesta;
 					}
 				});
@@ -97,7 +141,7 @@ $(document).on("click", ".btnActivarCategorias", function () {
 					$(this).removeClass('btn-success');
 					$(this).addClass('btn-danger');
 					$(this).html('Desactivado');
-					$(this).attr('estadocategorias', 1);
+					$(this).attr('estadocategoria', 1);
 
 					Swal.fire({ 
 						position: 'middle',
@@ -116,7 +160,7 @@ $(document).on("click", ".btnActivarCategorias", function () {
 					$(this).addClass('btn-success');
 					$(this).removeClass('btn-danger');
 					$(this).html('Activado');
-					$(this).attr('estadocategorias', 0);
+					$(this).attr('estadocategoria', 0);
 					
 					Swal.fire({
 						position: 'middle',

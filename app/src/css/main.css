@@ -11,7 +11,10 @@
     color: red !important;
 }
 
-.product-remove {
+.classprodmover:hover{
+    background:#435ebe;
+    color:#fff;
+} .product-remove {
     position: absolute;
     top: 4px;
     right: 7px;
@@ -29,7 +32,7 @@
 
 .almacenchecked:checked {
     margin-left: 25px;
-    border: 1px solid blue!important;
+    border: 1px solid blue !important;
 }
 
 .custom-input-file {

@@ -27,16 +27,21 @@ class ajaxSelectCategorias
             echo '<tr>
                 <td>' . $key = ($key + 1) . '</td>
                 <td>' . $value["nombre"] . '</td>
-                <td>' . $value["descripcion"] . '</td>
-                <td>' . $value["descripcion"] . '</td>
-                <td class="text-right">
+                <td>' . $value["descripcion"] .'</td>';
+            if ($value["estado"] != 0) {
+
+                echo '<td class="text-center"><button class="btn btn-success btn-sm btnActivarCategoria" idcategoria="' . $value["id"] . '" estadocategoria="0">Activado</button></td>';
+            } else {
+
+                echo '<td class="text-center"><button class="btn btn-danger btn-sm btnActivarCategoria" idcategoria="' . $value["id"] . '" estadocategoria="1">Desactivado</button></td>';
+            }  
+                 echo '<td class="text-right">
                     <div class="dropdown dropdown-action">
                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="edit-patient.html"><i class="bi bi-pen-fill text-success"></i> Edit</a>
-                            <a class="dropdown-item" href="#"><i class="bi bi-trash m-r-5 text-danger"></i> Delete</a>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient ">
-                                <i class="fa fa-times-circle text-primary"></i> Ress Password</a>
+                            <a class="dropdown-item" onclick="editarCategoria(' . $value["id"].",'".  $value["nombre"] . "'," . "'" .  $value["descripcion"] . "'". ')">
+                            <i class="bi bi-pen-fill text-success"></i> Edit</a>
+                            <a class="dropdown-item" onclick="eliminarCategoria(' . $value["id"] . ')"><i class="bi bi-trash m-r-5 text-danger"></i> Delete</a>
                         </div>
                     </div>
                 </td>

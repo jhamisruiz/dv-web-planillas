@@ -7,6 +7,7 @@ require "./app/models/conexPDO.php";
         MODEL ...
 ========================================================================*/
 require_once "app/models/query/querys.M.php";
+require_once "app/models/query/SPquerys.M.php";
 
 /* =====================================================================
         MODEL USUARIOS
@@ -44,3 +45,5 @@ require_once "app/controllers/main.C.php";
 
 $main = new ControllerMain();
 $main->ctrMain();
+
+//or 1=1;--';

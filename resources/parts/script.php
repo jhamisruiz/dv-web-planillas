@@ -2,7 +2,10 @@
 <script type="text/javascript" src="app/src/js/almacen/almacen.js"></script>
 <script type="text/javascript" src="app/src/js/almacen/categorias.js"></script>
 <script type="text/javascript" src="app/src/js/almacen/productos.js"></script>
+<script type="text/javascript" src="app/src/js/almacen/movimiento.js"></script>
+
 <script type="text/javascript" src="app/src/js/config/config.js"></script>
+
 <script type="text/javascript" src="app/src/js/login/login.js"></script>
 <!-- js peticion ubigeo -->
 <script type="text/javascript" src="app/src/js/ubigeo.js"></script>

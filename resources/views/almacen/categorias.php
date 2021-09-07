@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h5>Categorias</h5>
-                <button type="button" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Categoria</button>
+                <button type="button" onclick="limpiarForm()" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Categoria</button>
             </div>
             <div class="card-body">
                 <div class="row col-lg-4">
@@ -39,7 +39,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel33">Nueva Categorias </h4>
+                <h4 class="modal-title" id="myModalLabel33">Formulario Categorias </h4>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <i data-feather="x"></i>
                 </button>
@@ -50,11 +50,11 @@
                         <div class="col-lg-12">
                             <label>Nombre: </label>
                             <div class="form-group">
-                                <input type="text" id="nomCategoria" placeholder="Nombre categoria" class="form-control">
+                                <input type="text" id="nomCategoria" class="form-control border border-primary text-primary">
                             </div>
                             <label>Descripción: </label>
                             <div class="form-group">
-                                <textarea name="" id="desCategoria" class="form-control" cols="12" rows="3" placeholder="Descrip. categoria"></textarea>
+                                <textarea name="" id="desCategoria" class="form-control border border-primary text-primary" cols="12" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Close</span>
                     </button>
-                    <button type="button" class="btn btn-primary ml-1 AddCategoria">
+                    <button type="button" class="btn btn-primary ml-1" id="AddCategoria" idCategoria="0" editarCateg="NO">
                         <i class="bx bx-check d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Guardar</span>
                     </button>

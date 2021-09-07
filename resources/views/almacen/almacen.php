@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h5>Almacen</h5>
-                <button type="button" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Almacen</button>
+                <button type="button" onclick="limpiarFormAlmacen()" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Almacen</button>
             </div>
             <div class="card-body">
                 <div class="row col-lg-4">
@@ -41,13 +41,13 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel33">Nuevo Almacén </h4>
+                <h4 class="modal-title" id="myModalLabel33">Formulario Almacén</h4>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <i data-feather="x"></i>
                 </button>
             </div>
             <div class="pl-3 pr-3 pt-3">
-                <form method="post" action="/form" autocomplete="off" id="addFormAlmacen">
+                <form method="post" autocomplete="off" id="addFormAlmacen">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="row d-flex flex-wrap-reverse">
@@ -84,7 +84,7 @@
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label>Nombre Almacen <span class="text-danger">*</span></label>
-                                <input class="form-control border border-primary" name="addAlmacen" type="text" placeholder="Nombre...">
+                                <input id="nombreAlmacen" class="form-control border border-primary" name="addAlmacen" type="text" placeholder="Nombre...">
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -109,7 +109,7 @@
                             <div class="form-group">
                                 <label>Provincias <span class="text-danger">*</span></label>
                                 <select name="" class="form-control border border-primary" id="provincia">
-                                    <option>Seleccione</option>
+                                    <option id="editarProvincia">Seleccione</option>
                                 </select>
                             </div>
                         </div>
@@ -117,20 +117,20 @@
                             <div class="form-group">
                                 <label>Distrito <span class="text-danger">*</span></label>
                                 <select name="" class="form-control border border-primary" id="ubigeo">
-                                    <option>Seleccione</option>
+                                    <option id="editarDistrito" value="0">Seleccione</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label>Direccion <span class="text-danger">*</span></label>
-                                <input class="form-control border border-primary" name="addAlmacen" type="text" placeholder="Direccion...">
+                                <input id="direcAlmacen" class="form-control border border-primary" name="addAlmacen" type="text" placeholder="Direccion...">
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label>Referencia </label>
-                                <input class="form-control border border-primary" name="addAlmacen" type="text" placeholder="Referencia...">
+                                <input id="referAlmacen" class="form-control border border-primary" name="addAlmacen" type="text" placeholder="Referencia...">
                             </div>
                         </div>
                         <div class="col-lg-12">
@@ -145,9 +145,9 @@
                             <i class="bx bx-x d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Close</span>
                         </button>
-                        <button type="button" class="btn btn-primary ml-1">
+                        <button type="button" id="btnGuardarAlmacen" editaralmacen="NO" idalmacen="0" class="btn btn-primary ml-1">
                             <i class="bx bx-check d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block" id="btnGuardarAlmacen">Guardar</span>
+                            <span class="d-none d-sm-block">Guardar</span>
                         </button>
                     </div>
                 </form>

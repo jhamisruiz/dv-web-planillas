@@ -13,31 +13,33 @@ class ajaxSelectProductos
     public function ajaxSelect()
     {
         $idAlmac = $this->select;
-
-        $product = ControllerProductos::SELECTPRODS($idAlmac);
+        $idProd="";
+        $product = ControllerProductos::SELECTPRODS($idAlmac,$idProd);
         foreach ($product as $key => $value) {
             echo '<tr>
                 <td>' . ($key + 1) . '</td>
                 <td><img width="60" src="' . $value["Fimg"] . '">' . $value["Pnom"] . '</td>
                 <td>' . $value["Pdesc"] . '</td>
                 <td>' . $value["Pcant"] . '</td>
+                <td>' . $value["Nmarca"] . '</td>
                 <td>' . $value["Cnom"] . '</td>
+                <td>' . $value["Anom"] . '</td>
                 <td>' . $value["Unom"] . '-' . $value["Uasun"] . '</td>
                 <td>' . $value["Pfini"] . '</td>
                 <td>' . $value["Pfend"] . '</td>
-                <td>' . $value["Inom"] . '</td>';
-                if ($value["Pest"]==0) {
-                echo '<td class="text-center"><span class="badge bg-danger">Desactivado</span></td>';
+                <td class="text-center">' . $value["Inom"] . '</td>';
+                if ($value["Pest"]!=0) {
+                    echo '<td class="text-center"><button class="btn btn-success btn-sm btnActivarProducto" idproducto="' . $value["id"] . '" estadoproducto="0">Activado</button></td>';
                 } else {
-                echo '<td class="text-center"><span class="badge bg-success">Activado</span></td>';
+                    echo '<td class="text-center"><button class="btn btn-danger btn-sm btnActivarProducto" idproducto="' . $value["id"] . '" estadoproducto="1">Desactivado</button></td>';
                 }
-                
                 echo '<td class="text-right">
                     <div class="dropdown dropdown-action">
                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="edit-patient.html"><i class="bi bi-pen-fill text-success"></i> Edit</a>
-                            <a class="dropdown-item" href="#"><i class="bi bi-trash m-r-5 text-danger"></i> Delete</a>
+                            <a class="dropdown-item" onclick="editarProducto(' . $value["id"] . ')">
+                            <i class="bi bi-pen-fill text-success"></i> Edit</a>
+                            <a class="dropdown-item" onclick="eliminarProducto(' . $value["id"] . ')"><i class="bi bi-trash m-r-5 text-danger"></i> Delete</a>
                         </div>
                     </div>
                 </td>
@@ -65,6 +67,33 @@ class ajaxSelectProductos
             echo '<a onclick="'."addMarcaValue('". $value['nombre']."',". $value['id'].")".'"'." class='dropdown-item pb-0 pt-0 mb-0'>".$value['nombre']."</a>";
         }
     }
+
+    /*=============================================
+    SELECT PRODUCTOS para movimiento
+    =============================================*/
+    public $idmov;
+    public $value;
+    public function ajaxSelectProds()
+    {
+        $idAlmac = $this->idmov;
+
+        $value=$this->value;
+
+        $product = ControllerProductos::SEARCHPRODS($idAlmac, $value);
+        foreach ( $product as $value) {
+            echo '<a onclick="addcartmov(' . "'" . $value['nombre'] . "','" . $value['cantidad'] . "','" . $value['descripcion']."','" . $value['id'] ."'". ')" class="btn   btn-sm classprodmover w-100 text-left add-to-cart">
+            '.$value['nombre']. ' - ' . $value['nombre'] . '</a>';
+        }
+    }
+
+    public $idselectProd;
+    public function ajaxIdSelectProducto(){
+        $idAlmac="";
+        $idProd = $this->idselectProd;
+
+        $product = ControllerProductos::SELECTPRODS($idAlmac, $idProd);
+        echo json_encode($product[0]);
+    }
 }
 
  /*=============================================
@@ -76,6 +105,15 @@ if (isset($_POST['selectProductos'])) {
     $select->ajaxSelect();
 }
 
+/*=============================================
+    OBJETO GET EDITPRODUCTOS
+    =============================================*/
+if (isset($_POST['idSelectEditar'])) {
+    $editar = new ajaxSelectProductos();
+    $editar->idselectProd = $_POST['idSelectEditar'];
+    $editar->ajaxIdSelectProducto();
+}
+
 
 /*=============================================
     OBJETO SELECT PRODUCTO MARCA
@@ -84,4 +122,14 @@ if (isset($_POST['selectMarca'])) {
     $marca = new ajaxSelectProductos();
     $marca->marca = $_POST['selectMarca'];
     $marca->ajaxSelectMarca();
+}
+
+/*=============================================
+    OBJETO SELECT PRODUCTOS
+    =============================================*/
+if (isset($_POST['idselectMovProds'])) {
+    $movimiento = new ajaxSelectProductos();
+    $movimiento->idmov = $_POST['idselectMovProds'];
+    $movimiento->value = $_POST['valueMovProds'];
+    $movimiento->ajaxSelectProds();
 }

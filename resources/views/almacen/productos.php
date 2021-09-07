@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h5>Productos</h5>
-                <button type="button" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Productos</button>
+                <button type="button" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm" onclick="limpiarFormProd(0)">Add Productos</button>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -46,7 +46,9 @@
                                 <th class="bg-primary text-white">Nombre</th>
                                 <th class="bg-primary text-white">Descripción</th>
                                 <th class="text-white bg-primary">Cantidad</th>
+                                <th class="text-white bg-primary">Marca</th>
                                 <th class="text-white bg-primary">Categoria</th>
+                                <th class="text-white bg-primary">Almacen</th>
                                 <th class="text-white bg-primary">U.Medida</th>
                                 <th class="text-white bg-primary">F.Ingreso</th>
                                 <th class="text-white bg-primary">F.Vencimiento</th>
@@ -78,10 +80,10 @@
                 <form method="post" enctype="multipart/form-data" autocomplete="off" id="addFormProductos">
                     <div class="row">
                         <div class="col-lg-5">
-                            <div class="form-group">
+                            <div class="form-group" id="addFormProdualm">
                                 <label> Almacen <span class="text-danger">*</span></label>
-                                <select class="form-control bg-primary text-white" id="addAlmacenProd" name="selectalmacen" onchange="ocDepositoAlm()">
-                                    <option value="0">Select. Almacen </option>
+                                <select class="form-control bg-primary text-white" id="addAlmacenProd" name="selectalmacen" onchange="ocDepositoAlm(0)">
+                                    <option value="0" id="idselectAlmacen">Select. Almacen </option>
                                     <?php
                                     $value = "";
                                     $all = "";
@@ -104,13 +106,14 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Nombre Producto <span class="text-danger">*</span></label>
-                                        <input class="form-control border border-primary" name="addProducto" type="text" placeholder="Nombre...">
+                                        <input type="hidden" id="idproducto" value="NO">
+                                        <input id="nombreProd" class="form-control border border-primary" name="addProducto" type="text" placeholder="Nombre...">
                                     </div>
                                 </div>
                                 <div class="col-lg-5">
                                     <div class="form-group">
                                         <label>Categoria <span class="text-danger">*</span></label>
-                                        <select id="addCatProd" class="form-control bg-primary text-white">
+                                        <select id="addCatProd" class="form-control border border-primary">
                                             <option value="">Seleccione</option>
                                             <?php
                                             $value = "";
@@ -134,13 +137,14 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>Unidad Medida <span class="text-danger">*</span></label>
-                                        <input class="form-control border border-primary" name="addProducto" type="text" placeholder="...">
+                                        <input type="hidden" id="idUnidadMed" value='NO'>
+                                        <input id="unimedidaProd" class="form-control border border-primary" name="addProducto" type="text" placeholder="...">
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-5">
                                     <div class="form-group">
                                         <label>Abrev Sunat</label>
-                                        <input class="form-control border border-primary" name="addProducto" type="text" oninput="this.value = this.value.toUpperCase()" placeholder="...">
+                                        <input id="abrevSunat" class="form-control border border-primary" name="addProducto" type="text" oninput="this.value = this.value.toUpperCase()" placeholder="...">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -171,19 +175,25 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Ingrese Marca <span class="text-danger">*</span></label>
-                                            <div class="dropdown">
-                                                <input type="hidden" id="idMarcaProd">
-                                                <input type="text" id="addMarcaProd" data-bs-toggle="dropdown" class="form-control border border-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                                                <div class="dropdown-menu border border-primary" aria-labelledby="dropdownMenuButton" id="marcaProducto">
-                                                    Sin marcas...
+                                        <div class="row d-flex justify-content-center">
+                                            <div class="col-lg-10">
+                                                <div class="form-group">
+                                                    <label>Ingrese Marca <span class="text-danger">*</span></label>
+                                                    <div class="dropdown">
+                                                        <input type="hidden" id="idMarcaProd">
+                                                        <input type="text" id="addMarcaProd" onkeydown="limpiarIDmarca()" data-bs-toggle="dropdown" class="form-control border border-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                                                        <div class="dropdown-menu border border-primary" aria-labelledby="dropdownMenuButton" id="marcaProducto">
+                                                            Sin marcas...
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group mb-1 text-center">
                                             <label>Imagen </label>
-                                            <div class="custom-input-file col-md-6 col-sm-6 col-xs-6">
+                                            <div id="imagenProdF" class="custom-input-file col-md-6 col-sm-6 col-xs-6">
+                                                <input type="hidden" id="ingresarImagen" value="SI">
+                                                <input type="hidden" id="idImagen" value="0">
                                                 <input class="form-control input-file" type="file" id="cargarImg" onchange="mostrarImg()" accept="image/*">
                                                 Subir Imagen...
                                             </div>
@@ -200,9 +210,14 @@
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="row border border-primary">
-                                <div class="col-lg-12">
+                            <div class="form-check mb-0 pb-0">
+                                <div class="checkbox mb-0 pb-0">
+                                    <input type="checkbox" id="depositoSI" onchange="agregardeposito()" class="form-check-input" value="NO">
                                     <h4>Deposito </h4>
+                                </div>
+                            </div>
+                            <div id="secciondeposito" class="row border border-primary pt-3 mt-0 d-none">
+                                <div class="col-lg-12">
                                     <div class="form-group">
                                         <select class="form-control border-secondary" id="idDepositoprod" onchange="mostrarDep()">
                                             <option value="0">Crear Nuevo Deposito</option>
@@ -211,6 +226,7 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
+                                        <label class=" p-0 m-0">Nombre <span class="text-danger p-0 m-0">*</span></label>
                                         <input name="addDeposito" id="idaddDeposito" type="hidden" value="0">
                                         <input class="form-control pr-2 border-secondary" id="idNombreDp" name="addDeposito" type="text" placeholder="Nombre">
                                     </div>
@@ -222,14 +238,14 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>Cantidad Actual </label>
+                                        <label>Cantidad Actual </label><span class="text-danger">*</span>
                                         <input type="hidden" value="0" id="montoactual">
                                         <input class="form-control pr-2" onchange="onSumaCantProd()" id="idCantactDep" name="addDeposito" type="number" placeholder="Capacidad Actual">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>Capacidad Maxima</label>
+                                        <label>Capacidad Maxima</label><span class="text-danger">*</span>
                                         <input class="form-control pr-2" id="idCantmaxDep" name="addDeposito" type="number" placeholder="Capacidad Maxima" onkeyup="validmaxima()">
                                     </div>
                                 </div>
@@ -245,8 +261,8 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer mt-3">
-                <button type="button" class="btn btn-primary" id="btnGuardarProducto">Guardar</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Salir</button>
+                <button type="button" class="btn btn-primary" editarProd="SI" id="btnGuardarProducto">Guardar</button>
             </div>
         </div>
     </div>

@@ -22,13 +22,13 @@ class ajaxSelectAlamacen
             "A.referencia" => "",
             "A.estado" => "",
             "A.tipo" => "",
+            "A.fecha_cierre" => "fecha",
             "U.Departamento" => "depa",
             "U.Provincia" => "provi",
             "U.Distrito" => "dist",
         );
 
         $tables = array(
-            $tabla . " A" => "",
             "almacen A" => "ubigeo U", #0-0
             "A.idUbigeo" => "U.id_ubigeo", #1-1
             #"images F"=>"", #8-0
@@ -45,46 +45,41 @@ class ajaxSelectAlamacen
                    <td>' . $value["direccion"] . '<br><strong>Ref:</strong>' . $value["referencia"] . '</td>';
 
             if ($value["estado"] == 1) {
-
-                echo '<td class="text-center"><button class="btn btn-success btn-sm btnActivarAlmacen" idalmacen="' . $value["id"] . '" estadoalmacen="0">Activado</button></td>';
-            }
-            if ($value["estado"] == 'ENDED') {
-                echo '<td class="text-center"><span class="badge bg-secondary">FINALIZADO</span></td>';
+                if ($value["estado"] == 'ENDED') {
+                    echo '<td class="text-center"><span class="badge bg-secondary">FINALIZADO</span></td>';
+                }else{
+                    echo '<td class="text-center"><button class="btn btn-success btn-sm btnActivarAlmacen" idalmacen="' . $value["id"] . '" estadoalmacen="0">Activado</button></td>';
+                }
             }
             if ($value["estado"] == 0) {
-
-                echo '<td class="text-center"><button class="btn btn-danger btn-sm btnActivarAlmacen" idalmacen="' . $value["id"] . '" estadoalmacen="1">Desactivado</button></td>';
+                if ($value["estado"] == 'ENDED') {
+                    echo '<td class="text-center"><span class="badge bg-secondary">FINALIZADO</span></td>';
+                } else {
+                    echo '<td class="text-center"><button class="btn btn-danger btn-sm btnActivarAlmacen" idalmacen="' . $value["id"] . '" estadoalmacen="1">Desactivado</button></td>';
+                }                
             }
-                     
-
-                echo '<td class="text-center"><select name="" 
-                        class="form-control border border-primary selectChangeAlmacen" idalmacen="' . $value["id"] . '" tipoalmacen="TEMPORAL" style="font-size: 10px;">
-                        <option value="'.$value["tipo"].'" selected>'.$value["tipo"].'</option>';
-                if ($value["tipo"] == 'TEMPORAL') {
-                    echo '<option value="PRINCIPAL">PRINCIPAL</option>';
-                    }else{
-                    echo '<option value="TEMPORAL">TEMPORAL</option>';
-                    };     
-                    echo '</select></td>';
-
             
-            if ($value["estado"] != 'ENDED') {
-                echo '<td class="text-right" >
-                            <div class="dropdown dropdown-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="edit-patient.html"><i class="bi bi-pen-fill text-success"></i> Edit</a>
-                                    <a class="dropdown-item" href="#"><i class="bi bi-trash m-r-5 text-danger"></i> Delete</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient ">
-                                        <i class="fa fa-times-circle text-primary"></i> Ress Password</a>
-                                </div>
-                            </div>
-                        </td>
-                </tr>';
-            }
-
+            echo '<td class="text-center ">
+                <div class="d-flex flex-column">
+                <p class="p-0 m-0 text-success">' . $value["tipo"] . '</p>
+                <p class="p-0 m-0 text-primary">' . $value["fecha"] . '</p>
+                </div>
+                </td>';
+            
+            if ($value["estado"] == 'ENDED') {
                 echo '<td></td>';
-            
+            } else {
+                echo '<td class="text-right" >
+                        <div class="dropdown dropdown-action">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right border border-secondary">
+                                <a class="dropdown-item" onclick="editarAlmacen(' . $value["id"] . ')"><i class="bi bi-pen-fill text-success"></i> Edit</a>
+                                <a class="dropdown-item"onclick="eliminarAlmacen(' . $value["id"] . ')"><i class="bi bi-trash m-r-5 text-danger"></i> Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>';
+            }     
         }
     }
     /*=============================================
@@ -148,7 +143,43 @@ class ajaxSelectAlamacen
         }
        
     }
+    /*=============================================
+     SELECT DATA PARA EDITAR ALMACEN
+    =============================================*/
+    public $idEditarAlm;
+    public function ajaxeEditarAlmacen()
+    {
 
+        $data = $this->idEditarAlm;
+        $select = array(
+            "A.id" => "",
+            "A.nombre" => "",
+            "A.direccion" => "",
+            "A.referencia" => "",
+            "A.estado" => "",
+            "A.idSucursal" => "sucursal",
+            "A.descripcion" => "descrip",
+            "A.tipo" => "",
+            "A.fecha_cierre" => "fecha",
+            "U.Departamento" => "depa",
+            "U.Provincia" => "provi",
+            "U.Distrito" => "dist",
+            "U.id_ubigeo" => "ubigeo",
+        );
+
+        $tables = array(
+            "almacen A" => "ubigeo U", #0-0
+            "A.idUbigeo" => "U.id_ubigeo", #1-1
+            #"images F"=>"", #8-0
+            #"F.idProducto" => "P.id",   # 9-1
+        );
+
+        $where = array(
+            "A.id"=> "=".$data
+        );
+        $respuesta = ControllerQueryes::SELECT($select, $tables, $where);
+        echo json_encode($respuesta[0]);
+    }
 
 }
 
@@ -160,7 +191,14 @@ if (isset($_POST['selectAlmacen'])) {
     $select->select = $_POST['selectAlmacen'];
     $select->ajaxSelect();
 }
-
+/*=============================================
+OBJETO SELECT PARA EDITAR ALMACEN
+=============================================*/
+if (isset($_POST["idSelectEditar"])) {
+    $selecteditar = new ajaxSelectAlamacen();
+    $selecteditar->idEditarAlm = $_POST["idSelectEditar"];
+    $selecteditar->ajaxeEditarAlmacen();
+}
 /*=============================================
     OBJETO SELECT ALMACEN PERMISOS
     =============================================*/

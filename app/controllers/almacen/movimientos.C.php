@@ -1,8 +1,7 @@
 <?php 
 class ControllerMovimientos{
 
-
-static public function SELECTALL()
+    static public function SELECTALL()
     {
         $select = array("*" => "*");
         $tables = array(
@@ -13,7 +12,17 @@ static public function SELECTALL()
         $respuesta = ControllerQueryes::SELECT($select, $tables, $where);
         return $respuesta;
     }
-static public function SELECT($all){
+
+    static public function SELECTACCION(){
+        $select = array("*" => "*");
+        $tables = array(
+            "accion" => "",
+        );
+        $where = "";
+        $respuesta = ControllerQueryes::SELECT($select, $tables, $where);
+        return $respuesta;
+    }
+    static public function SELECT($all){
 
         $select = array(
             "A.id" => "idalmacen",
@@ -46,6 +55,12 @@ static public function SELECT($all){
         }
         $respuesta = ControllerQueryes::SELECT($select, $tables, $where);
         return $respuesta;
+    }
+
+    static public function SELECMOVIMIENTOS(){
+       
+        $res=ModelQueryes::SELECMOVIMIENTO();
+        return $res;
     }
 
 }

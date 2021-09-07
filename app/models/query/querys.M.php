@@ -18,7 +18,7 @@ class ModelQueryes{
         );
 
         $tables=array(
-            #"productos"=>"",
+            #"productos"=>"",//solo si no hay inner joins..
             #"productos P" => "almacen A", #0-0
             #"P.idAlmacen" => "A.id", #1-1
             #"images F"=>"", #8-0
@@ -118,7 +118,7 @@ class ModelQueryes{
         } catch (\Throwable $th) {
 
             $throw=$th->getMessage();
-            return "error";
+            return "SELECT $colums FROM $table  $wheres $orderby";
 
         }
         
@@ -232,24 +232,29 @@ class ModelQueryes{
         }
         $wheres=substr($wh,0,-4);
 
-        $stmt = $conex->prepare("UPDATE $table SET $set WHERE $wheres");
+        try {
+            $stmt = $conex->prepare("UPDATE $table SET $set WHERE $wheres");
 
-        if($stmt->execute()) {
+            if ($stmt->execute()) {
 
-            $cuenta = $stmt->rowCount();
+                $cuenta = $stmt->rowCount();
 
-            if ($cuenta > 0) {
+                if ($cuenta > 0) {
 
-                return "ok";
+                    return "ok";
+                } else {
+
+                    return "UPDATE $table SET $set WHERE $wheres";
+                }
             } else {
 
-                return "error";
+                return "UPDATE $table SET $set WHERE $wheres";
             }
-
-        } else {
-
-            return "error";
+        } catch (Throwable $th) {
+            $throw= $th->getMessage();
+            return "inyeccion";
         }
+        
         
         
         
@@ -285,15 +290,51 @@ class ModelQueryes{
             next($delate);
         }
         $where = substr($wheres,0, -4);
+        try {
+            $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE $where");
+            if ($stmt->execute()) {
 
-        $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE $where");
-        if ($stmt->execute()) {
+                return "ok";
+            } else {
 
-            return "ok";
-        } else {
-
-            return "error";
+                return "DELETE FROM $tabla WHERE $where";
+            }
+        } catch (\Throwable $th) {
+            $throw= $th->getMessage();
+            return "inyeccion";
         }
+        
+    }
+
+    /* ============search prod move========== */
+    static public function SEARCH($idAlmac, $value){
+        try {
+            $stmt = Conexion::conectar()->prepare("CALL sp_search_products(:value,:id)");
+
+            $stmt->bindParam(":id", $idAlmac, PDO::PARAM_INT);
+            $stmt->bindParam(":value", $value, PDO::PARAM_STR);
+
+            if ($stmt->execute()) {
+                return $stmt->fetchAll();
+            } else {
+                return 'error';
+            }
+
+            $stmt = null;
+        } catch (\Throwable $th) {
+            $throw = $th->getMessage();
+            return "inyeccion";
+        }
+        
+    }
+    
+    static public function SELECMOVIMIENTO(){
+
+        $stmt = Conexion::conectar()->prepare("CALL `sp_select_movimiento`()");
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+        $stmt = null;
     }
 }
 

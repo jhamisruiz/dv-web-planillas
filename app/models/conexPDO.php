@@ -9,7 +9,8 @@ class Conexion
         try {
 
             $link = new PDO(SGBD, DB_USER, DB_PASS); //Servidor,Usuario,Contraseña
-
+            $link->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $link->exec("set names utf8");
 
             return  $link;

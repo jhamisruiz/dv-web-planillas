@@ -27,10 +27,13 @@ class ControllerAlmacen{
         );
 
         $where =array(
-            "A.ingreso" =>"='1'"
+            "A.ingreso" =>"='1'",
+            "A.estado" => "='1'",
         );
         if ($all=="all") {
-             $where ="";
+            $where = array(
+                "A.estado" => "='1'",
+            );
         }
         $respuesta = ControllerQueryes::SELECT($select, $tables, $where);
         return $respuesta;
