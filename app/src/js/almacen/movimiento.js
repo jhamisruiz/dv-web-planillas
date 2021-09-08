@@ -15,9 +15,57 @@ function buscarProductoAlmacen(){
         alertify.error('Seleccione un almacen');
     }
 }
-/*==========detalle movimiento=========== */
+/*==========SELECT DETALLE MOVIMIENTO=========== */
 function detalleMovimiento(id){
-
+    var idmov = new FormData();
+    idmov.append("idMovimiento", id);
+    $.ajax({
+        method: "POST",
+        url: "app/src/ajax/almacen/select.movimiento.ajax.php",
+        data: idmov,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success: function (resp) {
+            console.log(resp)
+            var html='';
+            for (let i = 0; i < resp.length; i++) {
+                html += `<tr>
+                    <th scope="row">`+(i+1)+`</th>
+                    <td><img width=40" src="`+ resp[i]['imgUrl'] +`"></td>
+                    <td>`+ resp[i]['nombre']+`</td>
+                    <td>`+ resp[i]['descripcion'] +`</td>
+                    <td>`+ resp[i]['cantidad']+`</td>
+                    </tr>
+                `; 
+            }
+            Swal.fire({
+                title: '<strong>Detalle Movimiento</strong>',
+                html:
+                    `<div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Imagen</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        `+ html+`
+                        </tbody>
+                    </table>
+                    </div>`,
+                showCloseButton: false,
+                confirmButtonColor:false,
+                showCancelButton: false,
+                focusConfirm: false,
+            })
+        }
+    });
 }
 ///************************** */
 function selectAllMovimientos(){
@@ -83,6 +131,54 @@ $("#btnGuardarMovimiento").click(function () {
         alertify.error('Seleccione todos los campos');
     }
 
+});
+
+// ACEPTAR MOVIMIENTO
+$(document).on("click", ".btnAceptarMovimiento", function (){
+    Swal.fire({
+        title: 'Está seguro?',
+        text: "El estado cambiara!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Aceptar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            var idmovimiento = $(this).attr("idMovimiento")
+            var estado = $(this).attr("estado")
+            if (estado ==2){
+                $(this).attr('hidden', true)
+                $('#aceptar').addClass('btn-warning');
+                $('#aceptar').removeClass('btn-danger');
+                $('#aceptar').html('CANCELADO');
+            }else if(estado ==1){
+                $('#cancelar').attr('hidden', true)
+                $(this).addClass('btn-success');
+                $(this).removeClass('btn-danger');
+                $(this).html('INGRESADO');
+            }
+            
+            $.ajax({
+                method: "POST",
+                url: "app/src/ajax/almacen/movimiento.ajax.php",
+                data: { 'idMovimiento': idmovimiento, 'estado': estado },
+                success: function (respuesta) {
+                    if (respuesta=="ok"){
+                        if (estado == 2) {
+                            alertify.warning('Movimiento Cancelado');
+                        } else {
+                            alertify.success('Movimiento Aceptado');
+                        }
+                   }else{
+                        alertify.error('Movimiento no Aceptado');
+                   }
+                }
+            });
+        }
+    });
 });
 
 // ************************************************

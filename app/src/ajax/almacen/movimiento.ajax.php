@@ -60,17 +60,40 @@ class ajaxMovimientos{
             <td>' . $value['almSalida'] . '</td>
             <td>' . $value['almEntrada'] . '</td>';
             if ($value["estado"] == 0) {
-                echo '<td class="text-center"><button class="btn btn-danger btn-sm" >ACEPTAR</button></td>';
+                echo '<td class="text-center"><button id="cancelar" class="btn btn-danger btn-sm btnAceptarMovimiento" idMovimiento="' . $value['id'] . '" estado="2">CANCELAR</button>';
+                echo '<button id="aceptar" class="btn btn-secondary btn-sm btnAceptarMovimiento" idMovimiento="' . $value['id'] . '" estado="1">ACEPTAR</button></td>';
+            }elseif($value["estado"] == 2){
+                echo '<td class="text-center"><button class="btn btn-warning btn-sm" >CANCELADO</button></td>';
             }else{
-                echo '<td class="text-center"><button class="btn btn-seccess btn-sm" >INGRESADO</button></td>';
+                echo '<td class="text-center"><button class="btn btn-success btn-sm" >INGRESADO</button></td>';
             }
             echo '<td>' . $value['accion'] . '</td>
                 <td class="text-center">
-                <button class="btn btn-primary btn-sm" >VER DETALLE</button></td>
+                <button class="btn btn-primary btn-sm" onclick="detalleMovimiento('. $value['id'].')">VER DETALLE</button></td>
                 <td>' . $value['motivo'] . '</td>
             </tr>';
         }
 
+    }
+
+    public $aceptMovimiento;
+    public function ajaxAceptarMovimiento(){
+        $data = $this->aceptMovimiento;
+        $update = array(
+            'table'=>'movimientos',
+            'estado'=> $data['estado']
+        );
+
+        $where = array(
+            'id' => $data['id']
+        );
+
+        $update=ControllerQueryes::UPDATE($update, $where);
+        if($update=="ok"){
+            echo $update;
+        }else{
+            echo 'error';
+        }
     }
 
 }
@@ -91,4 +114,16 @@ if (isset($_POST['selectAllmovimientos'])) {
     $allmove = new ajaxMovimientos();
     $allmove->allmove = $_POST['selectAllmovimientos'];
     $allmove->ajaxSelectAllMovimiento();
+}
+
+/*=============================================
+    OBJETO ACEPTAR MOVIMIENTOS
+    =============================================*/
+if (isset($_POST['idMovimiento'])) {
+    $aceptar = new ajaxMovimientos();
+    $aceptar->aceptMovimiento = array(
+        'estado'=> $_POST['estado'],
+        'id'=> $_POST['idMovimiento']
+    );
+    $aceptar->ajaxAceptarMovimiento();
 }
