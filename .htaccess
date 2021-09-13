@@ -1,5 +1,19 @@
-Options All -Indexes
+Options +FollowSymLinks
 
 RewriteEngine On
 
 RewriteRule ^([-a-zA-Z0-9]+)$ index.php?ruta=$1
+##RewriteRule ^/?$ index.php?page=index [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^movimientos/detalle-movmimiento-exel/([0-9]+)/?$ app/src/ajax/files/exel.php?idruta=$1&nam=$2&idmov=$3 [L,QSA]
+RewriteRule ^movimientos/detalle-movmimiento-pdf/([0-9]+)/?$ app/src/ajax/files/pdf.php?idruta=$1&nam=$2&idmov=$3 [L,QSA]
+
+RewriteRule ^movimientos/detalle-movmimiento-exel/([-a-zA-Z]+)/?$ resources/error/404.php?idruta=$1&nam=$2&idmov=$3 [L,QSA]
+RewriteRule ^movimientos/detalle-movmimiento-pdf/([-a-zA-Z]+)/?$ resources/error/404.php?idruta=$1&nam=$2&idmov=$3 [L,QSA]
+
+ErrorDocument 500 "Sorry, our url not found" 
+ErrorDocument 500 /resources/error/500.php 
+ErrorDocument 404 /resources/error/404.php 
+ErrorDocument 401 /resources/error/401.php 

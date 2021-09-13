@@ -9,9 +9,11 @@ class ajaxSelectCategorias
     SELECT ALMACEN
     =============================================*/
     public $select;
+    public $search;
     public function ajaxSelect()
     {
         $tabla = $this->select;
+        $nombre =$this->search;
         $select = array(
             "*" => "*"
         );
@@ -21,7 +23,13 @@ class ajaxSelectCategorias
             #"images F"=>"", #8-0
             #"F.idProducto" => "P.id",   # 9-1
         );
-        $where = "";
+        if ($nombre == " " || $nombre == "  " || $nombre == "   " || $nombre == NULL) {
+            $where = '';
+        } else {
+            $where = array(
+                "nombre" => " LIKE CONCAT('%" . $nombre . "%')",
+            );
+        }
         $respuesta = ControllerQueryes::SELECT($select, $tables, $where);
         foreach ($respuesta as $key => $value) {
             echo '<tr>
@@ -53,5 +61,6 @@ class ajaxSelectCategorias
 if (isset($_POST['selectCategoria'])) {
     $select = new ajaxSelectCategorias();
     $select->select = $_POST['selectCategoria'];
+    $select->search = $_POST['search'];
     $select->ajaxSelect();
 }

@@ -57,9 +57,9 @@ class ControllerMovimientos{
         return $respuesta;
     }
 
-    static public function SELECMOVIMIENTOS(){
+    static public function SELECMOVIMIENTOS($idm,$search){
        
-        $res=ModelQueryes::SELECMOVIMIENTO();
+        $res=ModelQueryes::SELECMOVIMIENTO($idm,$search);
         return $res;
     }
 

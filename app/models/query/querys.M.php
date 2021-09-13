@@ -328,9 +328,11 @@ class ModelQueryes{
         
     }
     
-    static public function SELECMOVIMIENTO(){
+    static public function SELECMOVIMIENTO($idm, $search){
 
-        $stmt = Conexion::conectar()->prepare("CALL `sp_select_movimiento`()");
+        $stmt = Conexion::conectar()->prepare("CALL `sp_select_movimiento`(:id,:search)");
+        $stmt->bindParam(":id", $idm, PDO::PARAM_INT);
+        $stmt->bindParam(":search", $search, PDO::PARAM_STR);
         $stmt->execute();
 
         return $stmt->fetchAll();

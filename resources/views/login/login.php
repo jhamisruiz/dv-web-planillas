@@ -32,7 +32,7 @@
                 </form>
                 <div class="text-center mt-5 text-lg fs-4">
                     <p class="text-gray-600">No tengo una cuenta? <a href="registro" class="font-bold">Registrar</a>.</p>
-                    <p><a class="font-bold" href="auth-forgot-password.html">Se te olvidó tu contraseña?.</a>.</p>
+                    <!-- <p><a class="font-bold" href="auth-forgot-password.html">Se te olvidó tu contraseña?.</a>.</p> -->
                 </div>
             </div>
         </div>

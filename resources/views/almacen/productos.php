@@ -31,11 +31,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-3">
-                        <div class="input-group mb-3 border border-primary rounded p-0">
+                    <div class="col-lg-3 mb-0 pb-0">
+                        <div id="allsearch" class="input-group mb-0 border border-primary rounded p-0">
                             <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-                            <input type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <input onkeyup="searchProducto()" id="searchProducto" type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="button-addon2">
                         </div>
+                        <div id="smsearch" class="text-danger mb-0 pb-0"></div>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -53,6 +54,7 @@
                                 <th class="text-white bg-primary">F.Ingreso</th>
                                 <th class="text-white bg-primary">F.Vencimiento</th>
                                 <th class="text-white bg-primary">Almacenamiento</th>
+                                <th class="text-white bg-primary">Condicion</th>
                                 <th class="text-white bg-primary">Estado</th>
                                 <th class="bg-primary text-white" style="max-width: 70px;">Action</th>
                             </tr>
@@ -145,6 +147,20 @@
                                     <div class="form-group">
                                         <label>Abrev Sunat</label>
                                         <input id="abrevSunat" class="form-control border border-primary" name="addProducto" type="text" oninput="this.value = this.value.toUpperCase()" placeholder="...">
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        <label>Condición</label>
+                                        <select id="addCondicion" class="form-control border border-primary">
+                                            <option value="">Seleccione</option>
+                                            <option value="NUEVO">NUEVO</option>
+                                            <option value="REGULAR">REGULAR</option>
+                                            <option value="BUENO">BUENO</option>
+                                            <option value="MALOGRADO">MALOGRADO</option>
+                                            <option value="MALO">MALO</option>
+                                            <option value="PERDIDO">PERDIDO</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row">

@@ -20,7 +20,7 @@ class ControllerProductos
     /*=============================================
 	SELECT PRODUCTOS
 =============================================*/
-    static public function SELECTPRODS($idAlmac, $idProd)
+    static public function SELECTPRODS($idAlmac, $idProd, $search)
     {
         $select = array(
             "P.id" => "",
@@ -30,6 +30,7 @@ class ControllerProductos
             "P.fecha_end" => "Pfend",
             "P.cantidad" => "Pcant",
             "P.estado" => "Pest",
+            "P.condicion" => "",
             "P.idCategoria" => "idcat",
             "C.nombre" => "Cnom",
             "P.idUmedida" => "",
@@ -71,9 +72,17 @@ class ControllerProductos
             if ($idAlmac == 0) {
                 $where = "";
             } else {
-                $where = array(
-                    "P.idAlmacen" => "='" . $idAlmac . "'",
-                );
+                
+                if ($search == " " || $search == "  " || $search == "   " || $search == NULL) {
+                    $where = array(
+                        "P.idAlmacen" => "='" . $idAlmac . "'",
+                    );
+                } else {
+                    $where = array(
+                        "P.nombre" => " LIKE CONCAT('%" . $search . "%')",
+                        "P.idAlmacen" => "='" . $idAlmac . "'",
+                    );
+                }
             }
         } else {
             $where = array(
@@ -199,6 +208,7 @@ class ControllerProductos
                 "fecha_ingreso" => $produc['fechaingreso'],
                 "fecha_end" => $produc['fechavenci'],
                 "cantidad" => $produc['cantidad'],
+                "condicion" => $produc['condicion'],
                 "idAlmacen" => $produc['idalmacen'],
                 "idInfraestructura" => $lastIdDepo,
                 "id_marca" => $idmara,
@@ -217,6 +227,7 @@ class ControllerProductos
                 "fecha_ingreso" => $produc['fechaingreso'],
                 "fecha_end" => $produc['fechavenci'],
                 "cantidad" => $produc['cantidad'],
+                "condicion" => $produc['condicion'],
                 "idAlmacen" => $produc['idalmacen'],
                 "idInfraestructura" => $lastIdDepo,
                 "id_marca" => $idmara,
@@ -225,9 +236,9 @@ class ControllerProductos
                 "id" => $produc['idProd'], #condifion columna y valor
             );
             $prodUpdate = ControllerQueryes::UPDATE($update, $where);
+            //return $prodUpdate;
             $product = $produc['idProd'];
         }
-
         if (isset($imagen["noimg"]) and isset($imagen["imgemty"])) {
             $insert = "";
             if ($produc['ingresarImagen'] == "SI" and $produc['idimagen'] == 0) {
@@ -240,6 +251,7 @@ class ControllerProductos
                 $image = ControllerQueryes::INSERT($insert);
                 return  "ok";
             } else {
+                //return  $produc['ingresarImagen'];
                 if ($produc['ingresarImagen'] == "SI" and $produc['idimagen'] > 0) {
                     $update = "";
                     $update = array(
@@ -251,6 +263,8 @@ class ControllerProductos
                         "id" => $produc['idimagen'], #condifion columna y valor
                     );
                     $imageupd = ControllerQueryes::UPDATE($update, $where);
+                    return  "ok";
+                }else{
                     return  "ok";
                 }
             }

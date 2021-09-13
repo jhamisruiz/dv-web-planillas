@@ -14,7 +14,8 @@ class ajaxSelectAlamacen
     public function ajaxSelect()
     {
 
-        $tabla = $this->select;
+        $nombre = $this->select;
+        
         $select = array(
             "A.id" => "",
             "A.nombre" => "",
@@ -29,14 +30,21 @@ class ajaxSelectAlamacen
         );
 
         $tables = array(
-            "almacen A" => "ubigeo U", #0-0
+            "almacen A" => " ubigeo U", #0-0
             "A.idUbigeo" => "U.id_ubigeo", #1-1
             #"images F"=>"", #8-0
             #"F.idProducto" => "P.id",   # 9-1
         );
 
-        $where = "";
+        if($nombre == " " || $nombre == "  " || $nombre== "   " || $nombre == NULL){
+            $where = '';
+        }else{
+            $where = array(
+                "A.nombre" => " LIKE CONCAT('%" . $nombre . "%')",
+            );
+        }
         $respuesta = ControllerQueryes::SELECT($select, $tables, $where);
+        //echo $respuesta;
         foreach ($respuesta as $key => $value) {
             echo '<tr>
                    <td>' . $key = ($key + 1) . '</td>
@@ -97,15 +105,15 @@ class ajaxSelectAlamacen
             if($value['ingreso']=="1"){
                 $active= "active";
                 $check="checked";
-                $color= "bg-success";
+                $color= "bg-dark";
             }else{
                 $active="";
                 $check="";
                 $color = "";
             }
            echo '<button type="button" onclick="checkPermisos('. $valueid. ')" class="border border-' . $color . ' list-group-item list-group-item-action ' . $active. '">
-                    <input class="form-check-input me-1 ' . $color . ' border border-success" type="checkbox" id="' . $value['id'] . 'permiso" value="' . $value['ingreso'] . '" aria-label="..." '. $check.'>
-                    '. $value['nombre'].'
+                    <input disabled class="form-check-input me-1 ' . $color . ' border border-dark" type="checkbox" id="' . $value['id'] . 'permiso" value="' . $value['ingreso'] . '" aria-label="..." '. $check.'>
+                    Almacen: '. $value['nombre'].'  -Tipo: '. $value['tipo']. ' -Fecha Cierre: ' . $value['fecha_cierre'] . '
                 </button>';
         }
     }
@@ -188,7 +196,7 @@ class ajaxSelectAlamacen
     =============================================*/
 if (isset($_POST['selectAlmacen'])) {
     $select = new ajaxSelectAlamacen();
-    $select->select = $_POST['selectAlmacen'];
+    $select->select = $_POST['search'];
     $select->ajaxSelect();
 }
 /*=============================================

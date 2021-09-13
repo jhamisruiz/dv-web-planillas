@@ -3,13 +3,13 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h5>Almacen</h5>
-                <button type="button" onclick="limpiarFormAlmacen()" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Almacen</button>
+                <button type="button"  class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Almacen</button>
             </div>
             <div class="card-body">
                 <div class="row col-lg-4">
                     <div class="input-group mb-3 border border-primary rounded p-0">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <input onkeyup="searchAlmacen()" id="searchAlmacen" type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="button-addon2">
                     </div>
                 </div>
                 <div class="table-responsive">

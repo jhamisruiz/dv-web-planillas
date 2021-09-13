@@ -1,21 +1,28 @@
 /*==============================
 SELECT ALMACEN
 ===============================*/
-function selectAllalmacen(){
+function selectAllalmacen(search){
     let tabla="almacen";
     $.ajax({
         method: "POST",
         url: "app/src/ajax/almacen/select.almacen.ajax.php",
-        data: { 'selectAlmacen': tabla },
+        data: { 'selectAlmacen': tabla, 'search': search },
         success: function (respuesta) {
             $("#mostrarAlmacen").html(respuesta);//ingresa mensaje en html
         }
     });
 }
-
+/*==============================
+SEARCH ALMACEN
+===============================*/
+function searchAlmacen(){
+    var search = document.getElementById('searchAlmacen').value;
+    selectAllalmacen(search);
+}
 
 $(document).ready(function () {
-    selectAllalmacen();
+    var search ='';
+    selectAllalmacen(search);
 });
 
 $("#idcheckSucursal").on('change', function () {
@@ -76,7 +83,8 @@ function limpiarFormAlmacen() {
                     data: {'addAlmacen': almacen},
                     success: function(respuesta){
                         limpiarFormAlmacen();
-                        selectAllalmacen();
+                        var search = '';
+                        selectAllalmacen(search);
                         let dn = document.getElementById("sucuarlPrincipal");//formater el swith alamcen temporal
                         let db = document.getElementById("sucuarlTemporal");//formater el swith alamcen temporal
                         dn.classList.remove("d-none");//formater el swith alamcen temporal
@@ -166,7 +174,8 @@ function eliminarAlmacen(id){
                 processData: false,
                 success: function (respuesta) {
                     $("#smsconfirmations").html(respuesta);///
-                    selectAllalmacen();
+                    var search = '';
+                    selectAllalmacen(search);
                 }
             });
 

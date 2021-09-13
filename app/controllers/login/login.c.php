@@ -1,6 +1,57 @@
 <?php
 class ControllerLogin
-{
+{   
+    static public function listaAdmins() {
+        $select = array(
+            '*' => '*'
+        );
+        $tables = array(
+            'admin' => ''
+        );
+        $where = '';
+
+        $validad = ModelQueryes::SELECT($select, $tables, $where);
+        return $validad;
+    }
+
+    static public function REGISTRO($data){
+
+        if ($data[1] != $data[2]) {
+            return 'Las contraseñas no son iguales';
+        } else {
+            $select =array(
+                '*'=>'*'
+            );
+            $tables =array(
+                'admin'=>''
+            );
+            $where = array(
+                "usuario"=>"='". $data[0]."'"
+            );
+
+            $validad=ModelQueryes::SELECT($select, $tables, $where);
+
+            if (count($validad)==0) {
+                $password = password_hash($data[1], PASSWORD_DEFAULT);
+                $insert = array(
+                    "table" => "admin",
+                    "nombres" => $data[0],
+                    "usuario" => $data[0],
+                    "password" => $password,
+                );
+
+                $registro = ModelQueryes::INSERT($insert);
+                if ($registro == "ok") {
+                    return 'Usuario Registrado';
+                } else {
+                    return 'Usuario No Registrado';
+                }
+            } else {
+                return 'Este Usuario ya esta Registrado';
+            }
+        }
+    }
+
     static public function LOGIN($data)
     {
         if ($data[0] == ""|| $data[1] == "") {

@@ -1,3 +1,8 @@
+function myFMovimiento(){
+    $("#resSearchMov").html('');
+    limpiarCarro();
+}
+
 function buscarProductoAlmacen(){
     var idalmacen = document.getElementById("id-alacen-salida").value;
     var value = document.getElementById("valueSearchProds").value;
@@ -17,6 +22,17 @@ function buscarProductoAlmacen(){
 }
 /*==========SELECT DETALLE MOVIMIENTO=========== */
 function detalleMovimiento(id){
+
+    var head = `<tr>
+        <th></th>
+        <th>Nro</th>
+        <th>Nombre</th>
+        <th>Categoria</th>
+        <th>Descripcion</th>
+        <th>Cantidad</th>
+        <th>Condicion</th>
+        <th></th>
+    </tr>`;
     var idmov = new FormData();
     idmov.append("idMovimiento", id);
     $.ajax({
@@ -27,19 +43,57 @@ function detalleMovimiento(id){
         contentType: false,
         processData: false,
         dataType: "json",
-        success: function (resp) {
-            console.log(resp)
+        success: function (respuesta) {
+            var resp = respuesta[0];
             var html='';
+            var exel = '';
             for (let i = 0; i < resp.length; i++) {
                 html += `<tr>
                     <th scope="row">`+(i+1)+`</th>
-                    <td><img width=40" src="`+ resp[i]['imgUrl'] +`"></td>
+                    <td><img width=30" src="`+ resp[i]['imgUrl'] +`"></td>
                     <td>`+ resp[i]['nombre']+`</td>
+                    <td>`+ resp[i]['categoria'] + `</td>
                     <td>`+ resp[i]['descripcion'] +`</td>
                     <td>`+ resp[i]['cantidad']+`</td>
+                    <td>`+ resp[i]['condicion'] +`</td>
                     </tr>
-                `; 
+                `;
+                exel += `<tr>
+                    <td></td>
+                    <th scope="row">`+ (i + 1) + `</th>
+                    <td>`+ resp[i]['nombre'] + `</td>
+                    <td>`+ resp[i]['categoria'] + `</td>
+                    <td>`+ resp[i]['descripcion'] + `</td>
+                    <td>`+ resp[i]['cantidad'] + `</td>
+                    <td>`+ resp[i]['condicion'] +`</td>
+                    </tr>
+                `;
             }
+            var movimiento =` <tr>
+                        <th></th>
+                        <th>Usuario</th>
+                        <th>Fecha movimiento</th>
+                        <th>De</th>
+                        <th>Accion</th>
+                        <th>Para</th>
+                        <th>Motivo</th>
+                    </tr>
+                    <tr>
+                    <td></td>
+                    <td style="background-color: #00f; color: #fff">`+ respuesta[2][0]['usuario'] + `</td>
+                    <td>`+ respuesta[2][0]['fecha'] + `</td>
+                    <td>`+ respuesta[2][0]['almSalida'] + `</td>
+                    <td>`+ respuesta[2][0]['accion'] + `</td>
+                    <td>`+ respuesta[2][0]['almEntrada'] + `</td>
+                    <td>`+ respuesta[2][0]['motivo'] + `</td>
+                </tr>
+                <tr>
+                <td></td>
+                </tr>
+            `;
+            var csv= head+exel;
+            $('#idtable1').html(movimiento);
+            $('#idtable2').html(csv);
             Swal.fire({
                 title: '<strong>Detalle Movimiento</strong>',
                 html:
@@ -48,18 +102,28 @@ function detalleMovimiento(id){
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Imagen</th>
+                                <th scope="col">Img</th>
                                 <th scope="col">Nombre</th>
-                                <th scope="col">Descripción</th>
+                                <th scope="col">Categ.</th>
+                                <th scope="col">Descrip.</th>
                                 <th scope="col">Cantidad</th>
+                                <th scope="col">Condicion</th>
                             </tr>
                         </thead>
                         <tbody>
                         `+ html+`
                         </tbody>
                     </table>
+                    <di class="d-flex justify-content-center">
+                        <button onClick="javascript:window.open('`+ respuesta[1]['web'] + `/movimientos/detalle-movmimiento-pdf/` + resp[0]['id_movimiento']+`', '_blank');" class="btn btn-sm btn-outline-warning mr-1">
+                        <i class='fas fa-file-pdf' style='color:red'>
+                        </i></button>
+                        <button onclick="javascript:window.open('`+ respuesta[1]['web'] + `/movimientos/detalle-movmimiento-exel/` + resp[0]['id_movimiento'] +`', '_blank');" class="btn btn-sm btn-outline-success ml-1">
+                        <i class='fas fa-file-csv' style='color:green'></i></button>
+                    </di>
                     </div>`,
-                showCloseButton: false,
+                showConfirmButton: false,
+                showCloseButton: true,
                 confirmButtonColor:false,
                 showCancelButton: false,
                 focusConfirm: false,
@@ -68,19 +132,42 @@ function detalleMovimiento(id){
     });
 }
 ///************************** */
-function selectAllMovimientos(){
+function exportTableToEXEL(id) {
+    $.ajax({
+        method: "GET",
+        url: "app/src/ajax/files/exel.php",
+        data: {
+            'idruta': id
+        },
+        success: function (respuesta) {
+            console.log(respuesta)
+        }
+    });
+}
+function selectAllMovimientos(search){
     $.ajax({
         url: "app/src/ajax/almacen/movimiento.ajax.php",
         method: "POST",
         data: {
             'selectAllmovimientos': "mov",
+            'search': search,
         },
         success: function (respuesta) {
             $("#mostrarMovimientos").html(respuesta);
         }
     });
-} $(document).ready(function () {
-    selectAllMovimientos();
+}
+/*==============================
+SEARCH MOVIMIENTOS
+===============================*/
+function searchMovimiento() {
+    var search = document.getElementById('searchMovimiento').value;
+    selectAllMovimientos(search);
+}
+$(document).ready(function () {
+    var search = '';
+    selectAllMovimientos(search);
+    //corregirCant();
 });
 // ************************************************
 // GUARDAR MOVIMIENTO
@@ -120,7 +207,8 @@ $("#btnGuardarMovimiento").click(function () {
                 success: function (respuesta) {
                     $("#smsconfirmations").html(respuesta);//ingresa mensaje en html
                     document.getElementById("resSearchMov").innerHTML = "";//limpiar imput imagen
-                    selectAllMovimientos()
+                    var search = '';
+                    selectAllMovimientos(search)
                     limpiarCarro();
                 }
             });
@@ -147,15 +235,15 @@ $(document).on("click", ".btnAceptarMovimiento", function (){
     }).then((result) => {
         if (result.isConfirmed) {
 
-            var idmovimiento = $(this).attr("idMovimiento")
+            var id = $(this).attr("idMovimiento")
             var estado = $(this).attr("estado")
             if (estado ==2){
                 $(this).attr('hidden', true)
-                $('#aceptar').addClass('btn-warning');
-                $('#aceptar').removeClass('btn-danger');
-                $('#aceptar').html('CANCELADO');
+                $('#aceptar'+id).addClass('btn-warning');
+                $('#aceptar'+id).removeClass('btn-danger');
+                $('#aceptar'+id).html('CANCELADO');
             }else if(estado ==1){
-                $('#cancelar').attr('hidden', true)
+                $('#cancelar'+id).attr('hidden', true)
                 $(this).addClass('btn-success');
                 $(this).removeClass('btn-danger');
                 $(this).html('INGRESADO');
@@ -164,7 +252,7 @@ $(document).on("click", ".btnAceptarMovimiento", function (){
             $.ajax({
                 method: "POST",
                 url: "app/src/ajax/almacen/movimiento.ajax.php",
-                data: { 'idMovimiento': idmovimiento, 'estado': estado },
+                data: { 'idMovimiento': id, 'estado': estado },
                 success: function (respuesta) {
                     if (respuesta=="ok"){
                         if (estado == 2) {
@@ -173,7 +261,16 @@ $(document).on("click", ".btnAceptarMovimiento", function (){
                             alertify.success('Movimiento Aceptado');
                         }
                    }else{
-                        alertify.error('Movimiento no Aceptado');
+                        if (respuesta=="error") {
+                           alertify.error('Movimiento no Aceptado');
+                       } else {
+                            alertify.error(respuesta);
+                            $('#cancelar' + id).attr('hidden', false)
+                            $('#aceptar' + id).removeClass('btn-success');
+                            $('#aceptar' + id).addClass('btn-secondary');
+                            $('#aceptar' + id).html('ACEPTAR');
+                           console.log(respuesta);
+                       }
                    }
                 }
             });
@@ -334,6 +431,25 @@ $('.clear-cart').click(function () {
     displayCart();
 });
 
+function corregirCant(id){
+    var c = document.getElementById('idcantactual'+id).value;
+    var d = document.getElementById('idcantenv'+id).value;
+    let a = parseInt(c);
+    let b = parseInt(d);
+    if(b==a || b>a){
+        $('#idbuttonplus'+id).attr('disabled', true);
+    }else{
+        $('#idbuttonplus'+id).attr('disabled', false);
+    }
+    if (b > a || b < 1){
+        if ( b <1) {
+            document.getElementById('idcantenv'+id).value = '1';
+        }else{
+            document.getElementById('idcantenv'+id).value = a;
+        }
+    }
+    console.log(a+b)
+}
 
 function displayCart() {
     var cartArray = shoppingCart.listCart();
@@ -342,10 +458,10 @@ function displayCart() {
         output += "<tr>"
             + "<td><input type='hidden' name='idprod' value='" + cartArray[i].id + "'>" + cartArray[i].name + "</td>"
             + "<td>" + cartArray[i].descp + "</td>"
-            + "<td><input type='hidden' name='catactual' value='" + cartArray[i].price + "'>" + cartArray[i].price + "</td>"
-            + `<td><div class='input-group'><button onclick="minusitem('` + cartArray[i].name + `')" class='minus-item input-group-addon btn btn-primary'>-</button>`
-            + "<input type='number' name='cantenvio' class='item-count form-control' data-name='" + cartArray[i].name + "' value='" + cartArray[i].count + "'>"
-            + `<button onclick="plusitem('` + cartArray[i].name + `')" class='plus-item btn btn-primary input-group-addon'>+</button></div></td>`
+            + "<td><input type='hidden' id='idcantactual" + cartArray[i].id +"' name='catactual' value='" + cartArray[i].price + "'>" + cartArray[i].price + "</td>"
+            + `<td><div class='input-group'><button onclick="minusitem('` + cartArray[i].name + `'),corregirCant(` + cartArray[i].id + `)" class='minus-item input-group-addon btn btn-primary'>-</button>`
+            + "<input id='idcantenv" + cartArray[i].id +"' onchange='corregirCant(" + cartArray[i].id + ")' onkeyup='corregirCant(" + cartArray[i].id + ")' type='number' name='cantenvio' class='item-count form-control' data-name='" + cartArray[i].name + "' value='" + cartArray[i].count + "'>"
+            + `<button id="idbuttonplus` + cartArray[i].id +`" onclick="plusitem('` + cartArray[i].name + `'),corregirCant(` + cartArray[i].id + `)" class='plus-item btn btn-primary input-group-addon'>+</button></div></td>`
             + `<td><button class="delete-item btn btn-danger text-danger" data-name=` + cartArray[i].name + `>X</button></td>`
             + " = "
             + "</tr>";
@@ -386,3 +502,50 @@ $('.show-cart').on("change", ".item-count", function (event) {
 });
 
 displayCart();
+
+// download exel
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob([csv], {
+        type: "text/csv"
+    });
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
+}
+
+function exportTableToCSV(filename) {
+    var csv = [];
+    var rows = document.querySelectorAll(".idtablaclase tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var row = [],
+            cols = rows[i].querySelectorAll("td, th");
+
+        for (var j = 0; j < cols.length; j++)
+            row.push(cols[j].innerText);
+
+        csv.push(row.join(","));
+    }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+}

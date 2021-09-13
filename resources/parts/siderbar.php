@@ -23,7 +23,7 @@
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-person-badge-fill"></i>
-                        <span>Mantenimiento</span>
+                        <span>Planillas</span>
                     </a>
                     <ul class="submenu ">
                         <li class="submenu-item ">
@@ -116,19 +116,11 @@
                 </li>
 
                 <li class="sidebar-item  ">
-                    <a href="" class='sidebar-link'>
+                    <a href="/" class='sidebar-link'>
                         <i class="bi bi-chat-dots-fill"></i>
                         <span>Ayuda</span>
                     </a>
                 </li>
-
-                <li class="sidebar-item  ">
-                    <a href="https://github.com/zuramai/mazer#donate" class='sidebar-link'>
-                        <i class="bi bi-chat-dots-fill"></i>
-                        <span>Contactanos</span>
-                    </a>
-                </li>
-
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

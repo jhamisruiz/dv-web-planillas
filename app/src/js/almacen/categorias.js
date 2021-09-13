@@ -1,16 +1,24 @@
-function selectAllcategoria() {
+function selectAllcategoria(search) {
 	let tabla = "categorias";
 	$.ajax({
 		method: "POST",
 		url: "app/src/ajax/almacen/select.categoria.ajax.php",
-		data: { 'selectCategoria': tabla },
+		data: { 'selectCategoria': tabla, 'search': search },
 		success: function (respuesta) {
 			$("#mostrarCategorias").html(respuesta);//ingresa mensaje en html
 		}
 	});
 }
+/*==============================
+SEARCH CATEGORIAS
+===============================*/
+function searchCategoria() {
+	var search = document.getElementById('searchCategorias').value;
+	selectAllcategoria(search);
+}
 $(document).ready(function () {
-	selectAllcategoria();
+	var search = '';
+	selectAllcategoria(search);
 });
 /*============================== 
     CREAR/EDITAR CATEGORIA
@@ -30,7 +38,8 @@ $('#AddCategoria').click(function () {
             url:"app/src/ajax/almacen/categorias.ajax.php",
             data: {'addCategoria': categoria},
             success: function(respuesta){
-				selectAllcategoria();
+				var search = '';
+				selectAllcategoria(search);
               	$("#smsconfirmations").html(respuesta);//ingresa mensaje en html]
 				if ($('#AddCategoria').attr("editarcateg") == "NO") {
 					limpiarForm();
@@ -87,7 +96,8 @@ function eliminarCategoria(id) {
 				processData: false,
 				success: function (respuesta) {
 					$("#smsconfirmations").html(respuesta);///
-					selectAllcategoria();
+					var search = '';
+					selectAllcategoria(search);
 				}
 			});
 

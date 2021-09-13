@@ -1,24 +1,43 @@
 
-function selectAllproductos() {
+function selectAllproductos(search) {
     var idalmacen = $("#onloadAlmacen").val();
     if (idalmacen != "" && idalmacen >= 0) {
         $.ajax({
             method: "POST",
             url: "app/src/ajax/almacen/select.productos.ajax.php",
-            data: { 'selectProductos': idalmacen },
+            data: { 'selectProductos': idalmacen, 'search': search },
             success: function (respuesta) {
                 $("#mostrarProductos").html(respuesta);//ingresa mensaje en html
             }
         });
     }
 }
+/*==============================
+SEARCH PRODUCTOS
+===============================*/
+function searchProducto() {
+    $('#smsearch').html('')
+    $('#allsearch').removeClass('border-danger');
+    $('#allsearch').addClass('border-primary');
+    var search = document.getElementById('searchProducto').value;
+    var idalmacen = $("#onloadAlmacen").val();
+    if (idalmacen == "" || idalmacen == 0){
+        $('#allsearch').removeClass('border-primary');
+        $('#allsearch').addClass('border-danger');
+        $('#smsearch').html('Seleccione un Almacén')
+    }else{
+        selectAllproductos(search);
+    }
+}
 
 $(document).ready(function(){
-    selectAllproductos();
+    var search = '';
+    selectAllproductos(search);
     selectMarcaProducto();
 });
 function AlmacenProds() {
-    selectAllproductos();
+    var search = '';
+    selectAllproductos(search);
 }
 
 function onSumaCantProd(){
@@ -164,7 +183,8 @@ function ocDepositoAlm(id) {
     if (id == 0){
     $("#onloadAlmacen").find('option:selected').removeAttr("selected");
     $("#onloadAlmacen option[value='"+idalmacen+"']").attr("selected", "selected");
-    selectAllproductos();}
+        var search = '';
+        selectAllproductos(search);}
 }
 
 //select marca producto
@@ -196,23 +216,26 @@ function agregardeposito() {
         document.getElementById('depositoSI').value = "NO";
     }
 }
+
 /// GUARDAR EDITAR /
 $("#btnGuardarProducto").click(function () {
     selectMarcaProducto();
     var producto =[];
     var deposito =[];
     /* array add producto */
-    
+    var nomalmcc = $('select[name="selectalmacen"] option:selected').text();
+    var nomalmc = nomalmcc.split('-');
     producto.push({ 
         editProd: $(this).attr("editarProd"),
         ingresarImagen: $("#ingresarImagen").val(),
         idimagen: $("#idImagen").val(),
         idalmacen: $("#addAlmacenProd").val(),
-        nombreAlm: $('select[name="selectalmacen"] option:selected').text(),
+        nombreAlm: nomalmc[0],
         idProd: $("#idproducto").val(),
         nombreProd: $("#nombreProd").val(),
         idcategory: $("#addCatProd").val(),
         cantidad: $("#idCantProd").val(),
+        condicion: $("#addCondicion").val(),
         idunidad: $("#idUnidadMed").val(),
         unidadmed: $("#unimedidaProd").val(),
         abrevSunat: $("#abrevSunat").val(),
@@ -264,9 +287,10 @@ $("#btnGuardarProducto").click(function () {
                 url: "app/src/ajax/almacen/producto.ajax.php",
                 success: function (respuesta) {
                     console.log(respuesta);
-                    console.log(producto[0]);
-                    console.log(deposito[0]);
-                    selectAllproductos();
+                    // console.log(producto[0]);
+                    // console.log(deposito[0]);
+                    var search = '';
+                    selectAllproductos(search);
                     $("#smsconfirmations").html(respuesta);//ingresa mensaje en html
                     document.getElementById("imgProducto").innerHTML = "";//limpiar imput imagen
                 }
@@ -330,6 +354,7 @@ function editarProducto(id){
             $("#idUnidadMed").val(respuesta['idunidad']);//id unidad de medida
             $("#unimedidaProd").val(respuesta['Unom']);//
             $("#abrevSunat").val(respuesta['Uasun']);//
+            $("#addCondicion option[value='" + respuesta['condicion'] + "']").attr("selected", "selected");
             $("#datetimeStart").val(respuesta['Pfini']);//
             $("#datetimeEnd").val(respuesta['Pfend']);//
             $("#addProdDescrip").val(respuesta['Pdesc']);//
@@ -347,7 +372,7 @@ function editarProducto(id){
                 $("#ingresarImagen").val('NO');
                 
             }
-            console.log(respuesta['Fimg']);
+            //console.log(respuesta['Fimg']);
             $("#idImagen").val(respuesta['idimg']);//
             /////////deposito
             ocDepositoAlm(respuesta['Aid']);
@@ -396,7 +421,8 @@ function eliminarProducto(id){
                 processData: false,
                 success: function (respuesta) {
                     $("#smsconfirmations").html(respuesta);///
-                    selectAllproductos();
+                    var search = '';
+                    selectAllproductos(search);
                 }
             });
 

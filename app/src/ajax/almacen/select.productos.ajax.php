@@ -10,15 +10,17 @@ class ajaxSelectProductos
     SELECT PRODUCTOS
     =============================================*/
     public $select;
+    public $searchnom;
     public function ajaxSelect()
     {
         $idAlmac = $this->select;
+        $search = $this->searchnom;
         $idProd="";
-        $product = ControllerProductos::SELECTPRODS($idAlmac,$idProd);
+        $product = ControllerProductos::SELECTPRODS($idAlmac,$idProd, $search);
         foreach ($product as $key => $value) {
             echo '<tr>
                 <td>' . ($key + 1) . '</td>
-                <td><img width="60" src="' . $value["Fimg"] . '">' . $value["Pnom"] . '</td>
+                <td><img width="45" class="rounded-circle" src="' . $value["Fimg"] . '">' . $value["Pnom"] . '</td>
                 <td>' . $value["Pdesc"] . '</td>
                 <td>' . $value["Pcant"] . '</td>
                 <td>' . $value["Nmarca"] . '</td>
@@ -27,7 +29,8 @@ class ajaxSelectProductos
                 <td>' . $value["Unom"] . '-' . $value["Uasun"] . '</td>
                 <td>' . $value["Pfini"] . '</td>
                 <td>' . $value["Pfend"] . '</td>
-                <td class="text-center">' . $value["Inom"] . '</td>';
+                <td class="text-center">' . $value["Inom"] . '</td>
+                <td class="text-center">' . $value["condicion"] . '</td>';
                 if ($value["Pest"]!=0) {
                     echo '<td class="text-center"><button class="btn btn-success btn-sm btnActivarProducto" idproducto="' . $value["id"] . '" estadoproducto="0">Activado</button></td>';
                 } else {
@@ -82,7 +85,7 @@ class ajaxSelectProductos
         $product = ControllerProductos::SEARCHPRODS($idAlmac, $value);
         foreach ( $product as $value) {
             echo '<a onclick="addcartmov(' . "'" . $value['nombre'] . "','" . $value['cantidad'] . "','" . $value['descripcion']."','" . $value['id'] ."'". ')" class="btn   btn-sm classprodmover w-100 text-left add-to-cart">
-            '.$value['nombre']. ' - ' . $value['nombre'] . '</a>';
+            '.$value['nombre']. ' - ' . $value['nombre'] . '<img class="ml-4 rounded-circle" width="20px" src="' . $value['imgUrl'] . '"></a>';
         }
     }
 
@@ -90,8 +93,8 @@ class ajaxSelectProductos
     public function ajaxIdSelectProducto(){
         $idAlmac="";
         $idProd = $this->idselectProd;
-
-        $product = ControllerProductos::SELECTPRODS($idAlmac, $idProd);
+        $search='';
+        $product = ControllerProductos::SELECTPRODS($idAlmac, $idProd,$search);
         echo json_encode($product[0]);
     }
 }
@@ -102,6 +105,7 @@ class ajaxSelectProductos
 if (isset($_POST['selectProductos'])) {
     $select = new ajaxSelectProductos();
     $select->select = $_POST['selectProductos'];
+    $select->searchnom = $_POST['search'];
     $select->ajaxSelect();
 }
 

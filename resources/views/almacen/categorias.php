@@ -9,7 +9,7 @@
                 <div class="row col-lg-4">
                     <div class="input-group mb-3 border border-primary rounded p-0">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <input onkeyup="searchCategoria()" id="searchCategorias" type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="button-addon2">
                     </div>
                 </div>
                 <div class="table-responsive">

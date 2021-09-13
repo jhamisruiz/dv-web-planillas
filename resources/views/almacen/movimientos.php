@@ -9,7 +9,7 @@
                 <div class="row col-lg-4">
                     <div class="input-group mb-3 border border-primary rounded p-0">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <input onkeyup="searchMovimiento()" id="searchMovimiento" type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="button-addon2">
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -38,6 +38,18 @@
     </section>
 </div>
 
+<table style="display:none" class="idtablaclase">
+    <tr>
+        <td></td>
+        <td></td>
+        <td>LISTA DE MATERIALES</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr></tr>
+</table>
+<table style="display:none" class="idtablaclase" id="idtable1"></table>
+<table style="display:none" class="idtablaclase" id="idtable2"></table>
 <!--Add Categorias -->
 <div class="modal fade" id="inlineForm" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
@@ -54,7 +66,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Enviado por: <span class="text-danger">*</span></label>
-                                <select name="" class="form-control border border-primary" id="id-alacen-salida">
+                                <select name="" class="form-control border border-primary" id="id-alacen-salida" onchange="myFMovimiento()">
                                     <option value="0" selected>Seleccione</option>
                                     <?php
                                     $almacenP = ControllerMovimientos::SELECTALL();
