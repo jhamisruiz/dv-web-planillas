@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-07-2021 a las 17:09:02
+-- Tiempo de generación: 12-09-2021 a las 01:36:55
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 7.4.16
 
@@ -25,6 +25,66 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+DROP PROCEDURE IF EXISTS `sp_search_products`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_search_products` (IN `nombre` VARCHAR(250) CHARSET utf8, IN `idalmacen` INT(11))  NO SQL
+BEGIN
+IF (nombre !='')THEN
+SELECT P.id,P.nombre,P.descripcion,P.cantidad,I.imgUrl FROM productos P
+INNER JOIN categorias C ON P.idCategoria=C.id 
+INNER JOIN images I ON P.id=I.idProducto
+WHERE P.idAlmacen=idalmacen AND P.nombre LIKE CONCAT('%',nombre,'%') AND P.estado='1' LIMIT 4;
+END IF;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_select_detalle_movimiento`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_detalle_movimiento` (IN `idmov` INT(11))  BEGIN
+SET @id=idmov;
+SELECT M.fecha,DM.id_movimiento, DM.id_producto,DM.cantidad,P.nombre,C.nombre AS categoria,P.descripcion,P.condicion, I.imgUrl
+FROM detalle_movimiento DM
+INNER JOIN productos P ON DM.id_producto=P.id
+INNER JOIN images I ON P.id=I.idProducto
+INNER JOIN categorias C ON C.id=P.idCategoria
+INNER JOIN movimientos M ON DM.id_movimiento= M.id
+WHERE id_movimiento=@id;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_select_movimiento`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_movimiento` (INOUT `idmov` INT(11), INOUT `search` VARCHAR(250))  BEGIN
+SET @id=idmov,@searchn = search;
+IF (@searchn='' OR @searchn=' ')THEN
+IF (@id = '' OR @id = '0' OR @id = NULL)THEN
+SELECT M.id,(SELECT nombres FROM admin WHERE id=M.id_admin) AS usuario,M.fecha, 
+(SELECT nombre FROM almacen WHERE id=M.id_almacen_salida) AS almSalida , (SELECT nombre FROM almacen WHERE id=M.id_almacen_entrada) AS almEntrada ,M.motivo,M.estado,A.accion
+FROM movimientos M
+INNER JOIN accion A ON M.id_accion=A.id;
+ELSEIF @id != '' THEN
+SELECT M.id,(SELECT nombres FROM admin WHERE id=M.id_admin) AS usuario,M.fecha, 
+(SELECT nombre FROM almacen WHERE id=M.id_almacen_salida) AS almSalida , (SELECT nombre FROM almacen WHERE id=M.id_almacen_entrada) AS almEntrada ,M.motivo,M.estado,A.accion
+FROM movimientos M
+INNER JOIN accion A ON M.id_accion=A.id
+WHERE M.id=@id;
+END IF;
+ELSEIF @searchn !='' THEN
+-- search
+IF (@id = '' OR @id = '0' OR @id = NULL)THEN
+SELECT M.id,(SELECT nombres FROM admin WHERE id=M.id_admin) AS usuario,M.fecha, 
+    (SELECT nombre FROM almacen WHERE id=M.id_almacen_salida) AS almSalida ,
+    (SELECT nombre FROM almacen WHERE id=M.id_almacen_entrada) AS almEntrada ,
+M.motivo,M.estado,A.accion
+FROM movimientos M
+INNER JOIN accion A ON M.id_accion=A.id
+WHERE (SELECT nombre FROM almacen WHERE id=M.id_almacen_salida) LIKE CONCAT('%',@searchn,'%') OR 
+(SELECT nombre FROM almacen WHERE id=M.id_almacen_entrada) LIKE CONCAT('%',@searchn,'%');
+ELSEIF @id != '' THEN
+SELECT M.id,(SELECT nombres FROM admin WHERE id=M.id_admin) AS usuario,M.fecha, 
+(SELECT nombre FROM almacen WHERE nombre LIKE CONCAT('%',@searchn,'%') AND id=M.id_almacen_salida) AS almSalida , (SELECT nombre FROM almacen WHERE id=M.id_almacen_entrada) AS almEntrada ,M.motivo,M.estado,A.accion
+FROM movimientos M
+INNER JOIN accion A ON M.id_accion=A.id
+WHERE almSalida LIKE CONCAT('%',@searchn,'%') AND M.id=@id;
+END IF;
+END IF;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_select_ubigeo`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_ubigeo` (IN `provin` VARCHAR(11), IN `distrito` VARCHAR(11))  BEGIN
 SET @distrito=distrito, @provincia=provin;
@@ -49,14 +109,35 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `accion`
+--
+
+DROP TABLE IF EXISTS `accion`;
+CREATE TABLE `accion` (
+  `id` int(11) NOT NULL,
+  `accion` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `accion`
+--
+
+INSERT INTO `accion` (`id`, `accion`) VALUES
+(1, 'ENTRADA'),
+(2, 'SALIDA'),
+(3, 'RETORNO');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `admin`
 --
 
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
-  `nombres` varchar(250) NOT NULL DEFAULT '''Name''',
-  `apellidos` varchar(250) NOT NULL DEFAULT '''Lastname''',
+  `nombres` varchar(250) NOT NULL DEFAULT 'Name',
+  `apellidos` varchar(250) NOT NULL DEFAULT 'Lastname',
   `usuario` varchar(100) NOT NULL,
   `email` varchar(150) NOT NULL,
   `password` varchar(250) NOT NULL,
@@ -71,7 +152,9 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `nombres`, `apellidos`, `usuario`, `email`, `password`, `fecha_registro`, `id_rol`, `id_permiso`, `estado`) VALUES
-(1, 'Jhamis', 'Castillo', 'admin', 'admin@email.com', '$2y$10$u1NM1de97HnIgGqvJkY/ceFzYd5etEwVvd4rsbFllXzbH9u0C1ue.', '2021-07-11 10:31:23', NULL, NULL, '1');
+(1, 'jhon', 'Does', 'admin', 'admin@email.com', '$2y$10$u1NM1de97HnIgGqvJkY/ceFzYd5etEwVvd4rsbFllXzbH9u0C1ue.', '2021-07-11 10:31:23', NULL, NULL, '1'),
+(4, 'admin1', '\'Lastname\'', 'admin1', '', '$2y$10$4xWEp3GIs83VL4g2Zpi6.u.cnMqg/bct5zpxwxdC5adiB7SdK9oZy', '2021-09-11 17:42:53', NULL, NULL, '1'),
+(5, 'admin2', '\'Lastname\'', 'admin2', '', '$2y$10$Izv.pdY75I6tTNy/LSEnYes.XlU4adBxRv5CTBT8gKKGZ21HOEvO2', '2021-09-11 17:43:55', NULL, NULL, '0');
 
 -- --------------------------------------------------------
 
@@ -89,7 +172,7 @@ CREATE TABLE `almacen` (
   `descripcion` varchar(255) DEFAULT NULL,
   `idSucursal` int(11) DEFAULT NULL,
   `tipo` enum('PRINCIPAL','TEMPORAL') DEFAULT 'PRINCIPAL',
-  `fecha_cierre` date DEFAULT NULL,
+  `fecha_cierre` varchar(50) DEFAULT NULL,
   `referencia` varchar(250) DEFAULT NULL,
   `ingreso` enum('0','1') DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -99,12 +182,11 @@ CREATE TABLE `almacen` (
 --
 
 INSERT INTO `almacen` (`id`, `nombre`, `direccion`, `idUbigeo`, `estado`, `descripcion`, `idSucursal`, `tipo`, `fecha_cierre`, `referencia`, `ingreso`) VALUES
-(1, 'Almacen principal', 'av panamericana 300', '150101', '1', 'almacén principal de productos y herramientas ', 2, 'PRINCIPAL', NULL, 'sin referencia', '1'),
-(2, 'Almacen temporal Ate', 'av nicolas numero 233', '150103', '1', 'Almacén de la obra construcción de  puente ', 3, 'TEMPORAL', '2021-07-30', 'frente del grifo', '1'),
-(3, 'prueba almacen principal', 'Alcen prueba', '010301', '1', 'Alcen prueba', 1, 'PRINCIPAL', NULL, 'Alcen prueba', '1'),
-(4, 'temporal', 'direccion prueba', '020401', '1', 'describe almacen temporal', 2, 'TEMPORAL', '2021-07-30', 'refe. sin ', '0'),
-(7, 'Almacén temporal Lima centro', 'mz l calle 23 lt 20 la molina', '150114', '1', 'almacen aperturado por obra de calle', 3, 'TEMPORAL', '2021-07-11', 'a dos cuadras del hospital', '0'),
-(8, 'temporal almacen permiso', 'direccion de prueba', '100104', '1', 'descripcion de prueba', 1, 'TEMPORAL', '2021-07-30', 'de prueba', '1');
+(1, 'ALMACEN A', 'av amera n 200', '150110', '1', 'almacen principar...', 1, 'PRINCIPAL', '', 'frente al grifo', '1'),
+(3, 'almacen temoral ate', 'calle 22 sin numero', '150103', '1', 'almacen temporal por construccion de puente', 1, 'TEMPORAL', '2021-12-14', 'pasando el puente', '1'),
+(4, 'almacen principal B', 'mz c a lt 20', '150115', '1', 'almacen principal sucursal 2', 2, 'PRINCIPAL', NULL, 'sin referencial', '1'),
+(5, 'almacen temporal obra lima', 'lt 20 calla 2', '150101', '1', 'obras temporales', 1, 'TEMPORAL', '2021-11-25', 'frente al bcp', '0'),
+(6, 'nuevo', 'sin direccion', '050608', '1', 'sin des', 2, 'TEMPORAL', '2021-09-29', 'sin ref', '0');
 
 -- --------------------------------------------------------
 
@@ -125,14 +207,41 @@ CREATE TABLE `categorias` (
 --
 
 INSERT INTO `categorias` (`id`, `nombre`, `descripcion`, `estado`) VALUES
-(2, 'frutas', 'frutas frescas', '1'),
-(3, 'verduras', 'verduras secas', '1'),
-(4, 'medicina', 'medicina cara', '1'),
-(5, 'hortalizas', 'hortalizas', '1'),
-(6, 'prueba de categoria', NULL, '1'),
-(7, 'describe categorias', NULL, '1'),
-(8, 'asd', 'asd', '1'),
-(9, 'prueba asdasd', 'prueba sin errores', '1');
+(1, 'metalicos', 'fierros de diferente medida', '1'),
+(2, 'herramientas', 'herramientas de trabajo', '1'),
+(3, 'aglutinantes', 'productos derivados de pulverizantes', '1'),
+(4, 'ceramica', 'ceramicas de construccion', '1'),
+(6, 'plasticos', 'materiales plasticos', '1');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_movimiento`
+--
+
+DROP TABLE IF EXISTS `detalle_movimiento`;
+CREATE TABLE `detalle_movimiento` (
+  `id` int(22) NOT NULL,
+  `id_movimiento` int(11) DEFAULT NULL,
+  `id_producto` int(11) DEFAULT NULL,
+  `cantidad` varchar(22) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `detalle_movimiento`
+--
+
+INSERT INTO `detalle_movimiento` (`id`, `id_movimiento`, `id_producto`, `cantidad`) VALUES
+(1, 1, 2, '10'),
+(2, 1, 1, '20'),
+(3, 1, 4, '4'),
+(4, 2, 4, '5'),
+(5, 2, 2, '10'),
+(6, 2, 3, '10'),
+(7, 2, 1, '10'),
+(8, 3, 4, '2'),
+(9, 4, 3, '100'),
+(10, 5, 4, '10');
 
 -- --------------------------------------------------------
 
@@ -150,13 +259,6 @@ CREATE TABLE `empresa` (
   `idUbigeo` varchar(11) NOT NULL,
   `referencia` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `empresa`
---
-
-INSERT INTO `empresa` (`id`, `nombre`, `email`, `telefono`, `direccion`, `idUbigeo`, `referencia`) VALUES
-(1, 'clínica Trujillo', '', '', '', '130101', '');
 
 -- --------------------------------------------------------
 
@@ -179,12 +281,12 @@ CREATE TABLE `images` (
 --
 
 INSERT INTO `images` (`id`, `nombre`, `imgFile`, `imgUrl`, `idPersona`, `idProducto`) VALUES
-(11, 'Espinaca.png', 'public/img/Almacen principal/Espinaca.png', 'http://planillas.test/public/img/Almacen principal/Espinaca.png', NULL, 12),
-(12, 'Durazno.png', 'public/img/Almacen principal/Durazno.png', 'http://planillas.test/public/img/Almacen principal/Durazno.png', NULL, 13),
-(13, 'Coliflor.png', 'public/img/Almacen principal/Coliflor.png', 'http://planillas.test/public/img/Almacen principal/Coliflor.png', NULL, 14),
-(14, 'Col china.png', 'public/img/Almacen principal/Col china.png', 'http://planillas.test/public/img/Almacen principal/Col china.png', NULL, 15),
-(15, 'Papa peruanita.png', 'public/img/Almacen principal/Papa peruanita.png', 'http://planillas.test/public/img/Almacen principal/Papa peruanita.png', NULL, 16),
-(16, 'Durazno.png', 'public/img/Almacen principal/Durazno.png', 'http://planillas.test/public/img/Almacen principal/Durazno.png', NULL, 17);
+(1, 'Berenjena tamarillo.png', 'public/img/ALMACEN A/Berenjena tamarillo.png', 'http://planillas.test/public/img/ALMACEN A/Berenjena tamarillo.png', NULL, 1),
+(2, 'false', 'public/img/ALMACEN A/Cebolla rosada.png', 'https://image.flaticon.com/icons/png/512/136/136524.png', NULL, 2),
+(3, 'Durazno.png', 'public/img/ALMACEN A/Durazno.png', 'http://planillas.test/public/img/ALMACEN A/Durazno.png', NULL, 3),
+(4, 'Kion.png', 'public/img/ALMACEN A/Kion.png', 'http://planillas.test/public/img/ALMACEN A/Kion.png', NULL, 4),
+(5, 'Naranja tangelo.png', 'public/img/ALMACEN A/Naranja tangelo.png', 'http://planillas.test/public/img/ALMACEN A/Naranja tangelo.png', NULL, 5),
+(7, 'Manzana royal.png', 'public/img/almacen temoral ate/Manzana royal.png', 'http://planillas.test/public/img/almacen temoral ate/Manzana royal.png', NULL, 7);
 
 -- --------------------------------------------------------
 
@@ -200,7 +302,7 @@ CREATE TABLE `infraestructura` (
   `catidad_actual` int(11) DEFAULT NULL,
   `catidad_max` int(11) DEFAULT NULL,
   `descripcion` varchar(250) DEFAULT NULL,
-  `estado` enum('0','1') NOT NULL DEFAULT '1',
+  `estado` enum('0','1') NOT NULL DEFAULT '0',
   `idAlmacen` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -209,11 +311,56 @@ CREATE TABLE `infraestructura` (
 --
 
 INSERT INTO `infraestructura` (`id`, `deposito`, `tipo`, `catidad_actual`, `catidad_max`, `descripcion`, `estado`, `idAlmacen`) VALUES
-(1, 'estante aluminio', 'prueba', 6, 200, 'sin describe', '1', 1),
-(7, 'cubo madera', 'de tipo', 100, 200, 'cubo madera ', '1', 1),
-(8, 'estante fierro', NULL, 200, 400, 'estante de almacen de cemento', '1', 1),
-(9, 'botella', 'barril', 10, 40, 'barril de almacen', '1', 1),
-(10, 'estante madera', 'tipo prueba', 50, 1000, 'describe ', '1', 1);
+(1, 'estante madera', 'estante pesado', 0, 2000, 'estante de contenedor de fierros', '1', 1),
+(2, 'estante cemento', 'almacenamiento', 0, 500, 'deposito de cemento', '1', 1),
+(3, NULL, NULL, NULL, NULL, NULL, '0', NULL),
+(4, NULL, NULL, NULL, NULL, NULL, '0', NULL),
+(5, NULL, NULL, NULL, NULL, NULL, '0', NULL),
+(6, 'estante de pinturas', 'almacenamiento', 0, 500, 'opcional', '1', 3),
+(7, NULL, NULL, NULL, NULL, NULL, '0', NULL),
+(8, NULL, NULL, NULL, NULL, NULL, '0', NULL),
+(9, NULL, NULL, NULL, NULL, NULL, '0', NULL),
+(10, NULL, NULL, NULL, NULL, NULL, '0', NULL),
+(11, NULL, NULL, NULL, NULL, NULL, '0', NULL),
+(12, NULL, NULL, NULL, NULL, NULL, '0', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `marca`
+--
+
+DROP TABLE IF EXISTS `marca`;
+CREATE TABLE `marca` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(250) NOT NULL,
+  `descripcion` varchar(110) DEFAULT NULL,
+  `estado` enum('0','1') NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `marca`
+--
+
+INSERT INTO `marca` (`id`, `nombre`, `descripcion`, `estado`) VALUES
+(1, 'arequipa', NULL, '1'),
+(2, 'sol', NULL, '1'),
+(3, 'otros', NULL, '1'),
+(4, 'pintura', NULL, '1');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `motivo`
+--
+
+DROP TABLE IF EXISTS `motivo`;
+CREATE TABLE `motivo` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(150) NOT NULL,
+  `descripcion` varchar(250) NOT NULL,
+  `estado` enum('0','1') NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -224,9 +371,25 @@ INSERT INTO `infraestructura` (`id`, `deposito`, `tipo`, `catidad_actual`, `cati
 DROP TABLE IF EXISTS `movimientos`;
 CREATE TABLE `movimientos` (
   `id` int(11) NOT NULL,
-  `id_admin` int(11) NOT NULL,
-  `fecha` timestamp NOT NULL DEFAULT current_timestamp()
+  `id_admin` int(11) DEFAULT 1,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp(),
+  `id_almacen_salida` int(11) DEFAULT NULL,
+  `id_almacen_entrada` int(11) DEFAULT NULL,
+  `id_accion` int(11) DEFAULT NULL,
+  `estado` enum('0','1','2') NOT NULL DEFAULT '0',
+  `motivo` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `movimientos`
+--
+
+INSERT INTO `movimientos` (`id`, `id_admin`, `fecha`, `id_almacen_salida`, `id_almacen_entrada`, `id_accion`, `estado`, `motivo`) VALUES
+(1, 1, '2021-09-09 16:49:38', 1, 3, 2, '1', 'envio de material a obra 1'),
+(2, 1, '2021-09-09 17:11:54', 1, 5, 2, '2', NULL),
+(3, 1, '2021-09-09 17:14:01', 1, 3, 2, '2', 'por obra nueva'),
+(4, 1, '2021-09-10 01:32:04', 1, 5, 2, '1', NULL),
+(5, 1, '2021-09-10 02:07:25', 1, 5, 1, '2', NULL);
 
 -- --------------------------------------------------------
 
@@ -246,21 +409,23 @@ CREATE TABLE `productos` (
   `fecha_end` date DEFAULT NULL,
   `cantidad` int(10) DEFAULT NULL,
   `estado` enum('0','1') NOT NULL DEFAULT '1',
+  `condicion` varchar(250) DEFAULT NULL,
   `idAlmacen` int(11) DEFAULT NULL,
-  `idInfraestructura` int(11) DEFAULT NULL
+  `idInfraestructura` int(11) DEFAULT NULL,
+  `id_marca` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`id`, `nombre`, `descripcion`, `idCategoria`, `idUmedida`, `fecha_ingreso`, `fecha_update`, `fecha_end`, `cantidad`, `estado`, `idAlmacen`, `idInfraestructura`) VALUES
-(12, 'palanas', 'palanas de plastico', 6, 13, '2021-07-10', '2021-07-29 00:00:00', '2021-07-10', 20, '1', 1, 1),
-(13, 'prueba', 'asdas asdasd asdd', 4, 14, '2021-07-10', NULL, '2021-07-10', 100, '1', 1, 1),
-(14, 'prueba sin registro', 'asd', 6, 15, '2021-07-10', NULL, '2021-07-28', 100, '1', 1, 7),
-(15, 'cemento sol', 'cemento sol de 40.5 kilos', 6, 16, '2021-07-10', '0000-00-00 00:00:00', '2021-07-10', 200, '1', 1, 8),
-(16, 'prueba dos', 'litros de prueba', 4, 17, '2021-06-30', NULL, '0000-00-00', 10, '1', 1, 9),
-(17, 'palanas 2', 'decxripcion poalanas ', 9, 18, '2021-07-10', NULL, '2021-07-10', 50, '1', 1, 10);
+INSERT INTO `productos` (`id`, `nombre`, `descripcion`, `idCategoria`, `idUmedida`, `fecha_ingreso`, `fecha_update`, `fecha_end`, `cantidad`, `estado`, `condicion`, `idAlmacen`, `idInfraestructura`, `id_marca`) VALUES
+(1, 'fierro 1/2', 'varilla de fierro de 9.5 metros', 1, 1, '2021-09-09', NULL, '0000-00-00', 200, '1', 'NUEVO', 1, 1, 1),
+(2, 'cemento 40.5 kilos', 'cemento sol de 40 kilos', 3, 2, '2021-09-09', NULL, NULL, 500, '1', 'REGULAR', 1, 2, 2),
+(3, 'tejas', 'teja de techo por unidades', 4, 3, '2021-08-31', NULL, NULL, 100, '1', 'MALO', 1, 1, 3),
+(4, 'palana', '', 2, 4, '2021-08-31', NULL, NULL, 50, '1', 'REGULAR', 1, 1, 3),
+(5, 'ladrillo', 'ladrillos de obra por millar', 4, 5, '2021-08-31', NULL, NULL, 10, '1', 'BUENO', 1, 12, 3),
+(7, 'pruba', '', 6, 7, '2021-09-08', NULL, NULL, 10, '1', 'NUEVO', 3, 6, 3);
 
 -- --------------------------------------------------------
 
@@ -276,7 +441,7 @@ CREATE TABLE `sucursales` (
   `idUbigeo` varchar(11) NOT NULL,
   `referencia` varchar(255) NOT NULL,
   `estado` enum('0','1') NOT NULL DEFAULT '1',
-  `idEmpresa` int(11) NOT NULL
+  `idEmpresa` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -284,9 +449,9 @@ CREATE TABLE `sucursales` (
 --
 
 INSERT INTO `sucursales` (`id`, `nombre`, `direccion`, `idUbigeo`, `referencia`, `estado`, `idEmpresa`) VALUES
-(1, 'sucursal trujillo', 'sin direcc', '130101', 'no ref', '1', 1),
-(2, 'Sucursal Lima lima', 'Lima', '150101', 'a sin numero', '1', 1),
-(3, 'Sucursal Lima lima ate', 'ate sin numero av los asd', '150103', 'sin fefereancia', '1', 1);
+(1, 'sucursal ate', 'ate nro 22', '150101', 'frente al grifo', '1', 1),
+(2, 'sucursal 2', 'sin direccion', '150101', 'referencia los anvs', '1', 1),
+(3, 'sucursal de prueba', 'direccion sin nre', '150103', 'los olivos', '1', 1);
 
 -- --------------------------------------------------------
 
@@ -1719,7 +1884,7 @@ INSERT INTO `ubigeo` (`Departamento`, `Provincia`, `Distrito`, `id_ubigeo`) VALU
 ('Lima', 'Lima ', 'AncOn', '150102'),
 ('Lima', 'Lima ', 'Ate', '150103'),
 ('Lima', 'Lima ', 'Barranco', '150104'),
-('Lima', 'Lima ', 'Bre�a', '150105'),
+('Lima', 'Lima ', 'Breña', '150105'),
 ('Lima', 'Lima ', 'Carabayllo', '150106'),
 ('Lima', 'Lima ', 'Chaclacayo', '150107'),
 ('Lima', 'Lima ', 'Chorrillos', '150108'),
@@ -1778,23 +1943,23 @@ INSERT INTO `ubigeo` (`Departamento`, `Provincia`, `Distrito`, `id_ubigeo`) VALU
 ('Lima', 'Canta ', 'Lachaqui', '150405'),
 ('Lima', 'Canta ', 'San Buenaventura', '150406'),
 ('Lima', 'Canta ', 'Santa Rosa de Quives', '150407'),
-('Lima', 'Ca�ete ', '', '150500'),
-('Lima', 'Ca�ete ', 'San Vicente de Ca�ete', '150501'),
-('Lima', 'Ca�ete ', 'Asia', '150502'),
-('Lima', 'Ca�ete ', 'Calango', '150503'),
-('Lima', 'Ca�ete ', 'Cerro Azul', '150504'),
-('Lima', 'Ca�ete ', 'Chilca', '150505'),
-('Lima', 'Ca�ete ', 'Coayllo', '150506'),
-('Lima', 'Ca�ete ', 'Imperial', '150507'),
-('Lima', 'Ca�ete ', 'Lunahuana', '150508'),
-('Lima', 'Ca�ete ', 'Mala', '150509'),
-('Lima', 'Ca�ete ', 'Nuevo Imperial', '150510'),
-('Lima', 'Ca�ete ', 'Pacaran', '150511'),
-('Lima', 'Ca�ete ', 'Quilmana', '150512'),
-('Lima', 'Ca�ete ', 'San Antonio', '150513'),
-('Lima', 'Ca�ete ', 'San Luis', '150514'),
-('Lima', 'Ca�ete ', 'Santa Cruz de Flores', '150515'),
-('Lima', 'Ca�ete ', 'ZU�iga', '150516'),
+('Lima', 'Cañete ', '', '150500'),
+('Lima', 'Cañete ', 'San Vicente de Cañete', '150501'),
+('Lima', 'Cañete ', 'Asia', '150502'),
+('Lima', 'Cañete ', 'Calango', '150503'),
+('Lima', 'Cañete ', 'Cerro Azul', '150504'),
+('Lima', 'Cañete ', 'Chilca', '150505'),
+('Lima', 'Cañete ', 'Coayllo', '150506'),
+('Lima', 'Cañete ', 'Imperial', '150507'),
+('Lima', 'Cañete ', 'Lunahuana', '150508'),
+('Lima', 'Cañete ', 'Mala', '150509'),
+('Lima', 'Cañete ', 'Nuevo Imperial', '150510'),
+('Lima', 'Cañete ', 'Pacaran', '150511'),
+('Lima', 'Cañete ', 'Quilmana', '150512'),
+('Lima', 'Cañete ', 'San Antonio', '150513'),
+('Lima', 'Cañete ', 'San Luis', '150514'),
+('Lima', 'Cañete ', 'Santa Cruz de Flores', '150515'),
+('Lima', 'Cañete ', 'ZU�iga', '150516'),
 ('Lima', 'Huaral ', '', '150600'),
 ('Lima', 'Huaral ', 'Huaral', '150601'),
 ('Lima', 'Huaral ', 'Atavillos Alto', '150602'),
@@ -2405,24 +2570,13 @@ CREATE TABLE `unidadmedida` (
 --
 
 INSERT INTO `unidadmedida` (`id`, `nombre`, `abrev_sunat`, `descripcion`) VALUES
-(1, 'kilos', 'KL', NULL),
-(2, 'kilo', 'KL', NULL),
-(3, 'kilo', 'KL', NULL),
-(4, 'kilos', 'KL', NULL),
-(5, 'kilos', 'KL', NULL),
-(6, 'kilo', 'KL', NULL),
-(7, 'kiolos', 'KL', NULL),
-(8, 'kilo', 'KL', NULL),
-(9, 'kilo', 'KL', NULL),
-(10, 'kl', 'KL', NULL),
-(11, 'asdasd', 'ASDASD', NULL),
-(12, 'kilos', 'KL', NULL),
-(13, 'unidad', 'UN', NULL),
-(14, 'kilos', 'KL', NULL),
-(15, 'kilos', 'KL', NULL),
-(16, 'bolsas', 'BL', NULL),
-(17, 'litros', 'LT', NULL),
-(18, 'unidad', 'UN', NULL);
+(1, 'unidad', 'UN', NULL),
+(2, 'bolsa', 'BL', NULL),
+(3, 'unidad', 'UN', NULL),
+(4, 'unidad', 'UN', NULL),
+(5, 'millar', 'MLL', NULL),
+(6, 'unidad', 'UN', NULL),
+(7, 'unidades', 'UN', NULL);
 
 -- --------------------------------------------------------
 
@@ -2444,24 +2598,14 @@ CREATE TABLE `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Volcado de datos para la tabla `usuarios`
---
-
-INSERT INTO `usuarios` (`id`, `userNombre`, `password`, `userIP`, `loginTime`, `logout`, `estado`, `idPersona`, `navegador`) VALUES
-(1, 'asd', '$2y$10$yC7HXrBblSNY2GH626QOKeqNdOVxdhqjH', NULL, NULL, '', '1', 1, NULL),
-(2, 'asd', '$2y$10$n5S3tkK3ZMVzNk7zPAvGKeSKngkbTtvCf', NULL, NULL, '', '1', 2, NULL),
-(3, 'qwe', '$2y$10$Dr9AwPSQU.XnRu29qEZ.GeTot/0EHyY6m', NULL, NULL, '', '0', 3, NULL),
-(4, 'asd', '$2y$10$awk5kXVRkzpzPi7w/JdOneju.4UQ50fGl', NULL, NULL, '', '1', 4, NULL),
-(5, 'qwe', '$2y$10$ilYrExa2ywVSSsM5UYx07eAX1s4lcgqBk', NULL, NULL, '', '0', 5, NULL),
-(6, 'www', '$2y$10$fl8a2DcwhNqZPRLx/Gwmneh2wxbeFGdVu', NULL, NULL, '', '0', 6, NULL),
-(7, 'aaaaaaaaa', '$2y$10$anev3KxlJLnNHnS3RDCBquJ/TAzGzNXPH', NULL, NULL, '', '1', 7, NULL),
-(8, 'p', '$2y$10$OIaCzZxOYR86ulBPGeNq6e3diO0iR0XDO', NULL, NULL, '', '0', 8, NULL),
-(9, 's', '$2y$10$x./w9.7.l73J8iniIWpUTu25xyjKWb5Sv', NULL, NULL, '', '0', 9, NULL),
-(10, 'gjh', '$2y$10$hKhZB//9rOUZPOEfVcd4vOVXhDykduUHl', NULL, NULL, '', '0', 10, NULL);
-
---
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `accion`
+--
+ALTER TABLE `accion`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `admin`
@@ -2484,6 +2628,14 @@ ALTER TABLE `categorias`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `detalle_movimiento`
+--
+ALTER TABLE `detalle_movimiento`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_movimiento` (`id_movimiento`),
+  ADD KEY `id_producto` (`id_producto`);
+
+--
 -- Indices de la tabla `empresa`
 --
 ALTER TABLE `empresa`
@@ -2494,8 +2646,8 @@ ALTER TABLE `empresa`
 --
 ALTER TABLE `images`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idPersona` (`idPersona`),
-  ADD KEY `idProducto` (`idProducto`);
+  ADD UNIQUE KEY `idProducto` (`idProducto`),
+  ADD KEY `idPersona` (`idPersona`);
 
 --
 -- Indices de la tabla `infraestructura`
@@ -2505,10 +2657,26 @@ ALTER TABLE `infraestructura`
   ADD KEY `idAlmacen` (`idAlmacen`);
 
 --
+-- Indices de la tabla `marca`
+--
+ALTER TABLE `marca`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `motivo`
+--
+ALTER TABLE `motivo`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `movimientos`
 --
 ALTER TABLE `movimientos`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_accion` (`id_accion`),
+  ADD KEY `id_almacen_salida` (`id_almacen_salida`),
+  ADD KEY `id_almacen_entrada` (`id_almacen_entrada`),
+  ADD KEY `id_admin` (`id_admin`);
 
 --
 -- Indices de la tabla `productos`
@@ -2518,6 +2686,7 @@ ALTER TABLE `productos`
   ADD KEY `idCategoria` (`idCategoria`),
   ADD KEY `idUmedida` (`idUmedida`),
   ADD KEY `idAlmacen` (`idAlmacen`),
+  ADD KEY `id_marca` (`id_marca`),
   ADD KEY `idInfraestructura` (`idInfraestructura`);
 
 --
@@ -2552,52 +2721,76 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `accion`
+--
+ALTER TABLE `accion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `almacen`
 --
 ALTER TABLE `almacen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `detalle_movimiento`
+--
+ALTER TABLE `detalle_movimiento`
+  MODIFY `id` int(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `empresa`
 --
 ALTER TABLE `empresa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` int(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `infraestructura`
 --
 ALTER TABLE `infraestructura`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT de la tabla `marca`
+--
+ALTER TABLE `marca`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `motivo`
+--
+ALTER TABLE `motivo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `movimientos`
 --
 ALTER TABLE `movimientos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(22) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `sucursales`
@@ -2609,13 +2802,13 @@ ALTER TABLE `sucursales`
 -- AUTO_INCREMENT de la tabla `unidadmedida`
 --
 ALTER TABLE `unidadmedida`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
@@ -2625,8 +2818,21 @@ ALTER TABLE `usuarios`
 -- Filtros para la tabla `almacen`
 --
 ALTER TABLE `almacen`
-  ADD CONSTRAINT `almacen_ibfk_1` FOREIGN KEY (`idSucursal`) REFERENCES `sucursales` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `almacen_ibfk_2` FOREIGN KEY (`idUbigeo`) REFERENCES `ubigeo` (`id_ubigeo`);
+  ADD CONSTRAINT `almacen_ibfk_1` FOREIGN KEY (`idSucursal`) REFERENCES `sucursales` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `almacen_ibfk_2` FOREIGN KEY (`idUbigeo`) REFERENCES `ubigeo` (`id_ubigeo`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `detalle_movimiento`
+--
+ALTER TABLE `detalle_movimiento`
+  ADD CONSTRAINT `fk_id_movimiento` FOREIGN KEY (`id_movimiento`) REFERENCES `movimientos` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_id_producto_mov` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `images`
+--
+ALTER TABLE `images`
+  ADD CONSTRAINT `fk_id_producto` FOREIGN KEY (`idProducto`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `infraestructura`
@@ -2635,13 +2841,29 @@ ALTER TABLE `infraestructura`
   ADD CONSTRAINT `infraestructura_ibfk_1` FOREIGN KEY (`idAlmacen`) REFERENCES `almacen` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
+-- Filtros para la tabla `movimientos`
+--
+ALTER TABLE `movimientos`
+  ADD CONSTRAINT `fk_id_accion` FOREIGN KEY (`id_accion`) REFERENCES `accion` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_id_admin` FOREIGN KEY (`id_admin`) REFERENCES `admin` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_id_almacen_entrada` FOREIGN KEY (`id_almacen_entrada`) REFERENCES `almacen` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_id_almacen_salida` FOREIGN KEY (`id_almacen_salida`) REFERENCES `almacen` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `productos`
 --
 ALTER TABLE `productos`
-  ADD CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`idCategoria`) REFERENCES `categorias` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `productos_ibfk_2` FOREIGN KEY (`idUmedida`) REFERENCES `unidadmedida` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `productos_ibfk_3` FOREIGN KEY (`idInfraestructura`) REFERENCES `infraestructura` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `productos_ibfk_4` FOREIGN KEY (`idAlmacen`) REFERENCES `almacen` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+  ADD CONSTRAINT `fk_id_almacen` FOREIGN KEY (`idAlmacen`) REFERENCES `almacen` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_id_categoria` FOREIGN KEY (`idCategoria`) REFERENCES `categorias` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_id_deposito` FOREIGN KEY (`idInfraestructura`) REFERENCES `infraestructura` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_unidad_medida` FOREIGN KEY (`idUmedida`) REFERENCES `unidadmedida` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `id_marca` FOREIGN KEY (`id_marca`) REFERENCES `marca` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `sucursales`
+--
+ALTER TABLE `sucursales`
+  ADD CONSTRAINT `sucursales_ibfk_1` FOREIGN KEY (`idEmpresa`) REFERENCES `empresa` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
