@@ -67,9 +67,9 @@ echo "<table style='border-style: solid;border-color: #0d6efd'>
             <th style='background:#CCC; color:#000'>Usuario</th>
             <th style='background:#CCC; color:#000'></th>
             <th style='background:#CCC; color:#000'>Fecha movimiento</th>
-            <th style='background:#CCC; color:#000'>De</th>
+            <th style='background:#CCC; color:#000'>Solicitado a</th>
             <th style='background:#CCC; color:#000'>Accion</th>
-            <th style='background:#CCC; color:#000'>Para</th>
+            <th style='background:#CCC; color:#000'>Solicitado por</th>
             <th style='background:#CCC; color:#000'>Motivo</th>
             <th></th>
         </tr>

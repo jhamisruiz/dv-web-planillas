@@ -2,8 +2,8 @@
     <section class="section">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <h5>Movimientos</h5>
-                <button type="button" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Movimiento</button>
+                <h5>Requerimientos</h5>
+                <button type="button" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Requerimiento</button>
             </div>
             <div class="card-body">
                 <div class="row col-lg-4">
@@ -19,8 +19,8 @@
                                 <th class="bg-primary text-white">#</th>
                                 <th class="bg-primary text-white">Usario</th>
                                 <th class="bg-primary text-white">Fecha Reg.</th>
-                                <th class="bg-primary text-white">Enviado por:</th>
-                                <th class="bg-primary text-white">Recibido por:</th>
+                                <th class="bg-primary text-white">Solicitado a:</th>
+                                <th class="bg-primary text-white">Solicitado por:</th>
                                 <th class="bg-primary text-center text-white">Status</th>
                                 <th class="bg-primary text-white" style="max-width: 50px;">Action</th>
                                 <th class="bg-primary text-white" style="max-width: 50px;">Detalle</th>
@@ -55,7 +55,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel33">Nuevo Movimiento </h4>
+                <h4 class="modal-title" id="myModalLabel33">Nuevo Requerimiento </h4>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <i data-feather="x"></i>
                 </button>
@@ -65,7 +65,7 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Enviado por: <span class="text-danger">*</span></label>
+                                <label>Solicitar a: <span class="text-danger">*</span></label>
                                 <select name="" class="form-control border border-primary" id="id-alacen-salida" onchange="myFMovimiento()">
                                     <option value="0" selected>Seleccione</option>
                                     <?php
@@ -95,7 +95,7 @@
                         </div>
                         <div class="col-lg-4 ">
                             <div class="form-group">
-                                <label>Recibido por: <span class="text-danger">*</span></label>
+                                <label>Solicitado por: <span class="text-danger">*</span></label>
                                 <select name="" class="form-control border border-primary" id="id-alacen-entrada">
                                     <option value="0" selected>Seleccione</option>
                                     <?php

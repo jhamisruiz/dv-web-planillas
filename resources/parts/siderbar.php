@@ -93,7 +93,7 @@
                             <a href="productos">Productos</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="movimientos"> Movimiento </a>
+                            <a href="movimientos"> Requerimientos </a>
                         </li>
                         <!-- <li class="submenu-item ">
                             <a href="#"> Stock Prod. por Almacen </a>
