@@ -79,7 +79,7 @@ class ajaxSelectAlamacen
             } else {
                 echo '<td class="text-right" >
                         <div class="dropdown dropdown-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="bi bi-pen-fill"></i></a>
                             <div class="dropdown-menu dropdown-menu-right border border-secondary">
                                 <a class="dropdown-item" onclick="editarAlmacen(' . $value["id"] . ')"><i class="bi bi-pen-fill text-success"></i> Edit</a>
                                 <a class="dropdown-item"onclick="eliminarAlmacen(' . $value["id"] . ')"><i class="bi bi-trash m-r-5 text-danger"></i> Delete</a>

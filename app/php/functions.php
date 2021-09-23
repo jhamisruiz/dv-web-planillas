@@ -4,9 +4,9 @@ class Functions{
 
     static public function Alertify($alertify){
 
-        return "<script>
-        alertify.". $alertify["color"]."('". $alertify["sms"]."');
-        </script>";
+        return '<script>
+        alertify.'. $alertify['color'].'("'. $alertify['sms'].'");
+        </script>';
     }
 
     static public function SwiftAlert($swift)

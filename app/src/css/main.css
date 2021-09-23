@@ -11,10 +11,12 @@
     color: red !important;
 }
 
-.classprodmover:hover{
-    background:#435ebe;
-    color:#fff;
-} .product-remove {
+.classprodmover:hover {
+    background: #43be7a;
+    color: #fff;
+}
+
+.product-remove {
     position: absolute;
     top: 4px;
     right: 7px;
@@ -36,7 +38,7 @@
 }
 
 .custom-input-file {
-    background-color: #dc3546c9;
+    background-color: #7e7778c9;
     color: #fff;
     cursor: pointer;
     font-size: 18px;
@@ -61,4 +63,56 @@
     position: absolute;
     right: -1000px;
     top: -1000px;
+}
+
+.accordion-item:first-of-type .accordion-button {
+    border-top-left-radius: calc(.25rem - 1px);
+    border-top-right-radius: calc(.25rem - 1px);
+}
+
+.accordion-button:not(.collapsed) {
+    color: #0c63e4;
+    background-color: #ffffe7;
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%);
+}
+
+[type=button]:not(:disabled),
+[type=reset]:not(:disabled),
+[type=submit]:not(:disabled),
+button:not(:disabled) {
+    cursor: pointer;
+}
+
+.accordion-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    background-color: #dfddddc7;
+    border: 0;
+    border-radius: 0;
+    overflow-anchor: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, border-radius .15s ease;
+}
+
+.accordion-body {
+    padding: 1rem 1.25rem;
+}
+
+[type=button],
+[type=reset],
+[type=submit],
+button {
+    -webkit-appearance: button;
+}
+
+@media (max-width: 993px) {
+    .colum-flex-rev {
+        display: flex;
+        flex-direction: column-reverse;
+    }
 }

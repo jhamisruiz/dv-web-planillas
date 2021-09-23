@@ -140,7 +140,6 @@ function exportTableToEXEL(id) {
             'idruta': id
         },
         success: function (respuesta) {
-            console.log(respuesta)
         }
     });
 }
@@ -176,10 +175,12 @@ $("#btnGuardarMovimiento").click(function () {
     var id = [];
     var cant = [];
     var env = [];
-    mov.push($("#id-alacen-salida").val());
-    mov.push($("#idAccionMovimient").val());
-    mov.push($("#id-alacen-entrada").val());
-    mov.push($("#idmotivomove").val());
+    mov.push({
+        'id_sal': $("#id-alacen-salida").val(),
+        'id_accion': $("#idAccionMovimient").val(),
+        'id_entra': $("#id-alacen-entrada").val(),
+        'descripcion': $("#idmotivomove").val()
+    });
      
     $("input[name='idprod']").each(function () {
         id.push(this.value);
@@ -192,18 +193,25 @@ $("#btnGuardarMovimiento").click(function () {
     $("input[name='cantenvio']").each(function () {
         env.push(this.value);
     });
+    var mover = mov[0];
     var element = [];
     for (let i = 0; i < id.length; i++) {
         element.push({ id: + id[i], cant_act: cant[i], cant_env: env[i] });
         
     }
-
-    if (mov[0] != "" && mov[1] != "" && mov[2] != "") {
-        if (id.length>0){
+    console.log(mover['id_sal']);
+    if (mover['id_sal'] == 0 || mover['id_sal']=='') {
+        alertify.error('Seleccione un almacen a solicitar.');
+    } else if (mover['id_accion'] == 0 || mover['id_accion'] == '') {
+        alertify.error('Seleccione una Accion a realziar.');
+    } else{
+        if (id.length > 0) {
             $.ajax({
                 url: "app/src/ajax/almacen/movimiento.ajax.php",
-                method: "POST", data: { 'datosMovimiento': mov,
-                    'detalleMovimiento':element},
+                method: "POST", data: {
+                    'datosMovimiento': mover,
+                    'detalleMovimiento': element
+                },
                 success: function (respuesta) {
                     $("#smsconfirmations").html(respuesta);//ingresa mensaje en html
                     document.getElementById("resSearchMov").innerHTML = "";//limpiar imput imagen
@@ -212,14 +220,52 @@ $("#btnGuardarMovimiento").click(function () {
                     limpiarCarro();
                 }
             });
-        }else{
+        } else {
             alertify.error('Agregar Productos');
         }
-    }else{
-        alertify.error('Seleccione todos los campos');
     }
-
 });
+function elimnarMovimiento(id){
+    Swal.fire({
+        title: 'Está seguro?',
+        text: "El Rquerimiento se eliminara definitivamente!",
+        icon: 'error',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#dd6b55',
+        confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            var datos = new FormData();
+
+            datos.append("idEliminarM", id);
+
+            $.ajax({
+                url: "app/src/ajax/almacen/movimiento.ajax.php",
+                method: "POST",
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (respuesta) {
+                    $("#smsconfirmations").html(respuesta);///
+                    var search = '';
+                    selectAllMovimientos(search);
+                }
+            });
+
+        }
+    })
+}
+function removeAlmacenO(){
+    let id = document.getElementById('idAccionMovimient').value;
+    if (id==3) {
+        $('#idalmacensalida').addClass('d-none')
+    } else {
+        $('#idalmacensalida').removeClass('d-none')
+    }
+}
 
 // ACEPTAR MOVIMIENTO
 $(document).on("click", ".btnAceptarMovimiento", function (){
@@ -237,6 +283,7 @@ $(document).on("click", ".btnAceptarMovimiento", function (){
 
             var id = $(this).attr("idMovimiento")
             var estado = $(this).attr("estado")
+            var accion = $(this).attr("accion")
             if (estado ==2){
                 $(this).attr('hidden', true)
                 $('#aceptar'+id).addClass('btn-warning');
@@ -252,26 +299,10 @@ $(document).on("click", ".btnAceptarMovimiento", function (){
             $.ajax({
                 method: "POST",
                 url: "app/src/ajax/almacen/movimiento.ajax.php",
-                data: { 'idMovimiento': id, 'estado': estado },
+                data: { 'idMovimiento': id, 'estado': estado,'accion':accion },
                 success: function (respuesta) {
-                    if (respuesta=="ok"){
-                        if (estado == 2) {
-                            alertify.warning('Movimiento Cancelado');
-                        } else {
-                            alertify.success('Movimiento Aceptado');
-                        }
-                   }else{
-                        if (respuesta=="error") {
-                           alertify.error('Movimiento no Aceptado');
-                       } else {
-                            alertify.error(respuesta);
-                            $('#cancelar' + id).attr('hidden', false)
-                            $('#aceptar' + id).removeClass('btn-success');
-                            $('#aceptar' + id).addClass('btn-secondary');
-                            $('#aceptar' + id).html('ACEPTAR');
-                           console.log(respuesta);
-                       }
-                   }
+                    let search='';
+                    selectAllMovimientos(search);
                 }
             });
         }
@@ -448,7 +479,6 @@ function corregirCant(id){
             document.getElementById('idcantenv'+id).value = a;
         }
     }
-    console.log(a+b)
 }
 
 function displayCart() {

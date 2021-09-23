@@ -7,6 +7,16 @@
 <script type="text/javascript" src="app/src/js/config/config.js"></script>
 
 <script type="text/javascript" src="app/src/js/login/login.js"></script>
+<!-- conta -->
+<script type="text/javascript" src="app/src/js/contabilidad/tipo.js"></script>
+<script type="text/javascript" src="app/src/js/contabilidad/ingreso.js"></script>
+<script type="text/javascript" src="app/src/js/contabilidad/gasto.js"></script>
+<!-- planillas -->
+<script type="text/javascript" src="app/src/js/planillas/depa-empleo.js"></script>
+<script type="text/javascript" src="app/src/js/planillas/empleado.js"></script>
+<script type="text/javascript" src="app/src/js/planillas/pagos.js"></script>
+<script type="text/javascript" src="app/src/js/planillas/asistencias.js"></script>
+<script type="text/javascript" src="app/src/js/sucursales.js"></script>
 <!-- js peticion ubigeo -->
 <script type="text/javascript" src="app/src/js/ubigeo.js"></script>
 <!-- js -->
@@ -45,14 +55,17 @@ if (isset($_GET["ruta"])) {
 
 <script>
     $(function() {
-        $('#datetimepicker2').datetimepicker({
-            format: 'LT'
+        $('#timeStar').datetimepicker({
+            format: 'HH:mm:ss'
         });
         $('#datetimeStart').datetimepicker({
             format: 'YYYY-MM-DD'
         });
         $('#datetimeEnd').datetimepicker({
             format: 'YYYY-MM-DD'
+        });
+        $('#dateStart').datetimepicker({
+            format: 'YYYY-MM'
         });
     });
 </script>

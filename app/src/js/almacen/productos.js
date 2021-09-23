@@ -286,9 +286,6 @@ $("#btnGuardarProducto").click(function () {
                 method: "POST",
                 url: "app/src/ajax/almacen/producto.ajax.php",
                 success: function (respuesta) {
-                    console.log(respuesta);
-                    // console.log(producto[0]);
-                    // console.log(deposito[0]);
                     var search = '';
                     selectAllproductos(search);
                     $("#smsconfirmations").html(respuesta);//ingresa mensaje en html
@@ -372,7 +369,6 @@ function editarProducto(id){
                 $("#ingresarImagen").val('NO');
                 
             }
-            //console.log(respuesta['Fimg']);
             $("#idImagen").val(respuesta['idimg']);//
             /////////deposito
             ocDepositoAlm(respuesta['Aid']);
@@ -420,6 +416,8 @@ function eliminarProducto(id){
                 contentType: false,
                 processData: false,
                 success: function (respuesta) {
+                    console.log(respuesta)
+                    console.log(id)
                     $("#smsconfirmations").html(respuesta);///
                     var search = '';
                     selectAllproductos(search);

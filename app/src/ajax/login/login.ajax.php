@@ -58,9 +58,7 @@ class ajaxLogin{
     /*=============================================
 	    ACTIVAR CATEGORIAS
     =============================================*/
-
     public $activarUsuarios;
-
     public function ajaxActivarUsuarios()
     {
         $data = $this->activarUsuarios;
@@ -75,6 +73,39 @@ class ajaxLogin{
 
         $respuesta = ControllerQueryes::UPDATE($update, $where);
         echo $respuesta;
+    }
+    // reset password
+    public $reset;
+    public function resetPass()
+    {
+        $data = $this->reset;
+        // print_r($data);
+        $update = array(
+            "table" => "admin",
+            "password" => password_hash($data['pass'], PASSWORD_DEFAULT),
+        );
+        $where = array(
+            "id" => $data["id"], #condifion columna y valor
+        );
+        $respuesta = ControllerQueryes::UPDATE($update, $where);
+        // echo $respuesta;
+        if ($respuesta == "ok") {
+            $alertify = array(
+                "color" => "success",
+                "sms" => "Passwrds modificadas.",
+            );
+            $error = Functions::Alertify($alertify);
+            echo $error;
+        } else {
+            $swift = array(
+                "icon" => "error",
+                "sms" => "Error al modificar Passwrds.",
+                "rForm" => "",
+            );
+            $succes = Functions::SwiftAlert($swift);
+            echo $succes;
+        }
+
     }
 }
 
@@ -108,4 +139,10 @@ if (isset($_POST['idEliminar'])) {
     $admin = new ajaxLogin();
     $admin->eliminar = $_POST['idEliminar'];
     $admin->eliminar();
+}
+//objeto cambiar password
+if (isset($_POST['passordrest'])) {
+    $passw = new ajaxLogin();
+    $passw->reset = $_POST['passordrest'];
+    $passw->resetPass();
 }

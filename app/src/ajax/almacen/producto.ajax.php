@@ -67,9 +67,9 @@ class ajaxAddProductos{
             echo '<option value="' . $value["id"] . '">' . $value["dep"] . '</option>';
         }
     }
-    /*=============================================
+/*=============================================
 	    SLECT DEPOSITOS
-    =============================================*/
+=============================================*/
     public $iddeposito;
     public function ajaxSelectDeposito(){
 
@@ -95,9 +95,9 @@ class ajaxAddProductos{
         /* print_r($deposito[0]); */
         echo json_encode($deposito[0]);
     }
-    /*=============================================
-    ELIMINAR CATEGORIA
-    =============================================*/
+/*=============================================
+    ELIMINAR PRODUCTO
+=============================================*/
     public $idEliminar;
     public function ajaxeEliminarProducto()
     {
@@ -109,6 +109,7 @@ class ajaxAddProductos{
         );
 
         $eliminar = ControllerQueryes::DELATE($delate);
+        echo $eliminar;
         if ($eliminar == "ok"
         ) {
             $swift = array(
@@ -127,9 +128,9 @@ class ajaxAddProductos{
             echo $error;
         }
     }
-    /*=============================================
+/*=============================================
 	    ACTIVAR  PRODUCTO
-    =============================================*/
+=============================================*/
     public $activarProd;
     public function ajaxActivarProducto()
     {

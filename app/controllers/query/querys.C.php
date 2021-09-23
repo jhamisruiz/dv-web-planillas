@@ -1,5 +1,20 @@
 <?php
 class ControllerQueryes{
+    /* ================================================================
+    QUERY   ROWCOUNT
+    ================================================================= */
+    static public function ROWCOUNT($table)
+    {
+        $row='';
+        $respuesta = ModelQueryes::ROWCOUNT($table);
+        if (isset($respuesta['row'])){
+            $row = $respuesta['row'];
+        }
+        if ($row>0){
+            return $row;
+        }
+        return $respuesta;
+    }
 /* ================================================================
     QUERY SELECT
 ================================================================= */

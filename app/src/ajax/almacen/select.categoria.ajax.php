@@ -45,7 +45,7 @@ class ajaxSelectCategorias
             }  
                  echo '<td class="text-right">
                     <div class="dropdown dropdown-action">
-                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="bi bi-pen-fill"></i></a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" onclick="editarCategoria(' . $value["id"].",'".  $value["nombre"] . "'," . "'" .  $value["descripcion"] . "'". ')">
                             <i class="bi bi-pen-fill text-success"></i> Edit</a>

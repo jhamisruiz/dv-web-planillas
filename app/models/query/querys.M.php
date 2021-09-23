@@ -2,6 +2,27 @@
 
 include_once(dirname(__FILE__) . './../conexPDO.php');
 class ModelQueryes{
+    /* ================================================================
+    QUERY COUNT
+================================================================= */
+    static public function ROWCOUNT($table)
+    {
+        try {
+            $stmt = Conexion::conectar()->prepare("SELECT COUNT(*) as row FROM $table");
+
+            if ($stmt->execute()) {
+
+                return $stmt->fetch();
+            } else {
+
+                return  "SELECT COUNT(*) as row FROM $table";
+            }
+        } catch (\Throwable $th) {
+            $throw = $th->getMessage();
+            return $throw ;
+        }
+        
+    }
 /* ===============================================================================
     QUERY SELECT 
 ================================================================================ */
@@ -37,7 +58,9 @@ class ModelQueryes{
         $wher ="";
         
         for ($i=0; $i < count($select); $i++) {
-
+            if(key($select) == "ORDER_BY"){
+                $orderby = $select["ORDER_BY"];
+            }
             if (key($select)=="ORDERBY") {
 
                 if (key($select["ORDERBY"])=="ASC"|| key($select["ORDERBY"])=="DESC" AND key($select["ORDERBY"])!= $select["ORDERBY"][key($select["ORDERBY"])]) {
@@ -50,18 +73,19 @@ class ModelQueryes{
                 }
             } else {
 
-                if(key($select)=="*"and $select[key($select)] == "*"){
+                if(key($select) != "ORDER_BY"){
+                    if (key($select) == "*" and $select[key($select)] == "*") {
 
-                    $colum= key($select).",";
-
-                }else{
-
-                    if ($select[key($select)] == "" AND $select[key($select)] != "*") {
-
-                        $colum .= key($select) . ",";
+                        $colum = key($select) . ",";
                     } else {
 
-                        $colum .= key($select) . " AS " . $select[key($select)] . ",";
+                        if ($select[key($select)] == "" and $select[key($select)] != "*") {
+
+                            $colum .= key($select) . ",";
+                        } else {
+
+                            $colum .= key($select) . " AS " . $select[key($select)] . ",";
+                        }
                     }
                 }
                 
@@ -180,14 +204,20 @@ class ModelQueryes{
                     
                     return "ok";
                 }else {
-                    return "INSERT INTO $table $colums VALUES $values";
+                    return "error";
                 }
             }
             
         } catch (\Throwable $th) {
 
             $sms =$th->getMessage();
-            return "error";
+            $dups = explode(':', $sms);
+            $dup = explode(' ', $dups[2]);
+            if($dup[7]=="'dni'"){
+                return $sms;
+            }else{
+                return 'error';
+            }
         }
 
         $stmt = NULL;
@@ -301,7 +331,7 @@ class ModelQueryes{
             }
         } catch (\Throwable $th) {
             $throw= $th->getMessage();
-            return "inyeccion";
+            return $throw;
         }
         
     }

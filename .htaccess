@@ -9,6 +9,9 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^movimientos/detalle-movmimiento-exel/([0-9]+)/?$ app/src/ajax/files/exel.php?idruta=$1&nam=$2&idmov=$3 [L,QSA]
 RewriteRule ^movimientos/detalle-movmimiento-pdf/([0-9]+)/?$ app/src/ajax/files/pdf.php?idruta=$1&nam=$2&idmov=$3 [L,QSA]
+RewriteRule ^planillas/detalle-reporte-exel/([-a-zA-Z0-9]+)/?$ app/src/ajax/files/reportes.php?idruta=$1&nam=$2&idmov=$3 [L,QSA]
+RewriteRule ^contabilidad/detalle-reporte-exel/([-a-zA-Z0-9]+)/?$ app/src/ajax/files/rconta.php?idruta=$1&nam=$2&idmov=$3 [L,QSA]
+RewriteRule ^planillas/detalle-reporte-pdf/([-a-zA-Z0-9]+)/([0-9]+)/([-a-zA-Z0-9]+)/?$ app/src/ajax/files/empleo.php?idruta=$1&nam=$2&idmov=$3 [L,QSA]
 
 RewriteRule ^movimientos/detalle-movmimiento-exel/([-a-zA-Z]+)/?$ resources/error/404.php?idruta=$1&nam=$2&idmov=$3 [L,QSA]
 RewriteRule ^movimientos/detalle-movmimiento-pdf/([-a-zA-Z]+)/?$ resources/error/404.php?idruta=$1&nam=$2&idmov=$3 [L,QSA]

@@ -25,6 +25,7 @@
                                 <th class="bg-primary text-white" style="max-width: 50px;">Action</th>
                                 <th class="bg-primary text-white" style="max-width: 50px;">Detalle</th>
                                 <th class="bg-primary text-white">MOTIVO</th>
+                                <th class="bg-primary text-white">ELIMINAR</th>
                             </tr>
                         </thead>
                         <tbody id="mostrarMovimientos">
@@ -81,7 +82,7 @@
                         <div class="col-lg-4 d-flex justify-content-center">
                             <div class="form-group col-lg-5">
                                 <label>Acción: <span class="text-danger">*</span></label>
-                                <select name="" class="form-control border text-white border-primary bg-success" id="idAccionMovimient">
+                                <select onchange="removeAlmacenO()" class="form-control border text-white border-primary bg-success" id="idAccionMovimient">
                                     <option value="0" selected>Seleccione</option>
                                     <?php
                                     $acion = ControllerMovimientos::SELECTACCION();
@@ -94,9 +95,9 @@
                             </div>
                         </div>
                         <div class="col-lg-4 ">
-                            <div class="form-group">
+                            <div class="form-group" id="idalmacensalida">
                                 <label>Solicitado por: <span class="text-danger">*</span></label>
-                                <select name="" class="form-control border border-primary" id="id-alacen-entrada">
+                                <select class="form-control border border-primary" id="id-alacen-entrada">
                                     <option value="0" selected>Seleccione</option>
                                     <?php
                                     $almacenP = ControllerMovimientos::SELECTALL();

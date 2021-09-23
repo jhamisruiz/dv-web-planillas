@@ -6,7 +6,7 @@ include('./../../../models/query/querys.M.php');
 class ajaxCategorias{
     /*=============================================
 	CREAR/editar CATEGORIAS
-=============================================*/
+    =============================================*/
     public $categorias;
     public function ajaxCrearCategorias(){
 

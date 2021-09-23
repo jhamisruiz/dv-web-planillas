@@ -83,6 +83,17 @@ class ControllerLogin
                                 'user' => $res[0]['usuario'],
                                 'email' => $res[0]['email'],
                             );
+                            $select = array(
+                                "id_permiso" => ""
+                            );
+                            $tables = array(
+                                    "detalle_permisos" => "",
+                                );
+                            $where = array(
+                                    'id_admin' => "=" . $res[0]['id']
+                                );
+                            $detPers = ControllerQueryes::SELECT($select, $tables, $where);
+                            $_SESSION["perms"] = $detPers;
 
                             return '<script>window.location.replace("' . URL_HOST_WEB . '");</script>';
                         } else {

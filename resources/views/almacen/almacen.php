@@ -55,9 +55,19 @@
                                     <div class="form-group" id="sucuarlPrincipal">
                                         <select id="idSucursal" class="form-control border border-primary" name="">
                                             <option value="0">Seleccione Sucursal</option>
-                                            <option value="1">Sucursal 1</option>
-                                            <option value="2">Sucursal 2</option>
-                                            <option value="3">Sucursal 3</option>
+                                            <?php
+                                                $select =array(
+                                                    "*"=>"*"
+                                                );
+                                                $tables =array(
+                                                    'sucursales'=>''
+                                                );
+                                                $where='';
+                                                $sucursal=ControllerQueryes::SELECT($select, $tables, $where);
+                                                foreach ($sucursal as $key => $value) {
+                                                    echo '<option value="'.$value['id'].'">'.$value['nombre'].'</option>';
+                                                }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
