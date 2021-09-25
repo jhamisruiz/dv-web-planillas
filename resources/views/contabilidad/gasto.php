@@ -24,9 +24,11 @@
                                         <th class="bg-primary text-white">#</th>
                                         <th class="bg-primary text-white">Tipo</th>
                                         <th class="bg-primary text-white">Categ. Gasto</th>
+                                        <th class="bg-primary  text-white">Descripcion</th>
+                                        <th class="bg-primary text-white">Documento</th>
                                         <th class="bg-primary text-white">Cantidad</th>
-                                        <th class="bg-primary text-center text-white">Fecha-Registro</th>
-                                        <th class="bg-primary text-center text-white">Descripcion</th>
+                                        <th class="bg-primary  text-white">Fecha-Registro</th>
+                                        <th class="bg-primary  text-white">Observacion</th>
                                         <th class="bg-primary text-white" style="max-width: 50px;">Action</th>
                                     </tr>
                                 </thead>
@@ -102,7 +104,15 @@
                             </div>
                             <label>Descripción: </label>
                             <div class="form-group">
-                                <textarea name="" id="idescribeing" class="form-control border border-primary text-primary" cols="12" rows="3"></textarea>
+                                <textarea name="" id="idescribeing" class="form-control border border-primary text-primary" cols="12" rows="2"></textarea>
+                            </div>
+                            <label>Tipo. Documento: </label>
+                            <div class="form-group">
+                                <textarea name="" id="idtipodocum" class="form-control border border-primary text-primary" cols="12" rows="1"></textarea>
+                            </div>
+                            <label>Observacion: </label>
+                            <div class="form-group">
+                                <textarea name="" id="idobserva" class="form-control border border-primary text-primary" cols="12" rows="2"></textarea>
                             </div>
                         </div>
 

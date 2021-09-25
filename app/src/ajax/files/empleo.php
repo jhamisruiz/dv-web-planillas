@@ -9,8 +9,8 @@ date_default_timezone_set('America/Lima');
 //$fecha = date("d-m-Y H:i:s");
 
 $id = "";
-$dni ='';
- $nombres ='';
+$dni = '';
+$nombres = '';
 if (isset($_GET["idruta"])) {
     $fecha = $_GET['idruta'];
     $dni = $_GET['nam'];
@@ -39,12 +39,12 @@ if (isset($_GET["idruta"])) {
         "H.mes" => " LIKE '" . $fecha . "%' AND T.dni=" . $dni,
     );
     $pay = ControllerQueryes::SELECT($select, $tables, $where);
-    if(isset($pay[0]['nombre'])){
+    if (isset($pay[0]['nombre'])) {
 
-        $nombres =$pay[0]['nombre'] . " " . $pay[0]['apellidos'];
-    }else{
-        $url=URL_HOST_WEB;
-        header('Location: '.$url);
+        $nombres = $pay[0]['nombre'] . " " . $pay[0]['apellidos'];
+    } else {
+        $url = URL_HOST_WEB;
+        header('Location: ' . $url);
     }
 
     $selectfal = array(
@@ -71,7 +71,7 @@ if (isset($_GET["idruta"])) {
         <title>Detalle-pdf</title>
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
@@ -150,16 +150,19 @@ if (isset($_GET["idruta"])) {
                                     <td class="text-center border border-secondary"></td>
                                     <td class="text-center border border-secondary"></td>
                                     <?php
-                                    if(isset($pay[0]['total_horas'])){
-                                    $data = $pay[0]['total_horas'];
-                                    $days = explode(':', $data);
-                                    if (count($days)>0) {
-                                        $dias = $days[0];
-                                        $mins = $days[1];
-                                    }}
+                                    $dias = '';
+                                    $mins = '';
+                                    if (isset($pay[0]['total_horas'])) {
+                                        $data = $pay[0]['total_horas'];
+                                        $days = explode(':', $data);
+                                        if (count($days) > 0) {
+                                            $dias = $days[0];
+                                            $mins = $days[1];
+                                        }
+                                    }
                                     ?>
                                     <td class="text-center border border-secondary"><?= $dias ?></td>
-                                    <td class="text-center border border-secondary"><?= $mins?></td>
+                                    <td class="text-center border border-secondary"><?= $mins ?></td>
                                     <td class="text-center border border-secondary"></td>
                                     <td class="text-center border border-secondary"></td>
                                 </tr>
@@ -234,7 +237,7 @@ if (isset($_GET["idruta"])) {
                     console.log(window);
                     var opt = {
                         margin: 1,
-                        filename: 'prueba.pdf',
+                        filename: '" . $nombres . ".pdf',
                         image: {
                             type: 'jpeg',
                             quality: 0.98

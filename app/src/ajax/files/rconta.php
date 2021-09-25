@@ -1,5 +1,14 @@
 <?php
-
+//establecemos el timezone para obtener la hora local
+date_default_timezone_set('America/Lima');
+//la fecha de exportación sera parte del nombre del archivo Excel
+$fdata = date("d-m-Y H:i:s");
+$namef =  date("m") . " " . $fdata;
+//Inicio de exportación en Excel
+header('Content-type: text/csv');
+header("Content-Disposition: attachment; filename=CONTA$namef.xls"); //Indica el nombre del archivo resultante
+header("Pragma: no-cache");
+header("Expires: 0");
 include('./../../../php/functions.php');
 include('./../../../controllers/query/querys.C.php');
 include('./../../../models/query/querys.M.php');
@@ -8,8 +17,8 @@ include('./../../../models/query/querys.M.php');
 $fecha = "";
 if (isset($_GET["idruta"])) {
     $fecha = $_GET['idruta'];
-    
-    
+
+
     //echo $cont;
 ?>
 
@@ -21,23 +30,14 @@ if (isset($_GET["idruta"])) {
         <title>reporte-exel</title>
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
     </head>
 <?php
-    //establecemos el timezone para obtener la hora local
-    date_default_timezone_set('America/Lima');
-    //la fecha de exportación sera parte del nombre del archivo Excel
-    $fdata = date("d-m-Y H:i:s");
-    $namef =  date("m") . " " . $fdata;
-    //Inicio de exportación en Excel
-    header('Content-type: text/csv');
-    header("Content-Disposition: attachment; filename=CONTA$namef.xls"); //Indica el nombre del archivo resultante
-    header("Pragma: no-cache");
-    header("Expires: 0");
+    
     $seli = array(
         "DISTINCT id_tipo" => "id",
         "T.nombre" => "",
@@ -57,9 +57,11 @@ if (isset($_GET["idruta"])) {
         "C.id" => "",
         "C.tipo" => "",
         "C.id_tipo" => "id_tipo",
+        "C.descripcion" => "",
+        "C.documento" => "",
         "C.cantidad" => "",
         "C.fecha" => "",
-        "C.descripcion" => "",
+        "C.observacion" => "",
         "T.nombre" => "",
     );
     $tablesi = array(
@@ -73,12 +75,13 @@ if (isset($_GET["idruta"])) {
     <th></th>
     <th style="background:#25dd78;"></th>
     <th style="background:#25dd78;"></th>
-    <th style="background:#25dd78;">Reporte Ingresos al :'. $fdata. '</th>
+    <th style="background:#25dd78;">Reporte Ingresos al :' . $fdata . '</th>
     <th style="background:#25dd78;"></th>
     <th style="background:#25dd78;"></th>
     </tr>
     <tr></tr>
     </table>';
+    $montA = '0.00';
     foreach ($categi as $valuei) {
         $wherei = array(
             "C.fecha" => " LIKE CONCAT('%" . $fecha . "%') AND id_tipo=" . $valuei["id"] . " AND C.tipo = 'INGRESO'",
@@ -100,25 +103,29 @@ if (isset($_GET["idruta"])) {
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Nro</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Tipo</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Categ. Ingreso</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Descripcion</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Documento</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Cantidad</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Fecha-Registro</th>
-            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Descripcion</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Observacion</th>
             <th></th>
         </tr>
         ";
-        $total = '0.00';
+        $totali = '0.00';
         foreach ($ingreso as $ky => $vali) {
             echo '<tr >
             <td></td>
             <td style="border-style: solid;text:center;border-color: #000;margin-bottom:5px">' . ($ky + 1) . '</td>
             <td style="border-style: solid;text:center;border-color: #000;margin-bottom:5px">' . $vali['tipo'] . '</td>
             <td style="border-style: solid;text:center;border-color: #000;margin-bottom:5px">' . $vali['nombre'] . '</td>
+            <td style="border-style: solid;text:center;border-color: #000;margin-bottom:5px">' . $vali['descripcion'] . '</td>
+            <td style="border-style: solid;text:center;border-color: #000;margin-bottom:5px">' . $vali['documento'] . '</td>
             <td style="border-style: solid;text:center;border-color: #000;margin-bottom:5px">' . $vali['cantidad'] . '</td>
             <td style="border-style: solid;text:center;border-color: #000;margin-bottom:5px">' . $vali['fecha'] . '</td>
-            <td style="border-style: solid;text:center;border-color: #000;margin-bottom:5px">' . $vali['descripcion'] . '</td>
+            <td style="border-style: solid;text:center;border-color: #000;margin-bottom:5px">' . $vali['observacion'] . '</td>
             <td></td>
             </tr>';
-            $total = $total + $vali["cantidad"];
+            $totali = $totali + $vali["cantidad"];
         }
         echo '
         <tr>
@@ -126,12 +133,12 @@ if (isset($_GET["idruta"])) {
         <th></th>
         <th></th>
         <td style="background:#25dd78;;">total :</td>
-        <th style="background:#25dd78;;">' . number_format($total, 2) . '</th>
+        <th style="background:#25dd78;;">' . number_format($totali, 2) . '</th>
         <th></th>
         <th></th>
         </tr></table><table><th></th></table>';
         //$cont .= $value['id']." ";
-
+        $montA = $montA + $totali;
         //$cont = $cont+1;
     }
     /* ************************REPORTE DE GASTOS *************************/
@@ -149,9 +156,9 @@ if (isset($_GET["idruta"])) {
     <tr></tr>
     </table>';
     $sel = array(
-            "DISTINCT id_tipo" => "id",
-            "T.nombre" => "",
-        );
+        "DISTINCT id_tipo" => "id",
+        "T.nombre" => "",
+    );
     $tab = array(
         "contabilidad C" => "tipo_contabilidad T", #0-0
         "C.id_tipo" => "T.id", #0-0
@@ -167,16 +174,18 @@ if (isset($_GET["idruta"])) {
         "C.id" => "",
         "C.tipo" => "",
         "C.id_tipo" => "id_tipo",
+        "C.descripcion" => "",
+        "C.documento" => "",
         "C.cantidad" => "",
         "C.fecha" => "",
-        "C.descripcion" => "",
+        "C.observacion" => "",
         "T.nombre" => "",
     );
     $tables = array(
         "contabilidad C" => "tipo_contabilidad T", #0-0
         "C.id_tipo" => "T.id", #0-0
     );
-    
+    $montB = '0.00';
     foreach ($categ as $value) {
         $where = array(
             "C.fecha" => " LIKE CONCAT('%" . $fecha . "%') AND id_tipo=" . $value["id"] . " AND C.tipo = 'GASTO'",
@@ -188,7 +197,7 @@ if (isset($_GET["idruta"])) {
                 <th></th>
                 <th></th>
                 <td style='background:#f0bb0f;'>Tipo Gasto:</td>
-                <th style='background:#f0bb0f;color:#000;'>". $value["nombre"]."</th>
+                <th style='background:#f0bb0f;color:#000;'>" . $value["nombre"] . "</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -197,26 +206,30 @@ if (isset($_GET["idruta"])) {
             <th></th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Nro</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Tipo</th>
-            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Categ. Gasto</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Categ. Ingreso</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Descripcion</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Documento</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Cantidad</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Fecha-Registro</th>
-            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Descripcion</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Observacion</th>
             <th></th>
         </tr>
         ";
-        $total = '0.00';
+        $totalg = '0.00';
         foreach ($gasto as $ky => $val) {
             echo '<tr >
             <td></td>
-            <td style="border-style: solid;border-color: #000;margin-bottom:5px">' . ($ky+1). '</td>
+            <td style="border-style: solid;border-color: #000;margin-bottom:5px">' . ($ky + 1) . '</td>
             <td style="border-style: solid;border-color: #000;margin-bottom:5px">' . $val['tipo'] . '</td>
             <td style="border-style: solid;border-color: #000;margin-bottom:5px">' . $val['nombre'] . '</td>
+            <td style="border-style: solid;border-color: #000;margin-bottom:5px">' . $val['descripcion'] . '</td>
+            <td style="border-style: solid;border-color: #000;margin-bottom:5px">' . $val['documento'] . '</td>
             <td style="border-style: solid;border-color: #000;margin-bottom:5px">' . $val['cantidad'] . '</td>
             <td style="border-style: solid;border-color: #000;margin-bottom:5px">' . $val['fecha'] . '</td>
-            <td style="border-style: solid;border-color: #000;margin-bottom:5px">' . $val['descripcion'] . '</td>
+            <td style="border-style: solid;border-color: #000;margin-bottom:5px">' . $val['observacion'] . '</td>
             <td></td>
             </tr>';
-            $total = $total + $val["cantidad"];
+            $totalg = $totalg + $val["cantidad"];
         }
         echo '
         <tr>
@@ -224,13 +237,31 @@ if (isset($_GET["idruta"])) {
         <th></th>
         <th></th>
         <td style="background:#db5353;">total :</td>
-        <th style="background:#db5353;">' . number_format($total, 2) . '</th>
+        <th style="background:#db5353;">' . number_format($totalg, 2) . '</th>
         <th></th>
         <th></th>
         </tr></table><table><th></th></table>';
         //$cont .= $value['id']." ";
-
+        $montB = $montB +  $totalg;
+        $fin = '0.00';
+        $fin = $montA - $montB;
+        echo '<table>
+        
+        <td></td>
+        <td></td>
+        <td></td>
+        <th colspan="2">Monto Final Ingresos</th>
+        <th>S/: ' . (number_format($fin, 2)) . '</th>
+        </tr>
+        <tr>
+        <td></td>
+        <td></td>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </table>';
         //$cont = $cont+1;
     }
-    
 }

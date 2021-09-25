@@ -19,6 +19,8 @@ class ajaxIngresos
             "C.tipo" => "",
             "C.id_tipo" => "id_tipo",
             "C.cantidad" => "",
+            "C.documento" => "",
+            "C.observacion" => "",
             "C.fecha" => "",
             "C.descripcion" => "",
             "T.nombre" => "",
@@ -44,14 +46,16 @@ class ajaxIngresos
                 <td>' . $key = ($key + 1) . '</td>
                 <td>' . $value["tipo"] . '</td>
                 <td>' . $value["nombre"] . '</td>
+                <td>' . $value["descripcion"] . '</td>
+                <td>' . $value["documento"] . '</td>
                 <td>' . $value["cantidad"] . '</td>
                 <td>' . $value["fecha"] . '</td>
-                <td>' . $value["descripcion"] . '</td>';
+                <td>' . $value["observacion"] . '</td>';
             echo '<td class="text-right '.$dnone.'">
                     <div class="dropdown dropdown-action">
                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="bi bi-pen-fill"></i></a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" onclick="editarIngres(' . $value["id"] . ",".  $value["id_tipo"] . ",'" .  $value["cantidad"] . "','" .  $value["fecha"] . "','" .  $value["descripcion"] . "'". ')">
+                            <a class="dropdown-item" onclick="editarIngres(' . $value["id"] . ",".  $value["id_tipo"] . ",'" .  $value["cantidad"] . "','" .  $value["fecha"] . "','" .  $value["descripcion"] . "','" .  $value["documento"] . "','" .  $value["observacion"] . "'". ')">
                             <i class="bi bi-pen-fill text-success"></i> Edit</a>
                             <a class="dropdown-item" onclick="eliminarIng(' . $value["id"] . ')"><i class="bi bi-trash m-r-5 text-danger"></i> Delete</a>
                         </div>
@@ -65,7 +69,7 @@ class ajaxIngresos
         <td></td>
         <td></td>
         <td>total :</td>
-        <td>'. number_format($total, 2) . '</td>
+        <td><input type="hidden" id="idingresostot" value="' . number_format($total, 2) . '">' . number_format($total, 2) . '</td>
         <td></td>
         <td></td>
         <td></td>
@@ -77,7 +81,6 @@ class ajaxIngresos
     public $tingreso;
     public function ajaxCrearIngeso()
     {
-
         $data = $this->tingreso;
         if ($data['editar'] == "NO") {
             $insert = array(
@@ -85,6 +88,8 @@ class ajaxIngresos
                 "tipo" => 'INGRESO',
                 "id_tipo" => $data['id_tipo'],
                 "fecha" => $data['fecha'],
+                "documento" => $data['documento'],
+                "observacion" => $data['observacion'],
                 "cantidad" => $data['cantidad'],
                 "descripcion" => $data['descripcion'],
             );
@@ -96,6 +101,8 @@ class ajaxIngresos
                 "tipo" => 'INGRESO',
                 "id_tipo" => $data['id_tipo'],
                 "fecha" => $data['fecha'],
+                "documento" => $data['documento'],
+                "observacion" => $data['observacion'],
                 "cantidad" => $data['cantidad'],
                 "descripcion" => $data['descripcion'],
             );
@@ -169,6 +176,8 @@ class ajaxIngresos
                 "C.tipo" => "",
                 "C.id_tipo" => "id_tipo",
                 "C.cantidad" => "",
+                "C.documento" => "",
+                "C.observacion" => "",
                 "C.fecha" => "",
                 "C.descripcion" => "",
                 "T.nombre" => "",
@@ -194,14 +203,16 @@ class ajaxIngresos
                 <td>' . $key = ($key + 1) . '</td>
                 <td>' . $value["tipo"] . '</td>
                 <td>' . $value["nombre"] . '</td>
+                <td>' . $value["descripcion"] . '</td>
+                <td>' . $value["documento"] . '</td>
                 <td>' . $value["cantidad"] . '</td>
                 <td>' . $value["fecha"] . '</td>
-                <td>' . $value["descripcion"] . '</td>';
+                <td>' . $value["observacion"] . '</td>';
             echo '<td class="text-right ' . $dnone . '">
                     <div class="dropdown dropdown-action">
                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="bi bi-pen-fill"></i></a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" onclick="editarGasto(' . $value["id"] . "," .  $value["id_tipo"] . ",'" .  $value["cantidad"] . "','" .  $value["fecha"] . "','" .  $value["descripcion"] . "'" . ')">
+                            <a class="dropdown-item" onclick="editarGasto(' . $value["id"] . "," .  $value["id_tipo"] . ",'" .  $value["cantidad"] . "','" .  $value["fecha"] . "','" .  $value["descripcion"] . "','" .  $value["documento"] . "','" .  $value["observacion"] . "'" . ')">
                             <i class="bi bi-pen-fill text-success"></i> Edit</a>
                             <a class="dropdown-item" onclick="eliminarGasto(' . $value["id"] . ')"><i class="bi bi-trash m-r-5 text-danger"></i> Delete</a>
                         </div>
@@ -215,11 +226,25 @@ class ajaxIngresos
         <td></td>
         <td></td>
         <td>total :</td>
-        <td>' . number_format($total,2) . '</td>
+        <td><input type="hidden" id="idgastostotales" value="' . number_format($total, 2) . '">' . number_format($total, 2) . '</td>
         <td></td>
         <td></td>
         <td></td>
-        </tr>';
+        </tr>
+        <script>
+        try {
+        let ingreso = $("#idingresostot").val();
+    let gasto = $("#idgastostotales").val();
+    var ing = ingreso.replace(/,/g, "");
+    var gas = gasto.replace(/,/g, "");
+    var tot = ing - gas;
+    $("#idtotalingresos").html(parseFloat(tot).toFixed(2))
+    } catch (error) {
+        //
+    }
+        </script>
+        
+        ';
     }
 /*=============================================
 	CREAR/editar TIPO gasto
@@ -235,6 +260,8 @@ class ajaxIngresos
                 "tipo" => 'GASTO',
                 "id_tipo" => $data['id_tipo'],
                 "fecha" => $data['fecha'],
+                "documento" => $data['documento'],
+                "observacion" => $data['observacion'],
                 "cantidad" => $data['cantidad'],
                 "descripcion" => $data['descripcion'],
             );
@@ -246,6 +273,8 @@ class ajaxIngresos
                 "tipo" => 'GASTO',
                 "id_tipo" => $data['id_tipo'],
                 "fecha" => $data['fecha'],
+                "documento" => $data['documento'],
+                "observacion" => $data['observacion'],
                 "cantidad" => $data['cantidad'],
                 "descripcion" => $data['descripcion'],
             );

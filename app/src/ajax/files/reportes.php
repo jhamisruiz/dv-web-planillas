@@ -1,8 +1,29 @@
 <?php
+//establecemos el timezone para obtener la hora local
+date_default_timezone_set('America/Lima');
+//la fecha de exportaci贸n sera parte del nombre del archivo Excel
+$fdata = date("d-m-Y H:i:s");
+$namef =  date("m") . " " . $fdata;
+//Inicio de exportaci贸n en Excel
+header('Content-Type: application/vnd.ms-excel');
+header("Content-Disposition: attachment; filename=CONTA$namef.xls"); //Indica el nombre del archivo resultante
+header("Pragma: no-cache");
+header("Expires: 0");
 
 include('./../../../php/functions.php');
 include('./../../../controllers/query/querys.C.php');
 include('./../../../models/query/querys.M.php');
+//establecemos el timezone para obtener la hora local
+date_default_timezone_set('America/Lima');
+
+//la fecha de exportación sera parte del nombre del archivo Excel
+$fdata = date("d-m-Y H:i:s");
+$namef =  date("m") . " " . $fdata;
+//Inicio de exportación en Excel
+header('Content-type: text/csv');
+header("Content-Disposition: attachment; filename=RT0$namef.xls"); //Indica el nombre del archivo resultante
+header("Pragma: no-cache");
+header("Expires: 0");
 ?>
 <?php
 $fecha = "";
@@ -40,24 +61,13 @@ if (isset($_GET["idruta"])) {
         <title>reporte-exel</title>
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
     </head>
 <?php
-    //establecemos el timezone para obtener la hora local
-    date_default_timezone_set('America/Lima');
-
-    //la fecha de exportación sera parte del nombre del archivo Excel
-    $fdata = date("d-m-Y H:i:s");
-    $namef =  date("m") . " " . $fdata;
-    //Inicio de exportación en Excel
-    header('Content-type: text/csv');
-    header("Content-Disposition: attachment; filename=RT0$namef.xls"); //Indica el nombre del archivo resultante
-    header("Pragma: no-cache");
-    header("Expires: 0");
 
     echo "<table style='border-style: solid;border-color: #0d6efd'>
         <tr>

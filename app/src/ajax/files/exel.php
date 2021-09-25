@@ -1,5 +1,15 @@
 <?php
+//establecemos el timezone para obtener la hora local
+date_default_timezone_set('America/Lima');
 
+//la fecha de exportación sera parte del nombre del archivo Excel
+$fecha = date("d-m-Y H:i:s");
+$namef = $id . "_" . $movimiento[0]['fecha'];
+//Inicio de exportación en Excel
+header('Content-type: text/csv');
+header("Content-Disposition: attachment; filename=MN0$namef.xls"); //Indica el nombre del archivo resultante
+header("Pragma: no-cache");
+header("Expires: 0");
 include('./../../../php/functions.php');
 include('./../../../controllers/query/querys.C.php');
 include('./../../../models/query/querys.M.php');
@@ -23,34 +33,24 @@ if (isset($_GET["idruta"])) {
 
 ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="shortcut icon" href="https://lh3.googleusercontent.com/oUukRV8x9WR5J68u9pAxzbDoesBqT3lvdsEip-c0RnsNnO9f-qcqmddWzl6AFuYDMbA=s180-rw" type="image/x-icon">
-    <title>detalle-exel</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="shortcut icon" href="https://lh3.googleusercontent.com/oUukRV8x9WR5J68u9pAxzbDoesBqT3lvdsEip-c0RnsNnO9f-qcqmddWzl6AFuYDMbA=s180-rw" type="image/x-icon">
+        <title>detalle-exel</title>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
-</head>
+    </head>
 <?php
-//establecemos el timezone para obtener la hora local
-date_default_timezone_set('America/Lima');
+    
 
-//la fecha de exportación sera parte del nombre del archivo Excel
-$fecha = date("d-m-Y H:i:s");
-$namef=$id."_". $movimiento[0]['fecha'];
-//Inicio de exportación en Excel
-header('Content-type: text/csv');
-header("Content-Disposition: attachment; filename=MN0$namef.xls"); //Indica el nombre del archivo resultante
-header("Pragma: no-cache");
-header("Expires: 0");
-
-echo "<table style='border-style: solid;border-color: #0d6efd'>
+    echo "<table style='border-style: solid;border-color: #0d6efd'>
         <tr>
         </tr>
         <tr>
@@ -77,11 +77,11 @@ echo "<table style='border-style: solid;border-color: #0d6efd'>
             <td></td>
             <td>" . $movimiento[0]['usuario'] . "</td>
             <td></td>
-            <td>".$movimiento[0]['fecha']. "</td>
-            <td>". $movimiento[0]['almSalida']."</td>
-            <td>". $movimiento[0]['accion']."</td>
-            <td>". $movimiento[0]['almEntrada']."</td>
-            <td>". $movimiento[0]['motivo']."</td>
+            <td>" . $movimiento[0]['fecha'] . "</td>
+            <td>" . $movimiento[0]['almSalida'] . "</td>
+            <td>" . $movimiento[0]['accion'] . "</td>
+            <td>" . $movimiento[0]['almEntrada'] . "</td>
+            <td>" . $movimiento[0]['motivo'] . "</td>
         </tr>
         <tr></tr>
         <tr>  
@@ -95,8 +95,8 @@ echo "<table style='border-style: solid;border-color: #0d6efd'>
             <th style='background:#CCC; color:#000'>Condicion</th>
             <th></th>
         </tr>";
-        foreach ($request as $key => $value) {
-            echo '<tr>
+    foreach ($request as $key => $value) {
+        echo '<tr>
                 <th></th>
                 <th>' . ($key + 1) . '</th>
                 <td><img width=30" src="' . $value['imgUrl'] . '"></td>
@@ -106,6 +106,6 @@ echo "<table style='border-style: solid;border-color: #0d6efd'>
                 <td>' . $value['cantidad'] . '</td>
                 <td>' . $value['condicion'] . '</td>
         </tr><tr></tr>';
-        }
-  echo "</table>";
+    }
+    echo "</table>";
 }

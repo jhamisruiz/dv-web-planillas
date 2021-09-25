@@ -14,7 +14,7 @@ if (isset($_GET["ruta"])) {
         <div class="sidebar-header">
             <div class="d-flex justify-content-between">
                 <div class="logo">
-                    <a href="/"><img src="public/assets/images/logo/logo.png" alt="Logo" srcset=""></a>
+                    <a href="/"><img src="public/logo/logo.jpeg" alt="Logo" srcset=""></a>
                 </div>
                 <div class="toggler">
                     <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -25,13 +25,13 @@ if (isset($_GET["ruta"])) {
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
                 <?php
-                $dashboard = 0;#1
-                $contabilidad = 0;#2
+                $dashboard = 0; #1
+                $contabilidad = 0; #2
                 $sucursales = 0; #3
-                $planillas=0;#4
+                $planillas = 0; #4
                 $asistencia = 0; #5
-                $almacen = 0;#6
-                $config = 0;#7
+                $almacen = 0; #6
+                $config = 0; #7
                 for ($i = 0; $i < count($perms); $i++) {
                     if ($perms[$i]['id_permiso'] == 1) {
                         $dashboard = 1;
@@ -65,7 +65,7 @@ if (isset($_GET["ruta"])) {
                     </li>
                 <?php
                 }
-                if ($contabilidad== 2) {
+                if ($contabilidad == 2) {
                 ?>
                     <li class="sidebar-item  has-sub <?php if (isset($ruta) && $ruta[0] == 'contabilidad') echo $active ?>">
                         <a href="#" class='sidebar-link'>
@@ -132,7 +132,7 @@ if (isset($_GET["ruta"])) {
                         </a>
                     </li>
                 <?php
-                }?>
+                } ?>
                 <li class="sidebar-title">Extra UI</li>
                 <?php
                 if ($almacen == 6) {
