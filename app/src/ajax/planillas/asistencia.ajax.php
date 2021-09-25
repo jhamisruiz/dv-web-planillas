@@ -253,6 +253,40 @@ class ajaxEmpleadoAsistencia
         }
         
     }
+/*=============================================
+    ELIMINAR
+=============================================*/
+    public $idEliminar;
+    public $fechas;
+    public function ajaxeEliminar()
+    {
+
+        $dni = $this->idEliminar;
+        $fecha = $this->fechas;
+        $delate = array(
+            "table" => "detalle_asistencia",
+            "dni" => $dni. " AND fecha_asistencia = '". $fecha."'",
+        );
+
+        $eliminar = ControllerQueryes::DELATE($delate);
+        echo $eliminar;
+        if ($eliminar == "ok") {
+            $swift = array(
+                    "icon" => "success",
+                    "sms" => "Asistencia Eliminada",
+                    "rForm" => "",
+                );
+            $succes = Functions::SwiftAlert($swift);
+            echo $succes;
+        } else {
+            $alertify = array(
+                "color" => "error",
+                "sms" => "No se elimino la Asistencia",
+            );
+            $error = Functions::Alertify($alertify);
+            echo $error;
+        }
+    }
 }
 
 /*=============================================
@@ -282,4 +316,14 @@ if (isset($_POST['addAsistencia'])) {
     $reg = new ajaxEmpleadoAsistencia();
     $reg->registrar = $_POST['addAsistencia'];
     $reg->ajaxRegistrarAsistencias();
+}
+
+/*=============================================
+OBJETO REGISTRAR ASISTENCIAS
+=============================================*/
+if (isset($_POST['idEliminar'])) {
+    $del = new ajaxEmpleadoAsistencia();
+    $del->idEliminar = $_POST['idEliminar'];
+    $del->fechas = $_POST['fecha'];
+    $del->ajaxeEliminar();
 }

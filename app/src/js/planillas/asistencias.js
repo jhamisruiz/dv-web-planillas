@@ -77,7 +77,9 @@ function onchangeDate(){
                 $('#falta').removeClass('bg-danger text-white')
                 $('#falta').addClass('btn-outline-danger')
                 $('#horaentrada').html(respuesta['hora_entrada']);
+                $('#eliminarasistencia').removeClass('d-none')
             }
+
             if (respuesta['asistencia'] == 'FALTA') {
                 $('#entrada').removeClass('bg-success text-white')
                 $('#entrada').addClass('btn-outline-success')
@@ -88,13 +90,16 @@ function onchangeDate(){
                 $('#salida').addClass('btn-outline-warning')
                 $('#horasalida').html('00:00');
                 $('#horastotal').html('00:00');
+                $('#eliminarasistencia').removeClass('d-none')
             }
             if (respuesta['salida'] == 'SALIDA') {
                 $('#salida').removeClass('btn-outline-warning')
                 $('#salida').addClass('bg-warning text-dark')
                 $('#horasalida').html(respuesta['hora_salida']);
                 $('#horastotal').html(respuesta['total_horas']);
+                $('#eliminarasistencia').removeClass('d-none')
             }
+
         }
     });
     
@@ -107,9 +112,42 @@ function onchangeDate2() {
     $('#falta').addClass('btn-outline-danger')
     $('#salida').removeClass('bg-warning text-dark')
     $('#salida').addClass('btn-outline-warning')
+    $('#eliminarasistencia').addClass('d-none')
     $('#horasalida').html('00:00');
     for (let i = 0; i < 1; i++) {
         setTimeout(onchangeDate, 50);
         i = i + 1;
     }
+}
+
+//eliminar asistencia
+function eliminarasistencia(){
+    var fecha = $('#datetimeStart').val();
+    var dni = $('#idemploy').val();
+    var datos = new FormData();
+    datos.append("idEliminar", dni);
+    datos.append("fecha", fecha);
+    $.ajax({
+        url: "app/src/ajax/planillas/asistencia.ajax.php",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (respuesta) {
+            // console.log(respuesta);
+            $("#smsconfirmations").html(respuesta);///
+
+            $('#entrada').removeClass('bg-success text-white')
+            $('#entrada').addClass('btn-outline-success')
+            $('#falta').removeClass('bg-danger text-white')
+            $('#falta').addClass('btn-outline-danger')
+            $('#salida').removeClass('bg-warning text-dark')
+            $('#salida').addClass('btn-outline-warning')
+            $('#horasalida').html('00:00');
+            $('#horastotal').html('00:00');
+            $('#horaentrada').html('00:00');
+            $('#eliminarasistencia').addClass('d-none')
+        }
+    });
 }

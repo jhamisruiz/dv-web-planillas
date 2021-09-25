@@ -83,6 +83,9 @@
                                 <button class="w-75 btn btn-outline-warning asistencia" asistencia="SALIDA" id="salida">SALIDA</button>
                                 <p id="horasalida" style="font-size:12px">00:00</p>
                             </div>
+                            <div class="text-center">
+                                <i id="eliminarasistencia" class="bi bi-trash m-r-5 text-danger d-none" onclick="eliminarasistencia()" style="cursor: pointer;font-size:25px"></i>
+                            </div>
                         </div>
                     </div>
 

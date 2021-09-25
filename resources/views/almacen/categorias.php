@@ -5,6 +5,7 @@
                 <h5>Categorias</h5>
                 <button type="button" onclick="limpiarForm()" class="btn bg-primary text-white" data-bs-toggle="modal" data-bs-target="#inlineForm">Add Categoria</button>
             </div>
+            <form id="addFormDepartamentos"></form>
             <div class="card-body">
                 <div class="row col-lg-4">
                     <div class="input-group mb-3 border border-primary rounded p-0">

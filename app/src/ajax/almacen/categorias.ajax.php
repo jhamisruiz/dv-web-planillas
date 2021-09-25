@@ -67,7 +67,7 @@ class ajaxCategorias{
         if ($eliminar == "ok") {
             $swift = array(
                 "icon" => "success",
-                "sms" => "Almacen Eliminado",
+                "sms" => "Almacen categorias",
                 "rForm" => "",
             );
             $succes = Functions::SwiftAlert($swift);
@@ -75,7 +75,7 @@ class ajaxCategorias{
         } else {
             $alertify = array(
                 "color" => "error",
-                "sms" => "No se elimino el Almacen",
+                "sms" => "No se elimino el categorias",
             );
             $error = Functions::Alertify($alertify);
             echo $error;
