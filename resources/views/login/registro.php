@@ -3,7 +3,7 @@
         <div class="col-lg-5 col-12">
             <div id="auth-left">
                 <div class="auth-logo">
-                    <a href="index.html"><img src="public/assets/images/logo/logo.png" alt="Logo"></a>
+                    <a href="index.html"><img src="public/logo/logo.jpeg" alt="Logo"></a>
                 </div>
                 <h1 class="auth-title">Registro</h1>
                 <p class="auth-subtitle mb-5">Ingrese sus datos para registrarse en nuestro sitio web.</p>

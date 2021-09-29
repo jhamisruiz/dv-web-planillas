@@ -91,7 +91,7 @@
 
     </section>
 </div>
-<!--Add Categorias -->
+<!--Add MODAL -->
 <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-xl" role="document">
         <div class="modal-content">
@@ -277,17 +277,20 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-8">
-                                    <div class="">
-                                        <div class="form-group p-1">
-                                            <label>Precio X Hora<span class="text-danger">*</span></label>
-                                            <div class="d-flex">
-                                                <button type="button" onclick="salarioXH(-10)" class="btn bg-primary text-white">-</button>
-                                                <div id="allsearch" class="input-group mb-0 border border-primary rounded p-0">
-                                                    <span class="input-group-text" id="basic-addon1"><i class=>S/</i></span>
-                                                    <input id="salarioXH" class="form-control" type="number" min="0.00" step="0.010" value="0.00">
-                                                </div>
-                                                <button type="button" onclick="salarioXH(10)" class="btn bg-primary text-white">+</button>
+                                    <div class="div">
+                                        <label class="text-primary">
+                                            <input type="checkbox" onclick="activetareo()" id="idtareo" value=""> Trabajador tareo
+                                        </label>
+                                    </div>
+                                    <div id="idpreciohora" class="form-group p-1 d-none">
+                                        <label>Precio X Hora<span class="text-danger">*</span></label>
+                                        <div class="d-flex">
+                                            <button type="button" onclick="salarioXHora(-10)" class="btn bg-primary text-white">-</button>
+                                            <div id="allsearch" class="input-group mb-0 border border-primary rounded p-0">
+                                                <span class="input-group-text" id="basic-addon1"><i class=>S/</i></span>
+                                                <input id="salarioXH" class="form-control" type="number" min="0.00" step="0.010" value="0.00">
                                             </div>
+                                            <button type="button" onclick="salarioXHora(10)" class="btn bg-primary text-white">+</button>
                                         </div>
                                     </div>
                                 </div>

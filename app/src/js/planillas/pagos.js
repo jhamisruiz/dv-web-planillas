@@ -1,6 +1,6 @@
 
-function dataTimeNow() {
-    let now = new Date();
+function dataTimeNowP() {
+    var now = new Date();
     let Y = now.getFullYear();
     let MM = now.getMonth() + 1;
     let DD = now.getDate();
@@ -9,22 +9,27 @@ function dataTimeNow() {
     if (M.length == 1) { M = '0' + M }
     if (D.length == 1) { D = '0' + D }
     let date = Y + '-' + M + '-' + D;
+    var mes = Y + '-' + M + '-01';
     //hora
     let string = String(now);
     let hora = string.split(' ');
     let HH = hora[4]
-    return { 'date': date, 'hora': HH, }
+    return { 'date': date, 
+            'hora': HH, 
+            'mes': mes,}
 }
 $(document).ready(function () {
-    let date = dataTimeNow();
-    $("#dateStart").val(date['date']);
+    let date = dataTimeNowP();
+    $("#datetimeStart").val(date['mes']);
+    $("#datetimeEnd").val(date['date']);
     searchMes()
 });
 
 function asisEmployDNI() {
     $('#btncalcularp').addClass('d-none');
     $('#btncalcularF').addClass('d-none');
-    var mes = $('#dateStart').val()
+    var dia1 = $('#datetimeStart').val()
+    var dia2 = $('#datetimeEnd').val()
     var dni = $('#buscarXdni').val()
     var sucursal = '';
     if (dni.length == 8) {
@@ -40,7 +45,7 @@ function asisEmployDNI() {
         $.ajax({
             method: "POST",
             url: "app/src/ajax/planillas/pagos.ajax.php",
-            data: { 'dniEmployes': dni, 'fecha': mes },
+            data: { 'dniEmployes': dni, 'fecha1': dia1, 'fecha2': dia2 },
             success: function (respuesta) {
                 $("#idfaltas").html(respuesta);
                 //$("#nombreenploy").removeClass('d-none');
@@ -49,16 +54,19 @@ function asisEmployDNI() {
         $.ajax({
             method: "POST",
             url: "app/src/ajax/planillas/pagos.ajax.php",
-            data: { 'dniasistencia': dni, 'fechaa': mes },
+            data: { 'dniasistencia': dni, 'fecha1': dia1, 'fecha2': dia2 },
             success: function (respuesta) {
                 $("#idasistencias").html(respuesta);
                 //$("#nombreenploy").removeClass('d-none');
             }
         });
+        let data={
+            'dni': dni
+        }
         $.ajax({
             method: "POST",
             url: "app/src/ajax/planillas/pagos.ajax.php",
-            data: { 'historial': dni,},
+            data: { 'historial': data,},
             success: function (respuesta) {
                 $("#idhistorialpago").html(respuesta);
             }
@@ -111,23 +119,41 @@ function remuneraFin(price,id) {
     
 }
 function calcularPago(){
+    $("#iddominical").attr("checked", false);
+    $('#idrespuestacal').html(`
+    <label>Costo h. s/.<strong>
+            <l id="idcostohora">0.00</l>
+        </strong>
+        x<strong>
+            <l id="idhstrabaja">00:00</l>
+        </strong>Horas T.
+    </label>`);
     $('#idremunera').val(parseFloat(0).toFixed(2));
     $('#comentario').val('')
     $("#calcularModal").modal('show');
     var salary = $("#idsalaryt").val();
     $("#idsalario").val(salary);
-    var mes = $('#dateStart').val()
+    var dia1 = $('#datetimeStart').val()
+    var dia2 = $('#datetimeEnd').val()
     var dni = $('#buscarXdni').val()
     $.ajax({
         method: "POST",
         url: "app/src/ajax/planillas/pagos.ajax.php",
-        data: { 'dniEmpleado': dni, 'fechames': mes },
+        data: { 'dniEmpleado': dni, 'fecha1': dia1, 'fecha2': dia2},
         success: function (respuesta) {
-            console.log(respuesta)
-            let salary = parseFloat(respuesta);
+            let salary = parseFloat(respuesta.replace(/,/g, ""));
             $('#idpagomes').val(salary)
+            if ($('#idtotalhoras').html()=='MES'){
+                $('#idrespuestacal').html(`
+                PAGO MENSUAL
+                <div class="d-none">
+                <l id="idhstrabaja">00:00</l>
+                <l id="idcostohora">0.00</l>
+                </div>
+                `);
+            }else{
             $('#idcostohora').html($('#idsalhorat').val());
-            $('#idhstrabaja').html($('#idtotalhoras').html());
+            $('#idhstrabaja').html($('#idtotalhoras').html());}
         }
     });
 }
@@ -135,9 +161,16 @@ function calcularPago(){
     CREAR/EDITAR
 ===============================*/
 $('#Addpagos').click(function () {
+    let dominic='';
+    if (document.getElementById("iddominical").checked === true) {
+        dominic = 'SI';
+    }else{
+        dominic = '';
+    }
     var data = {
         'dni': $('#buscarXdni').val(),
-        'mes': $('#dateStart').val(),
+        'dia1': $('#datetimeStart').val(),
+        'dia2': $('#datetimeEnd').val(),
         'salary': $('#idsalario').val(),
         'total_horas': $('#idhstrabaja').html(),
         'precio_hora': $('#idcostohora').html(),
@@ -145,6 +178,7 @@ $('#Addpagos').click(function () {
         'remunera': $('#idremunera').val(),
         'coment': $('#comentario').val(),
         'id': $(this).attr('idpago'),
+        'dominic': dominic,
         'editar': $(this).attr('editar')
 
     }
@@ -164,29 +198,61 @@ $('#Addpagos').click(function () {
 
 });
 function searchMes(){
-    var fecha = new String($('#dateStart').val());
-    if (fecha.length==10){
-        fecha = fecha.substring(0, 7);
+    let fecha ={
+        'dni': 0,
+        'dia1': $('#datetimeStart').val(),
+        'dia2': $('#datetimeEnd').val()
     }
     $.ajax({
         method: "POST",
         url: "app/src/ajax/planillas/pagos.ajax.php",
-        data: { 'historial': fecha, },
+        data: { 'historial': fecha,},
         success: function (respuesta) {
+            console.log(fecha)
             $("#verhistorypagos").html(respuesta);
             $('#idnonehis').addClass('d-none')
         }
     });
 }
+///////////function eleminar
+function eliminarPago(id){
+    Swal.fire({
+        title: 'Está seguro?',
+        text: "Se Pago se eliminara definitivamente!",
+        icon: 'error',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#dd6b55',
+        confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var datos = new FormData();
+            datos.append("idEliminar", id);
+            $.ajax({
+                url: "app/src/ajax/planillas/pagos.ajax.php",
+                method: "POST",
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (respuesta) {
+                    $("#smsconfirmations").html(respuesta);///
+                    asisEmployDNI()
+                }
+            });
 
+        }
+    })
+}
 function exelreportes(){
-    let mes = $('#dateStart').val()
-    let url = "/planillas/detalle-reporte-exel/" + mes;
+    var dia1 = $('#datetimeStart').val()
+    var dia2 = $('#datetimeEnd').val()
+    let url = "/planillas/detalle-reporte-exel/" + dia1+'/'+dia2;
     javascript: window.open(url, '_blank');
 }
-function exelreportesCont() {
-    let mes = $('#dateStart').val()
+function pdfreportesCont(id,host) {
+    let mes = $('#datetimeStart').val()
     let dni = $('#buscarXdni').val()
-    let url = "/planillas/detalle-reporte-pdf/" + mes + "/" + dni+"/expor-file-pdf";
+    let url = "/planillas/detalle-reporte-pdf/" + id + "/" + dni+"/expor-file-pdf";
     javascript: window.open(url, '_blank');
 }

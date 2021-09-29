@@ -3,7 +3,7 @@
         <div class="col-lg-5 col-12">
             <div id="auth-left">
                 <div class="auth-logo">
-                    <a><img src="public/assets/images/logo/logo.png" alt="Logo"></a>
+                    <a><img src="public/logo/logo.jpeg" alt="Logo"></a>
                 </div>
                 <h1 class="auth-title">Login</h1>
                 <?php

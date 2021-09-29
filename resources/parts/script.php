@@ -58,6 +58,9 @@ if (isset($_GET["ruta"])) {
         $('#timeStar').datetimepicker({
             format: 'HH:mm:ss'
         });
+        $('#timeStarDos').datetimepicker({
+            format: 'HH:mm:ss'
+        });
         $('#datetimeStart').datetimepicker({
             format: 'YYYY-MM-DD'
         });

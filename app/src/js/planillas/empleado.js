@@ -62,10 +62,22 @@ $(document).ready(function () {
         error='';
     }
 });
-//// crear editar
+function activetareo(){
+    if (document.getElementById("idtareo").checked === true){
+        $('#idpreciohora').removeClass('d-none');
+    }else{
+        $('#idpreciohora').addClass('d-none');
+        $('#salarioXH').val('0.00');
+    }
+}
+//// CREAR / EDITAR
 $('#btnTrabajador').click(function () {
     var employe = [];
-
+    
+    var sal_hora = document.getElementById("salarioXH").value;
+    if (document.getElementById("idtareo").checked === false) {
+        sal_hora='MES';
+    }
     employe.push({
         'id': $(this).attr("idtrabajador"),
         'id_sucursal': document.getElementById("idSucursal").value,
@@ -81,7 +93,7 @@ $('#btnTrabajador').click(function () {
         'id_area': document.getElementById("idarea").value,
         'id_empleo': document.getElementById("idempleo").value,
         'salario': document.getElementById("salTrabajador").value,
-        'sal_hora': document.getElementById("salarioXH").value,
+        'sal_hora': sal_hora,
         'editar': $(this).attr("editarTrabajador")
     });
     if (employe[0]['id_sucursal'] == "" || employe[0]['id_sucursal'] == 0) {
@@ -104,6 +116,9 @@ $('#btnTrabajador').click(function () {
                 let pg = parseInt(document.getElementById("rowsemployes").value);
                 selectAllEmployes(search,0,pg);
                 $("#smsconfirmations").html(respuesta);//ingresa mensaje en html
+                if ($(this).attr("editarTrabajador")=='NO'){
+                    limpiarFormEmploye()
+                }
             }
         });
     }
@@ -114,6 +129,7 @@ function limpiarFormEmploye() {
     $('.form-control').find($('option')).attr('selected', false)//deselecciona selects
     document.getElementById('provincia').innerHTML = "";
     document.getElementById('ubigeo').innerHTML = "";
+    $('#idpreciohora').addClass('d-none');
     $("#provincia").html(` <option id="editarProvincia">Seleccione</option>`);//provincia
     $("#ubigeo").html(`<option id="editarDistrito" value="0">Seleccione</option>`);//distrito
     $("#btnTrabajador").attr('editarTrabajador', 'NO')
@@ -137,6 +153,15 @@ function editarEmploye(id) {
         success: function (respuesta) {
             limpiarFormEmploye();
             $("#inlineForm").modal('show');
+            var sal_hora = respuesta["sal_hora"];
+            if (sal_hora=='MES'){
+                $('#idpreciohora').addClass('d-none');
+                $("#idtareo").attr("checked", false);
+                sal_hora='0.00';
+            }else{
+                $('#idpreciohora').removeClass('d-none');
+                $("#idtareo").attr("checked", true);
+            }
             //add data
             $("#idSucursal option[value='" + respuesta["id_sucursal"] + "']").attr("selected", "selected");
             $("#nombTrabajador").val(respuesta["nombre"]);
@@ -155,7 +180,7 @@ function editarEmploye(id) {
             $("#idarea option[value='" + respuesta["id_departamento"] + "']").attr("selected", "selected");
             $("#idempleo option[value='" + respuesta["id_empleo"] + "']").attr("selected", "selected");
             $("#salTrabajador").val(respuesta["salario"]);
-            $("#salarioXH").val(respuesta["sal_hora"]);
+            $("#salarioXH").val(sal_hora);
             $("#btnTrabajador").attr('editarTrabajador', 'SI')
             $("#btnTrabajador").attr('idtrabajador', id)
         }
@@ -273,7 +298,7 @@ function salario(price){
 
     $('#salTrabajador').val(parseFloat(res).toFixed(2))
 }
-function salarioXH(price) {
+function salarioXHora(price) {
     var total = parseFloat($('#salarioXH').val());
     var res = 0;
     if (total < 1) {

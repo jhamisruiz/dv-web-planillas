@@ -39,9 +39,19 @@ function asistEmploye(id) {
     onchangeDate()
 }
 $(document).on("click", ".asistencia", function () {
+    var hora='';
+    if ($(this).attr("asistencia") == 'ENTRADA' || $(this).attr("asistencia") == 'FALTA'){
+        hora = $('#timeStar').val();
+    }else{
+        if ($('#timeStarDos').val()==''){
+            alertify.error('Ingresa hora salida*');
+            exit()
+        }
+        hora = $('#timeStarDos').val();
+    }
     var data= {
         "asist": $(this).attr("asistencia"),
-        "hora": $('#timeStar').val(),
+        "hora": hora,
         "fecha": $('#datetimeStart').val(),
         "dni": $('#idemploy').val(),
     }
@@ -76,8 +86,11 @@ function onchangeDate(){
                 $('#entrada').addClass('bg-success text-white')
                 $('#falta').removeClass('bg-danger text-white')
                 $('#falta').addClass('btn-outline-danger')
+                $('#timeStarDos').val('');
                 $('#horaentrada').html(respuesta['hora_entrada']);
                 $('#eliminarasistencia').removeClass('d-none')
+                $('#horastotal').html('00:00');
+                $('#horastotal').removeClass('text-danger');
             }
 
             if (respuesta['asistencia'] == 'FALTA') {
@@ -89,15 +102,19 @@ function onchangeDate(){
                 $('#salida').removeClass('bg-warning text-dark')
                 $('#salida').addClass('btn-outline-warning')
                 $('#horasalida').html('00:00');
-                $('#horastotal').html('00:00');
+                $('#timeStarDos').val('');
+                $('#horastotal').html('Registro Falta');
+                $('#horastotal').addClass('text-danger');
                 $('#eliminarasistencia').removeClass('d-none')
             }
             if (respuesta['salida'] == 'SALIDA') {
                 $('#salida').removeClass('btn-outline-warning')
                 $('#salida').addClass('bg-warning text-dark')
                 $('#horasalida').html(respuesta['hora_salida']);
+                $('#timeStarDos').val(respuesta['hora_salida']);
                 $('#horastotal').html(respuesta['total_horas']);
-                $('#eliminarasistencia').removeClass('d-none')
+                $('#eliminarasistencia').removeClass('d-none');
+                $('#horastotal').removeClass('text-danger');
             }
 
         }

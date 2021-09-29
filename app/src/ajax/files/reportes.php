@@ -14,21 +14,15 @@ include('./../../../php/functions.php');
 include('./../../../controllers/query/querys.C.php');
 include('./../../../models/query/querys.M.php');
 //establecemos el timezone para obtener la hora local
-date_default_timezone_set('America/Lima');
 
 //la fecha de exportación sera parte del nombre del archivo Excel
-$fdata = date("d-m-Y H:i:s");
-$namef =  date("m") . " " . $fdata;
-//Inicio de exportación en Excel
-header('Content-type: text/csv');
-header("Content-Disposition: attachment; filename=RT0$namef.xls"); //Indica el nombre del archivo resultante
-header("Pragma: no-cache");
-header("Expires: 0");
+
 ?>
 <?php
 $fecha = "";
 if (isset($_GET["idruta"])) {
-    $fecha = $_GET['idruta'];
+    $dia1 = $_GET['idruta'];
+    $dia2 = $_GET['nam'];
     $select = array(
         "T.nombre" => "",
         "T.apellidos" => "",
@@ -40,13 +34,16 @@ if (isset($_GET["idruta"])) {
         "H.abono" => "",
         "H.cometario" => "",
         "H.mes" => "",
+        "H.desde" => "",
+        "H.hasta" => "",
+        "H.dominic" => "",
     );
     $tables = array(
         "historial_pago H" => "trabajador T", #0-0
         "H.dni" => "T.dni", #0-0
     );
     $where = array(
-        "H.mes" => " LIKE '" . $fecha . "%'",
+        "H.fecha" => " BETWEEN '" . $dia1 . "' AND '" . $dia2 . "'",
     );
 
     $historys = ControllerQueryes::SELECT($select, $tables, $where);
@@ -77,7 +74,7 @@ if (isset($_GET["idruta"])) {
         <th></th>
         <th></th>
         <th></th>
-        <th style='background:#0d6efd; color:#CCC'>REPORTE DE PAGOS - $fdata</th>
+        <th colspan='4' style='background:#0d6efd; color:#CCC'>REPORTE DE PAGOS - $fdata</th>
         <th></th>
         </tr>
         <tr></tr>
@@ -86,7 +83,7 @@ if (isset($_GET["idruta"])) {
         <th></th>
         <th></th>
         <th></th>
-        <th>Mes : $fecha</th>
+        <th colspan='4'>Periodo : $dia1 / $dia2</th>
         <th></th>
         <th></th>
         <th></th>
@@ -102,6 +99,9 @@ if (isset($_GET["idruta"])) {
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Apellidos</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>DNI</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Fecha</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Desde</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Hasta</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Dominical</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Salario</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>H. trabajadas</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Costo H.</th>
@@ -109,21 +109,6 @@ if (isset($_GET["idruta"])) {
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Bono</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Comentario</th>
             <th></th>
-        </tr>
-        <tr>
-        <th></th>
-        <th style='border-left: solid;border-color: #000'></th>
-        <th></th
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th style='border-right: solid;border-color: #000'></th>
-        <th></th>
         </tr>";
     foreach ($historys as $key => $value) {
         echo '<tr>
@@ -133,14 +118,17 @@ if (isset($_GET["idruta"])) {
                 <th style="text:center;border-style: solid;border-color: #000">' . $value['apellidos'] . '</th>
                 <th style="text:center;border-style: solid;border-color: #000">' . $value['dni'] . '</th>
                 <th style="text:center;border-style: solid;border-color: #000">' . $value['mes'] . '</th>
+                <th style="text:center;border-style: solid;border-color: #000">' . $value['desde'] . '</th>
+                <th style="text:center;border-style: solid;border-color: #000">' . $value['hasta'] . '</th>
+                <th style="text:center;border-style: solid;border-color: #000">' . $value['dominic'] . '</th>
                 <th style="text:center;border-style: solid;border-color: #000">' . $value['salario'] . '</th>
                 <th style="text:center;border-style: solid;border-color: #000">' . $value['total_horas'] . '</th>
                 <th style="text:center;border-style: solid;border-color: #000">' . $value['precio_hora'] . '</th>
                 <th style="text:center;border-style: solid;border-color: #000">' . $value['monto_pagado'] . '</th>
                 <th style="text:center;border-style: solid;border-color: #000">' . $value['abono'] . '</th>
                 <th style="text:center;border-style: solid;border-color: #000">' . $value['cometario'] . '</th>
-        </tr>
-        <tr></tr>';
+        </tr>';
     }
-    echo "</table>";
+    echo "
+    <tr></tr></table>";
 }

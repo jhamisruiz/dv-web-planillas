@@ -10,7 +10,7 @@
                         <div class="form-group">
                             <p>Buscar por DNI </p>
                             <div class="input-group mb-3 rounded border border-primary">
-                                <input id="buscarXdni" value='' type="text" class="form-control" onkeyup="buscarEmployDNI()" placeholder="ejem: 8745631" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                                <input id="buscarXdni" value='47732559' type="text" class="form-control" onkeyup="buscarEmployDNI()" placeholder="ejem: 8745631" aria-label="Example text with button addon" aria-describedby="button-addon1">
                                 <button class="btn btn-primary" onclick="buscarEmployDNI()" type="button" id="button-addon1">Buscar</button>
                             </div>
                         </div>
@@ -49,46 +49,53 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Fhecha<span class="text-danger">*</span></label>
+                            <div class="cal-icon">
+                                <input type="text" onclick="onchangeDate(),onchangeDate2()" onblur="onchangeDate2()" onkeyup="onchangeDate2()" id="datetimeStart" class="form-control border border-primary">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 d-flex align-items-center justify-content-center p-0">
+                        <div class="">
+                            <i id="eliminarasistencia" class="bi bi-trash m-r-5 text-danger d-none" onclick="eliminarasistencia()" style="cursor: pointer;font-size:28px"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <label>Hora<span class="text-danger">*</span></label>
+                                <label>Hora Entrada<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input type="text" id="timeStar" onkeyup="onchangeDate2()" class="form-control border border-primary">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label>Fhecha<span class="text-danger">*</span></label>
-                                <div class="cal-icon">
-                                    <input type="text" onclick="onchangeDate(),onchangeDate2()" onblur="onchangeDate2()" onkeyup="onchangeDate2()" id="datetimeStart" class="form-control border border-primary">
-                                </div>
+                            <div class="text-center">
+                                <button class="w-100 btn btn-outline-success asistencia" asistencia="ENTRADA" id="entrada">ENTRADA</button>
+                                <p id="horaentrada" style="font-size:12px">00:00</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="col-lg-12">
-                            <div class="text-center">
-                                <button class="w-75 btn btn-outline-success asistencia" asistencia="ENTRADA" id="entrada">ENTRADA</button>
-                                <p id="horaentrada" style="font-size:12px">00:00</p>
+                            <div class="form-group">
+                                <label>Hora Salida<span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input type="text" id="timeStarDos" onkeyup="onchangeDate2()" class="form-control border border-primary">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="text-center pb-3">
-                                <button class="w-75 btn btn-outline-danger asistencia" asistencia="FALTA" id="falta">FALTA</button>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
                             <div class="text-center">
-                                <button class="w-75 btn btn-outline-warning asistencia" asistencia="SALIDA" id="salida">SALIDA</button>
+                                <button class="w-100 btn btn-outline-warning asistencia" asistencia="SALIDA" id="salida">SALIDA</button>
                                 <p id="horasalida" style="font-size:12px">00:00</p>
-                            </div>
-                            <div class="text-center">
-                                <i id="eliminarasistencia" class="bi bi-trash m-r-5 text-danger d-none" onclick="eliminarasistencia()" style="cursor: pointer;font-size:25px"></i>
                             </div>
                         </div>
                     </div>
-
+                </div>
+                <div class="col-lg-12">
+                    <div class="text-center pb-3">
+                        <button class="w-50 btn btn-outline-danger asistencia" asistencia="FALTA" id="falta">FALTA</button>
+                    </div>
                 </div>
                 <h6>Total de horas: <l id="horastotal">00:00</l>
                 </h6>

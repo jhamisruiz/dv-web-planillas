@@ -6,20 +6,22 @@ include('./../../../models/query/querys.M.php');
 date_default_timezone_set('America/Lima');
 
 //la fecha de exportación sera parte del nombre del archivo Excel
-//$fecha = date("d-m-Y H:i:s");
+$fecha = date("d-m-Y");
 
 $id = "";
 $dni = '';
 $nombres = '';
 if (isset($_GET["idruta"])) {
-    $fecha = $_GET['idruta'];
+    $id = $_GET['idruta'];
     $dni = $_GET['nam'];
 
     $select = array(
         "T.nombre" => "",
         "T.apellidos" => "",
         "T.fecha_ingreso" => "f_in",
+        "T.sal_hora" => "",
         "H.dni" => "",
+        "H.id" => "",
         "H.salario" => "",
         "H.total_horas" => "",
         "H.precio_hora" => "",
@@ -27,6 +29,9 @@ if (isset($_GET["idruta"])) {
         "H.abono" => "",
         "H.cometario" => "",
         "H.mes" => "",
+        "H.desde" => "",
+        "H.hasta" => "",
+        "H.dominic" => "",
         "E.nombre" => "nom_emp",
     );
     $tables = array(
@@ -36,9 +41,10 @@ if (isset($_GET["idruta"])) {
         "T.id_empleo" => "E.id", #0-0
     );
     $where = array(
-        "H.mes" => " LIKE '" . $fecha . "%' AND T.dni=" . $dni,
+        "T.dni" => "=" . $dni . " AND H.id=" . $id,
     );
     $pay = ControllerQueryes::SELECT($select, $tables, $where);
+    //print_r($pay);
     if (isset($pay[0]['nombre'])) {
 
         $nombres = $pay[0]['nombre'] . " " . $pay[0]['apellidos'];
@@ -55,10 +61,18 @@ if (isset($_GET["idruta"])) {
     );
     $wherefal = array(
         "dni" => '=' . $dni,
-        "asistencia" => "='FALTA'  AND fecha_asistencia LIKE '" . $fecha . "%'",
+        "asistencia" => "='FALTA' AND fecha_asistencia BETWEEN '" . $pay[0]['desde'] . "' AND '" . $pay[0]['hasta'] . "'",
     );
     $faltas = ControllerQueryes::SELECT($selectfal, $tablesfal, $wherefal);
     $tot_fal = count($faltas);
+    /* dias asistidos */
+    $selecta = array("*" => "*");
+    $tablesa = array("detalle_asistencia" => "",);
+    $wherea = array(
+        "dni" => '=' . $dni,
+        "asistencia" => "='PRESENTE'  AND fecha_asistencia BETWEEN '" . $pay[0]['desde'] . "' AND '" . $pay[0]['hasta'] . "'",
+    );
+    $asista = ControllerQueryes::SELECT($selecta, $tablesa, $wherea);
 
 ?>
     <html lang="en">
@@ -92,14 +106,14 @@ if (isset($_GET["idruta"])) {
                     <div class=" pt-0" id="invoice">
                         <div class="card-header bg-transparent header-elements-inline p-">
                             <div class="text-center">
-                                <h4 class="card-title text-primary"><strong>RO<?= $fecha ?>:Trabajador - Reporte Individual</strong></h4>
+                                <h4 class="card-title text-primary"><strong>RO0<?= $id ?>:Trabajador - Reporte Individual</strong></h4>
                                 <h6 class="card-title text-primary p-0 m-0">(Contiene datos mínimos de una Boleta de Pago)</strong></h6>
                             </div>
                         </div>
                         <div class="card-body border border-secondary mb-2">
                             <h6>RUC:</h6>
                             <h6>Empleador :</h6>
-                            <h6>Periodo : <strong><?= $fecha ?></strong></h6>
+                            <h6>Periodo : <strong><?= $pay[0]['desde'] . ' / ' . $pay[0]['hasta'] ?></strong></h6>
                         </div>
                         <div class="p-0 mb-2">
                             <table class="w-100">
@@ -141,11 +155,20 @@ if (isset($_GET["idruta"])) {
                                 <tr>
                                     <th class="text-center bg-info border border-secondary">Total Horas</th>
                                     <th class="text-center bg-info border border-secondary">Minutos</th>
+                                    <th class="text-center bg-info border border-secondary">Dominical</th>
                                     <th class="text-center bg-info border border-secondary">Total Horas</th>
                                     <th class="text-center bg-info border border-secondary">Minutos</th>
                                 </tr>
                                 <tr>
-                                    <td class="text-center border border-secondary">30</td>
+                                    <td class="text-center border border-secondary">
+                                        <?php
+                                        if ($pay[0]['sal_hora'] == 'MES') {
+                                            echo count($asista);
+                                        } else {
+                                            echo count($asista);
+                                        }
+                                        ?>
+                                    </td>
                                     <td class="text-center border border-secondary"><?= $tot_fal ?></td>
                                     <td class="text-center border border-secondary"></td>
                                     <td class="text-center border border-secondary"></td>
@@ -163,12 +186,13 @@ if (isset($_GET["idruta"])) {
                                     ?>
                                     <td class="text-center border border-secondary"><?= $dias ?></td>
                                     <td class="text-center border border-secondary"><?= $mins ?></td>
+                                    <td class="text-center border border-secondary"><?= $pay[0]['dominic'] ?></td>
                                     <td class="text-center border border-secondary"></td>
                                     <td class="text-center border border-secondary"></td>
                                 </tr>
                                 <tr>
                                     <th colspan="6" class="text-center bg-info border border-secondary">Motivo de Suspensión de Labores</th>
-                                    <th colspan="2" rowspan="2" class="text-center bg-info border border-secondary">Otros empleadores por
+                                    <th colspan="3" rowspan="2" class="text-center bg-info border border-secondary">Otros empleadores por
                                         Rentas de 5ta categoría
                                     </th>
                                 </tr>
@@ -202,7 +226,14 @@ if (isset($_GET["idruta"])) {
                                     <td colspan="4" class="border border-secondary"><?= $pay[0]['salario'] ?></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="7" class="bg-info border border-secondary">Neto a Pagar</td>
+                                    <td colspan="6" class="bg-info border border-secondary">Neto a Pagar</td>
+                                    <td colspan="1" class="bg-info border border-secondary">
+                                        <?php
+                                        if ($pay[0]['sal_hora'] == 'MES') {
+                                            echo 'MES';
+                                        }
+                                        ?>
+                                    </td>
                                     <td colspan="1" class="bg-info border border-secondary"><?= $pay[0]['monto_pagado'] ?></td>
                                 </tr>
                             </table>

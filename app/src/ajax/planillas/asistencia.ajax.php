@@ -319,7 +319,7 @@ if (isset($_POST['addAsistencia'])) {
 }
 
 /*=============================================
-OBJETO REGISTRAR ASISTENCIAS
+OBJETO ELIMINAR ASISTENCIAS
 =============================================*/
 if (isset($_POST['idEliminar'])) {
     $del = new ajaxEmpleadoAsistencia();

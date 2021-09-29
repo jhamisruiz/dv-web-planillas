@@ -1,11 +1,19 @@
 <div class="page-heading">
     <section class="section">
-        <div class="row">
+        <div class="row pl-2">
             <div class="col-lg-2">
                 <div class="form-group">
-                    <label>Buscar por Mes<span class="text-danger">*</span></label>
+                    <label>Desde <span class="text-danger">*</span></label>
                     <div class="cal-icon">
-                        <input type="text" id="dateStart" onblur="asisEmployDNI()" onkeyup="asisEmployDNI()" class="form-control border border-primary">
+                        <input type="text" id="datetimeStart" onblur="asisEmployDNI()" onkeyup="asisEmployDNI()" class="form-control border border-primary">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label>Hasta <span class="text-danger">*</span></label>
+                    <div class="cal-icon">
+                        <input type="text" id="datetimeEnd" onblur="asisEmployDNI()" onkeyup="asisEmployDNI()" class="form-control border border-primary">
                     </div>
                 </div>
             </div>
@@ -21,15 +29,14 @@
             <div class="col-lg-4 d-flex d-flex justify-content-center">
                 <div class="card-header">
                     <button type="button" id="btncalcularp" onclick="calcularPago()" class="btn bg-primary text-white d-none">
-                        <i style="font-size:20px" class="fa">&#xf155;</i>
+                        <i style="font-size:20px" class="fas fa-funnel-dollar mr-2"></i>
                         Calcular Pago
                     </button>
-                    <button id="btncalcularF" onclick="exelreportesCont()" host="<?= URL_HOST_WEB ?>" mes="" class="btn bg-warning text-white d-none">PDF</button>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-10">
+            <div class="col-lg-12">
                 <div class="table-responsive">
                     <table class="table table-hover border">
                         <tbody id="idemploye">
@@ -40,7 +47,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-10">
+            <div class="col-lg-12">
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header collapsed" id="flush-headingOne">
@@ -124,39 +131,46 @@
             <form action="#" id="addFormCategorias">
                 <div class="modal-body">
                     <div class="row pl-4 pr-4">
-                        <div class="col-lg-10 p-0">
-                            <div class="col-lg-5">
-                                <label>Remuneración s/.</label>
-                                <div class="form-group d-flex align-items-center">
-                                    <button id="idnutonfin" type="button" onclick="remuneraFin(-10,0)" class="btn bg-primary text-white" disabled>-</button>
-                                    <input id="idremunera" class="form-control border border-primary text-primary" type="number" min="0.00" step="0.010" value="0.00">
-                                    <button type="button" onclick="remuneraFin(10,1)" class="btn bg-primary text-white">+</button>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <label>Remuneración s/.</label>
+                                    <div class="form-group d-flex align-items-center">
+                                        <button id="idnutonfin" type="button" onclick="remuneraFin(-10,0)" class="btn bg-primary text-white" disabled>-</button>
+                                        <input id="idremunera" class="form-control border border-primary text-primary" type="number" min="0.00" step="0.010" value="0.00">
+                                        <button type="button" onclick="remuneraFin(10,1)" class="btn bg-primary text-white">+</button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label>Salario mensaual s/.</label>
+                                    <div class="form-group d-flex align-items-center">
+                                        <input type="text" id="idsalario" class="form-control border border-primary text-primary" disabled>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <label>
-                                Costo h. s/.
-                                <strong>
-                                    <l id="idcostohora">0.00</l>
-                                </strong>
-                                x
-                                <strong>
-                                    <l id="idhstrabaja">00:00</l>
-                                </strong>
-                                Horas T.
-                            </label>
-                            <label>Monto total s/. </label>
-                            <div class="form-group d-flex align-items-center">
-                                <button id="idnutonsal" type="button" onclick="salarioFin(-10)" class="ml-2 btn bg-primary text-white">-</button>
-                                <input id="idpagomes" class="form-control w-50 border border-primary text-primary" type="number" min="0.00" step="0.010" value="0.00">
-                                <button type="button" onclick="salarioFin(10)" class="btn bg-primary text-white">+</button>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <label>Salario mensaual s/.</label>
-                            <div class="form-group d-flex align-items-center">
-                                <input type="text" id="idsalario" class="form-control border border-primary text-primary" disabled>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div id='idrespuestacal'>
+                                        <label>Costo h. s/.<strong>
+                                                <l id="idcostohora">0.00</l>
+                                            </strong>
+                                            x<strong>
+                                                <l id="idhstrabaja">00:00</l>
+                                            </strong>Horas T.
+                                        </label>
+                                    </div>
+                                    <label>Monto total s/. </label>
+                                    <div class="form-group d-flex align-items-center">
+                                        <button id="idnutonsal" type="button" onclick="salarioFin(-10)" class="ml-2 btn bg-primary text-white">-</button>
+                                        <input id="idpagomes" class="form-control border border-primary text-primary" type="number" min="0.00" step="0.010" value="0.00">
+                                        <button type="button" onclick="salarioFin(10)" class="btn bg-primary text-white">+</button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 d-flex align-items-center">
+                                    <label><input type="checkbox" name="" id="iddominical"> Dominical</label>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-12">

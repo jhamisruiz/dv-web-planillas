@@ -67,7 +67,7 @@ class ajaxCategorias{
         if ($eliminar == "ok") {
             $swift = array(
                 "icon" => "success",
-                "sms" => "Almacen categorias",
+                "sms" => "Se elimino la categorias",
                 "rForm" => "",
             );
             $succes = Functions::SwiftAlert($swift);
