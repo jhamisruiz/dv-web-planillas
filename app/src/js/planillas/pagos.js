@@ -179,6 +179,8 @@ $('#Addpagos').click(function () {
         'coment': $('#comentario').val(),
         'id': $(this).attr('idpago'),
         'dominic': dominic,
+        'dias': $('#idnumasist').val(),
+        'faltas': $('#idnumfaltas').val(),
         'editar': $(this).attr('editar')
 
     }
@@ -247,8 +249,12 @@ function eliminarPago(id){
 function exelreportes(){
     var dia1 = $('#datetimeStart').val()
     var dia2 = $('#datetimeEnd').val()
-    let url = "/planillas/detalle-reporte-exel/" + dia1+'/'+dia2;
-    javascript: window.open(url, '_blank');
+    if (dia1 == '' || dia2==''){
+        alertify.error('Selecciona una fecha');
+    }else{
+        let url = "/planillas/detalle-reporte-exel/" + dia1 + '/' + dia2;
+        javascript: window.open(url, '_blank');
+    }
 }
 function pdfreportesCont(id,host) {
     let mes = $('#datetimeStart').val()

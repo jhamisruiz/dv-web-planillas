@@ -39,6 +39,8 @@
                                 <th class="bg-primary text-white">Fecha</th>
                                 <th class="bg-primary text-white">Desde</th>
                                 <th class="bg-primary text-white">Hasta</th>
+                                <th class="bg-primary text-white">N.D</th>
+                                <th class="bg-primary text-white">N.F</th>
                                 <th class="bg-primary text-white">Salario.</th>
                                 <th class="bg-primary text-white">H. trabajadas</th>
                                 <th class="bg-primary text-white">Costo hora.</th>

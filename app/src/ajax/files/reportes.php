@@ -37,6 +37,8 @@ if (isset($_GET["idruta"])) {
         "H.desde" => "",
         "H.hasta" => "",
         "H.dominic" => "",
+        "H.dias" => "",
+        "H.faltas" => "",
     );
     $tables = array(
         "historial_pago H" => "trabajador T", #0-0
@@ -66,8 +68,11 @@ if (isset($_GET["idruta"])) {
     </head>
 <?php
 
-    echo "<table style='border-style: solid;border-color: #0d6efd'>
+    echo "<table style=''>
         <tr>
+        <th></th>
+        <th></th>
+        <th></th>
         </tr>
         <tr>
         <th></th>
@@ -94,39 +99,45 @@ if (isset($_GET["idruta"])) {
         <tr></tr>
         <tr>
             <th></th>
-            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Nro</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Nr</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Nombres</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Apellidos</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>DNI</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Fecha</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Desde</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Hasta</th>
-            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Dominical</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>N.D</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>N.F</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000;'>Dmincl</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Salario</th>
-            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>H. trabajadas</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>H. trabajos</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Costo H.</th>
-            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Mnt. Pagado</th>
+            <th style='background:#CCC; color:#0d6efd;text:center;border-style: solid;border-color: #0d6efd'>Mnt. Pagdo</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Bono</th>
             <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000'>Comentario</th>
+            <th style='background:#CCC; color:#000;text:center;border-style: solid;border-color: #000;width: 100px;'>Firma trab.</th>
             <th></th>
         </tr>";
     foreach ($historys as $key => $value) {
         echo '<tr>
                 <th></th>
-                <th style="text:center;border-style: solid;border-color: #000">' . ($key + 1) . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['nombre'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['apellidos'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['dni'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['mes'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['desde'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['hasta'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['dominic'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['salario'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['total_horas'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['precio_hora'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['monto_pagado'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['abono'] . '</th>
-                <th style="text:center;border-style: solid;border-color: #000">' . $value['cometario'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . ($key + 1) . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['nombre'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['apellidos'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['dni'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['mes'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['desde'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['hasta'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['dias'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['faltas'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['dominic'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['salario'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['total_horas'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['precio_hora'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #0d6efd">' . $value['monto_pagado'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['abono'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000">' . $value['cometario'] . '</th>
+                <th style="text-align:center;border-style: solid;border-color: #000"></th>
         </tr>';
     }
     echo "

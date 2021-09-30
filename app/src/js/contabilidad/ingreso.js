@@ -1,3 +1,24 @@
+function dataTimeNowI() {
+    var now = new Date();
+    let Y = now.getFullYear();
+    let MM = now.getMonth() + 1;
+    let DD = now.getDate();
+    let M = String(MM);
+    let D = String(DD);
+    if (M.length == 1) { M = '0' + M }
+    if (D.length == 1) { D = '0' + D }
+    let date = Y + '-' + M + '-' + D;
+    var mes = Y + '-' + M + '-01';
+    //hora
+    let string = String(now);
+    let hora = string.split(' ');
+    let HH = hora[4]
+    return {
+        'date': date,
+        'hora': HH,
+        'mes': mes,
+    }
+}
 function selectingreso(search) {
     $('#idtotalingresos').html('0.00')
     let tabla = $("#iddnone").val();
@@ -32,6 +53,10 @@ $(document).ready(function () {
     try {
         var search = document.getElementById('dateStart').value;
         selectingreso(search);
+        var search = document.getElementById('dateStart').value;
+        selectgasto(search);
+        let date = dataTimeNowI();
+        document.getElementById('dateStart').value = date['date'];
     } catch (error) {
         //
     }
@@ -126,8 +151,11 @@ function eliminarIng(id) {
 
 function exelreportesConta(){
     let mes = $('#dateStart').val()
+    if (mes==''){
+        alertify.error('Selecciona una fecha');
+    }else{
     let url = "/contabilidad/detalle-reporte-exel/" + mes;
-    javascript: window.open(url, '_blank');
+    javascript: window.open(url, '_blank');}
 }
 
 /* //////////GASTOS */
@@ -150,14 +178,7 @@ function searchgasto() {
     var search = document.getElementById('dateStart').value;
     selectgasto(search);
 }
-$(document).ready(function () {
-    try {
-        var search = document.getElementById('dateStart').value;
-        selectgasto(search);
-    } catch (error) {
-        //
-    }
-});
+
 /*============================== 
     CREAR/EDITAR GASTOS
 ===============================*/

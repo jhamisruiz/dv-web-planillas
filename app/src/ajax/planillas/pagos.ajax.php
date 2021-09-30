@@ -32,6 +32,8 @@ class ajaxEmpleadoPagos
                 "desde" => $data['dia1'],
                 "hasta" => $data['dia2'],
                 "dominic" => $data['dominic'],
+                "dias" => $data['dias'],
+                "faltas" => $data['faltas'],
             );
             $respuesta = ControllerQueryes::INSERT($insert);
             //echo $respuesta;
@@ -143,8 +145,9 @@ class ajaxEmpleadoPagos
         );
         $asist = ControllerQueryes::SELECT($select, $tables, $where);
         //echo count($asist);
+        $num = 0;
         if (count($asist)==0) {
-            echo '<p class="ml-5"> El Empleado no tiene faltas</p>';
+            echo '<p class="ml-5"> El Empleado no tiene faltas<input id="idnumfaltas" type="hidden" value="' . $num . '"></p>';
         } else {
             echo '<tr>
                 <th class="bg-danger text-white m-0 p-0">#</th>
@@ -153,15 +156,16 @@ class ajaxEmpleadoPagos
                 <th class="bg-danger text-white m-0 p-0">Fecha Asist.</th>
             </tr>';
             foreach ($asist as $key => $value) {
-
+                $num= ($key + 1);
                 echo '<tr class="m-0 p-0">
-                <td class="m-0 p-0">' . ($key + 1) . '</td>
+                <td class="m-0 p-0">' . $num . '</td>
                 <td class="text-danger">' . $value['asistencia'] . '</td>
                 <td class="m-0 p-0">' . $value['dni'] . '</td>
                 <td class="m-0 p-0">' . $value['fecha_asistencia'] . '</td>
             </tr>
             ';
             }
+            echo '<tr><td><input id="idnumfaltas" type="hidden" value="' . $num . '"></td></tr>';
         }
         
     }
@@ -185,8 +189,9 @@ class ajaxEmpleadoPagos
         );
         $asista = ControllerQueryes::SELECT($select, $tables, $where);
         //
+        $num = 0;
         if(count($asista)==0){
-            echo '<p class="ml-5"> No hay asistencia para este Empleado</p>';
+            echo '<p class="ml-5"> No hay asistencia para este Empleado<input id="idnumasist" type="hidden" value="' . $num . '"></p>';
         }else{
             echo '<tr>
                 <th class="bg-success text-white m-0 p-0">#</th>
@@ -199,9 +204,9 @@ class ajaxEmpleadoPagos
             </tr>';
             $h="";
             foreach ($asista as $key => $value) {
-
+                $num = ($key + 1);
                 echo '<tr class="m-0 p-0">
-                <td class="m-0 p-0">' . ($key + 1) . '</td>
+                <td class="m-0 p-0">' . $num . '</td>
                 <td class="text-success m-0 p-0 ">' . $value['asistencia'] . '</td>
                 <td class="m-0 p-0">' . $value['dni'] . '</td>
                 <td class="m-0 p-0">' . $value['fecha_asistencia'] . '</td>
@@ -231,7 +236,7 @@ class ajaxEmpleadoPagos
                 $echo= $hcerr . $horas . ':' . $cerm . $min . ":" .  $cers . $seg;
             }
             echo '<tr>
-                <td></td>
+                <td><input id="idnumasist" type="hidden" value="'. $num.'"></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -264,6 +269,8 @@ class ajaxEmpleadoPagos
             "H.desde" => "",
             "H.hasta" => "",
             "H.dominic" => "",
+            "H.dias" => "",
+            "H.faltas" => "",
         );
         $tables = array(
             "historial_pago H" => "trabajador T", #0-0
@@ -291,9 +298,11 @@ class ajaxEmpleadoPagos
                 <th class="bg-primary text-white m-0 p-0">Fecha Pago</th>
                 <th class="bg-primary text-white m-0 p-0">Desde</th>
                 <th class="bg-primary text-white m-0 p-0">Hasta</th>
+                <th class="bg-primary text-white m-0 p-0">N.dias</th>
+                <th class="bg-primary text-white m-0 p-0">N.faltas</th>
                 <th class="bg-primary text-white m-0 p-0">Salario.</th>
-                <th class="bg-primary text-white m-0 p-0">H. trabajadas</th>
-                <th class="bg-primary text-white m-0 p-0">Costo hora.</th>
+                <th class="bg-primary text-white m-0 p-0">H. Trabajo</th>
+                <th class="bg-primary text-white m-0 p-0">Costo H.</th>
                 <th class="bg-primary text-white m-0 p-0">M. pagado</th>
                 <th class="bg-primary text-white m-0 p-0">Dominical</th>
                 <th class="bg-primary text-white m-0 p-0">Bono</th>
@@ -314,11 +323,13 @@ class ajaxEmpleadoPagos
                 <td class="m-0 p-0">' . $value['mes'] . '</td>
                 <td class="m-0 p-0">' . $value['desde'] . '</td>
                 <td class="m-0 p-0">' . $value['hasta'] . '</td>
+                <td class="m-0 p-0 text-center">' . $value['dias'] . '</td>
+                <td class="m-0 p-0 text-center">' . $value['faltas'] . '</td>
                 <td class="m-0 p-0">' . $value['salario'] . '</td>
                 <td class="m-0 p-0">' . $value['total_horas'] . '</td>
                 <td class="m-0 p-0">' . $value['precio_hora'] . '</td>
                 <td class="m-0 p-0">' . $value['monto_pagado'] . '</td>
-                <td class="m-0 p-0">' . $value['dominic'] . '</td>
+                <td class="m-0 p-0 text-center">' . $value['dominic'] . '</td>
                 <td class="m-0 p-0">' . $value['abono'] . '</td>
                 <td class="m-0 p-0">' . $value['cometario'] . '</td>';
                 if(strlen($data['dni']) == 8){
