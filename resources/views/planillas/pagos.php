@@ -168,8 +168,20 @@
                                         <button type="button" onclick="salarioFin(10)" class="btn bg-primary text-white">+</button>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 d-flex align-items-center">
-                                    <label><input type="checkbox" name="" id="iddominical"> Dominical</label>
+                                <div class="col-lg-4 pb-0 d-flex align-items-center d-none">
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <label><input type="checkbox" onclick="dominical()" id="iddominical"> Dominical</label>
+                                        </div>
+                                        <div id="idsaldominic" class="d-flex d-none">
+                                            <button type="button" onclick="salario(-10)" class="btn bg-primary text-white">-</button>
+                                            <div id="allsearch" class="input-group mb-0 border border-primary rounded p-0">
+                                                <span class="input-group-text" id="basic-addon1"><i class="">S/</i></span>
+                                                <input id="salTrabajador" class="form-control" type="number" min="0.00" step="0.010" value="0.00">
+                                            </div>
+                                            <button type="button" onclick="salario(10)" class="btn bg-primary text-white">+</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

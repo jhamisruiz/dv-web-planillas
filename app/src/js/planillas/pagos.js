@@ -119,6 +119,9 @@ function remuneraFin(price,id) {
     
 }
 function calcularPago(){
+    document.getElementById("iddominical").checked = false;
+    $('#idsaldominic').addClass('d-none');
+    $('#salTrabajador').val('0.00');
     $("#iddominical").attr("checked", false);
     $('#idrespuestacal').html(`
     <label>Costo h. s/.<strong>
@@ -157,24 +160,51 @@ function calcularPago(){
         }
     });
 }
+function dominical(){
+    // $('#salTrabajador').val('0.00');
+    // if (document.getElementById("iddominical").checked === true) {
+    //     let ph = parseFloat($('#idcostohora').html());
+    //     let domin = parseFloat(8).toFixed(2) * parseFloat(ph).toFixed(2);
+    //     $('#salTrabajador').val(parseFloat(domin).toFixed(2));
+    //     $('#idsaldominic').removeClass('d-none');
+    // } else {
+    //     $('#idsaldominic').addClass('d-none');
+        
+    // }
+    // let dominic = '';
+    // if (document.getElementById("iddominical").checked === true) {
+    //     dominic = 'SI';
+    //     tot = parseFloat($('#idpagomes').val()) + parseFloat($('#salTrabajador').val());
+    // } else {
+    //     dominic = '';
+    //     tot = parseFloat($('#idpagomes').val()).toFixed(2);
+    // }
+}
 /*============================== 
     CREAR/EDITAR
 ===============================*/
 $('#Addpagos').click(function () {
+    var th = $('#idhstrabaja').html();
+    let sh=th.split(':');
     let dominic='';
-    if (document.getElementById("iddominical").checked === true) {
+    let td = $('#idnumasist').val();
+    var tot=0;
+    if (td == 6 && sh[0]>= 48){
         dominic = 'SI';
+        let ph = parseFloat($('#idcostohora').html());
+        let dom = parseFloat(8).toFixed(2) * parseFloat(ph).toFixed(2);
+        tot = parseFloat($('#idpagomes').val()) + parseFloat(dom);
     }else{
-        dominic = '';
+        tot = parseFloat($('#idpagomes').val()).toFixed(2);
     }
     var data = {
         'dni': $('#buscarXdni').val(),
         'dia1': $('#datetimeStart').val(),
         'dia2': $('#datetimeEnd').val(),
         'salary': $('#idsalario').val(),
-        'total_horas': $('#idhstrabaja').html(),
+        'total_horas': th,
         'precio_hora': $('#idcostohora').html(),
-        'total_salary': $('#idpagomes').val(),
+        'total_salary': tot,
         'remunera': $('#idremunera').val(),
         'coment': $('#comentario').val(),
         'id': $(this).attr('idpago'),
